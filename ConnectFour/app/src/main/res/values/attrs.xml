@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BoardView">
+        <attr name="rows" format="integer" />
+        <attr name="columns" format="integer" />
+        <attr name="board_color" format="color" />
+        <attr name="player1_color" format="color" />
+        <attr name="player2_color" format="color" />
+    </declare-styleable>
+</resources>
