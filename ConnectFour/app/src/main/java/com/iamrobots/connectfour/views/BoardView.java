@@ -29,14 +29,18 @@ public class BoardView extends View {
     private static final int DEFAULT_PLAYER1_COLOR = Color.parseColor("#f1c40f");
     private static final int DEFAULT_PLAYER2_COLOR = Color.parseColor("#e74c3c");
 
-    private float mRadius; // radius
     private int mRows;
     private int mColumns;
+    private float mRadius;
+    private float[] mPosX;
+    private float[] mPosY;
 
     private Bitmap mBoardBitmap;
     private Paint mBoardPaint;
     private Paint mEraser;
 
+    private Bitmap mBackBoardBitmap;
+    private Paint mBackBoardPaint;
     private Paint mFirstPlayerPaint;
     private Paint mSecondPlayerPaint;
 
@@ -51,6 +55,10 @@ public class BoardView extends View {
         mEraser.setAntiAlias(true);
         mEraser.setColor(Color.TRANSPARENT);
         mEraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
+        mBackBoardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mBackBoardPaint.setColor(Color.WHITE);
+        mBackBoardPaint.setStyle(Paint.Style.FILL);
 
         mFirstPlayerPaint = new Paint();
         mFirstPlayerPaint.setAntiAlias(true);
@@ -75,35 +83,15 @@ public class BoardView extends View {
                 a.recycle();
             }
         } else {
-            setRowsColumns(DEFAULT_ROWS, DEFAULT_COLUMNS);
+            mRows = DEFAULT_ROWS;
+            mColumns = DEFAULT_COLUMNS;
             mBoardPaint.setColor(DEFAULT_BOARD_COLOR);
             mFirstPlayerPaint.setColor(DEFAULT_PLAYER1_COLOR);
             mSecondPlayerPaint.setColor(DEFAULT_PLAYER2_COLOR);
         }
-    }
 
-    public void setRowsColumns(int rows, int columns) {
-        mRows = rows;
-        mColumns = columns;
-    }
-
-    public void dropBall(int row, int column, int player) {
-        Paint paint;
-
-        if (column < 0 || column >= mColumns)
-            return;
-        if (row < 0 || row >= mRows)
-            return;
-        if (player > 1 || player < 0)
-            return;
-
-        if (player == 1)
-            paint = mSecondPlayerPaint;
-        else
-            paint = mFirstPlayerPaint;
-
-        float posX = mRadius; // + (mRadius) * column;
-        float posY = mRadius; // + (mRadius) * (mRows - row);
+        mPosY = new float[mRows];
+        mPosX = new float[mColumns];
     }
 
     public BoardView(Context context) {
@@ -131,6 +119,7 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        canvas.drawBitmap(mBackBoardBitmap, 0, 0, null);
         canvas.drawBitmap(mBoardBitmap, 0, 0, null);
     }
 
@@ -139,10 +128,10 @@ public class BoardView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int minw = getPaddingLeft() + getPaddingRight() + getSuggestedMinimumWidth();
-        int w = resolveSizeAndState(minw, widthMeasureSpec, 1);
+        int w = resolveSize(minw, widthMeasureSpec);
 
-        int minh = (MeasureSpec.getSize(w) / mColumns) * mRows + getPaddingBottom() + getPaddingTop();
-        int h = resolveSizeAndState(minh, heightMeasureSpec, 0);
+        int minh = ((w / mColumns) * mRows) + getPaddingBottom() + getPaddingTop();
+        int h = resolveSize(minh, heightMeasureSpec);
 
         setMeasuredDimension(w, h);
     }
@@ -153,26 +142,96 @@ public class BoardView extends View {
 
         int width = w - (getPaddingLeft() + getPaddingRight());
         int height = h - (getPaddingTop() + getPaddingBottom());
+
+        initBoard(width, height);
+
+    }
+
+    private void initBoard(int width, int height) {
         int circlePadding = 4;
-        float posX;
-        float posY;
 
         mRadius = Math.min(width / mColumns, height / mRows) / 2;
-        posX = mRadius + ((float) width - (mRadius * mColumns) * 2) / 2;
-        posY = mRadius + ((float) height - (mRadius * mRows) * 2) / 2;
+        mPosX[0] = mRadius + ((float) width - (mRadius * mColumns) * 2) / 2;
+        mPosY[mRows - 1] = mRadius + ((float) height - (mRadius * mRows) * 2) / 2;
+
+        for (int i = 1; i < mColumns; i++) {
+            mPosX[i] = mPosX[i - 1] + mRadius * 2;
+        }
+
+        for (int i = mRows - 1; i > 0; i--) {
+            mPosY[i - 1] = mPosY[i] + mRadius * 2;
+        }
+
+        mBackBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas backboardCanvas = new Canvas(mBackBoardBitmap);
+        backboardCanvas.drawRect(0f, 0f, width, height, mBackBoardPaint);
 
         mBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(mBoardBitmap);
-        canvas.drawRect(0f, 0f, (float) width, (float) height, mBoardPaint);
+        Canvas boardCanvas = new Canvas(mBoardBitmap);
+        boardCanvas.drawRect(0f, 0f, (float) width, (float) height, mBoardPaint);
 
         for (int i = 0; i < mRows; ++i) {
             for (int j = 0; j < mColumns; ++j) {
-                canvas.drawCircle(posX, posY, mRadius - circlePadding, mEraser);
-                posX += mRadius * 2;
+                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - circlePadding, mEraser);
             }
-            posY += mRadius * 2;
-            posX = mRadius + (width - (mRadius * mColumns) * 2) / 2;
         }
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    /*
+         * Drops a ball of the players color at the given row and column.
+         * TODO: Animate ball drop!
+         */
+    public void dropBall(int row, int column, int player) {
+        Paint paint;
+
+        if (column < 0 || column >= mColumns)
+            return;
+        if (row < 0 || row >= mRows)
+            return;
+        if (player > 1 || player < 0)
+            return;
+        if (mBackBoardBitmap == null)
+            return;
+
+        if (player == 1)
+            paint = mSecondPlayerPaint;
+        else
+            paint = mFirstPlayerPaint;
+
+
+        Canvas canvas = new Canvas(mBackBoardBitmap);
+        canvas.drawCircle(mPosX[column], mPosY[row], mRadius, paint);
+        invalidate();
+
+    }
+
+    public int getRows() {
+        return mRows;
+    }
+
+    public int getColumns() {
+        return mColumns;
+    }
+
+    // TODO: figure out what to do when out of bounds on getRow and getColumn
+    public int getRow(float y) {
+        if (y < 0 || y > getMeasuredHeight())
+            return -1;
+        int interval = getMeasuredHeight() / mRows;
+        return mRows - ( (int) y / interval) - 1;
+
+    }
+
+    public int getColumn(float x) {
+        if (x < 0 || x > getMeasuredWidth())
+            return -1;
+        int interval = getMeasuredWidth() / mColumns;
+        return (int) x / interval;
 
     }
 }

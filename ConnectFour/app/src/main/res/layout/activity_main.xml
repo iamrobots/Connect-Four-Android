@@ -70,11 +70,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        app:columns="7"
         app:layout_constraintBottom_toTopOf="@+id/rewindButton"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:columns="7"
-        app:rows="6"
-        />
+        app:rows="6" />
 
     <ImageButton
         android:id="@+id/rewindButton"
