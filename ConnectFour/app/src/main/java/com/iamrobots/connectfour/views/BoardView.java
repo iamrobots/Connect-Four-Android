@@ -1,5 +1,8 @@
 package com.iamrobots.connectfour.views;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -13,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 
 import com.iamrobots.connectfour.R;
 
@@ -44,6 +48,9 @@ public class BoardView extends View {
     private Paint mFirstPlayerPaint;
     private Paint mSecondPlayerPaint;
 
+    private Bitmap mAnimationBitmap;
+
+
     private void init(@Nullable AttributeSet attrs) {
 
         // Setting up paints
@@ -67,7 +74,6 @@ public class BoardView extends View {
         mSecondPlayerPaint = new Paint();
         mSecondPlayerPaint.setAntiAlias(true);
         mSecondPlayerPaint.setStyle(Paint.Style.FILL);
-
 
         // Parse attributes from attrs.xml here
         if (attrs != null) {
@@ -119,7 +125,12 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if (mBackBoardBitmap == null || mBoardBitmap == null) {
+            initBoard(getWidth(), getHeight());
+        }
+
         canvas.drawBitmap(mBackBoardBitmap, 0, 0, null);
+        canvas.drawBitmap(mAnimationBitmap, 0, 0, null);
         canvas.drawBitmap(mBoardBitmap, 0, 0, null);
     }
 
@@ -130,25 +141,14 @@ public class BoardView extends View {
         int minw = getPaddingLeft() + getPaddingRight() + getSuggestedMinimumWidth();
         int w = resolveSize(minw, widthMeasureSpec);
 
-        int minh = ((w / mColumns) * mRows) + getPaddingBottom() + getPaddingTop();
+        int minh = getPaddingBottom() + getPaddingTop() + ((w / mColumns) * mRows);
         int h = resolveSize(minh, heightMeasureSpec);
 
         setMeasuredDimension(w, h);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        int width = w - (getPaddingLeft() + getPaddingRight());
-        int height = h - (getPaddingTop() + getPaddingBottom());
-
-        initBoard(width, height);
-
-    }
-
     private void initBoard(int width, int height) {
-        int circlePadding = 4;
+        int circlePadding = 6;
 
         mRadius = Math.min(width / mColumns, height / mRows) / 2;
         mPosX[0] = mRadius + ((float) width - (mRadius * mColumns) * 2) / 2;
@@ -165,6 +165,8 @@ public class BoardView extends View {
         mBackBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas backboardCanvas = new Canvas(mBackBoardBitmap);
         backboardCanvas.drawRect(0f, 0f, width, height, mBackBoardPaint);
+
+        mAnimationBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         mBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas boardCanvas = new Canvas(mBoardBitmap);
@@ -183,29 +185,68 @@ public class BoardView extends View {
     }
 
     /*
-         * Drops a ball of the players color at the given row and column.
-         * TODO: Animate ball drop!
-         */
-    public void dropBall(int row, int column, int player) {
-        Paint paint;
+     * Drops a ball of the players color at the given row and column.
+     * TODO: Animate ball drop!
+     */
+    public boolean addToken(final int row,final int column, int player) {
+        final Paint playerPaint;
+
+        if (column < 0 || column >= mColumns)
+            return false;
+        if (row < 0 || row >= mRows)
+            return false;
+        if (player > 1 || player < 0)
+            return false;
+        if (mBackBoardBitmap == null)
+            return false;
+
+        if (player == 1)
+            playerPaint = mSecondPlayerPaint;
+        else
+            playerPaint = mFirstPlayerPaint;
+
+        final Canvas animationCanvas = new Canvas(mAnimationBitmap);
+
+
+        ValueAnimator animation = ValueAnimator.ofFloat(0f, mPosY[row]);
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                animationCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                animationCanvas.drawCircle(mPosX[column], value, mRadius, playerPaint);
+                invalidate();
+            }
+        });
+
+        animation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animationCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                Canvas backBoardCanvas = new Canvas(mBackBoardBitmap);
+                backBoardCanvas.drawCircle(mPosX[column], mPosY[row], mRadius, playerPaint);
+                invalidate();
+            }
+        });
+
+        animation.setInterpolator(new AccelerateInterpolator());
+        animation.setDuration(120 * (mRows - row));
+        animation.start();
+        return true;
+    }
+
+    public void removeToken(int row, int column) {
 
         if (column < 0 || column >= mColumns)
             return;
         if (row < 0 || row >= mRows)
             return;
-        if (player > 1 || player < 0)
-            return;
         if (mBackBoardBitmap == null)
             return;
 
-        if (player == 1)
-            paint = mSecondPlayerPaint;
-        else
-            paint = mFirstPlayerPaint;
-
-
         Canvas canvas = new Canvas(mBackBoardBitmap);
-        canvas.drawCircle(mPosX[column], mPosY[row], mRadius, paint);
+        canvas.drawCircle(mPosX[column], mPosY[row], mRadius, mBackBoardPaint);
         invalidate();
 
     }
@@ -218,7 +259,7 @@ public class BoardView extends View {
         return mColumns;
     }
 
-    // TODO: figure out what to do when out of bounds on getRow and getColumn
+    // TODO: figure out what to do when out of bounds (above, below, margins, padding) on getRow and getColumn
     public int getRow(float y) {
         if (y < 0 || y > getMeasuredHeight())
             return -1;
