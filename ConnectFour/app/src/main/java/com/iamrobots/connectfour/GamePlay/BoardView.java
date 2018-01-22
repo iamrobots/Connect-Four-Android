@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.views;
+package com.iamrobots.connectfour.GamePlay;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -15,10 +15,14 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.iamrobots.connectfour.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by David Lively on 1/18/18.
@@ -251,6 +255,25 @@ public class BoardView extends View {
 
     }
 
+    public void setRowsColumns(int rows, int columns) {
+        mRows = rows;
+        mColumns = columns;
+        mPosX = new float[columns];
+        mPosY = new float[rows];
+    }
+
+    public void setBoardColor(int color) {
+        mBoardPaint.setColor(color);
+    }
+
+    public void setFirstPlayerColor(int color) {
+        mFirstPlayerPaint.setColor(color);
+    }
+
+    public void setSecondPlayerColor(int color) {
+        mSecondPlayerPaint.setColor(color);
+    }
+
     public int getRows() {
         return mRows;
     }
@@ -274,5 +297,37 @@ public class BoardView extends View {
         int interval = getMeasuredWidth() / mColumns;
         return (int) x / interval;
 
+    }
+
+
+    // TODO: Doesnt repeat because circle is drawn and then not undrawn.
+    public void highlightTokens(final ArrayList<Pair<Integer, Integer>> rowColumnArray, int player) {
+        final Paint paint;
+        final Canvas canvas = new Canvas(mBoardBitmap);
+        paint = player == 0 ? mFirstPlayerPaint : mSecondPlayerPaint;
+
+        ValueAnimator animator = ValueAnimator.ofFloat(6f, 0f);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                for (Pair<Integer, Integer> rowColumnPair : rowColumnArray) {
+                    int row = rowColumnPair.first;
+                    int column = rowColumnPair.second;
+                    canvas.drawRect(mPosX[column] - mRadius, mPosY[row] - mRadius, mPosX[column] + mRadius, mPosY[row] + mRadius, mBoardPaint);
+                    if (row > 0 && row < mRows && column > 0 && column < mColumns) {
+                        canvas.drawCircle(mPosX[column], mPosY[row], mRadius - value, paint);
+                    }
+                }
+                invalidate();
+            }
+
+        });
+
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatCount(5);
+        animator.setDuration(1000);
+        animator.start();
     }
 }

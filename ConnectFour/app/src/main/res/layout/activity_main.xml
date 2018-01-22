@@ -64,7 +64,7 @@
 
     </LinearLayout>
 
-    <com.iamrobots.connectfour.views.BoardView
+    <com.iamrobots.connectfour.GamePlay.BoardView
         android:id="@+id/boardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
