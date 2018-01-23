@@ -300,7 +300,6 @@ public class BoardView extends View {
     }
 
 
-    // TODO: Doesnt repeat because circle is drawn and then not undrawn.
     public void highlightTokens(final ArrayList<Pair<Integer, Integer>> rowColumnArray, int player) {
         final Paint paint;
         final Canvas canvas = new Canvas(mBoardBitmap);
