@@ -12,6 +12,7 @@ import com.iamrobots.connectfour.R;
 import java.util.Stack;
 
 public class GameActivity extends AppCompatActivity {
+    GameModel gameModel;
     BoardView mBoardView;
     ImageButton mRewindButton;
     int mCurrentPlayer;
