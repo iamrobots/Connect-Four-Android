@@ -1,16 +1,20 @@
 package com.iamrobots.connectfour.GamePlay;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.util.Pair;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
 
 public class GameActivity extends AppCompatActivity {
+    TextView mFirstPlayerTextView;
+    TextView mSecondPlayerTextView;
 
     GameModel mGameModel;
     BoardView mBoardView;
@@ -18,6 +22,9 @@ public class GameActivity extends AppCompatActivity {
 
     int mCurrentPlayer;
     boolean mGameOver;
+
+    int mRounds;
+    int mCurrentRound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +34,15 @@ public class GameActivity extends AppCompatActivity {
         // Temporary Variables. Will get rows and columns from Player selection.
         int rows = 6;
         int columns = 7;
+        String firstPlayerName = "Player 1";
+        String secondPlayerName = "Player 2";
+        int firstPlayerColor = Color.parseColor("#f1c40f");
+        int secondPlayerColor = Color.parseColor("#e74c3c");
+
+        mFirstPlayerTextView = findViewById(R.id.player1_id);
+        mSecondPlayerTextView = findViewById(R.id.player2_id);
+        mFirstPlayerTextView.setText(firstPlayerName);
+        mSecondPlayerTextView.setText(secondPlayerName);
 
         mGameModel = new GameModel();
         mGameModel.setRows(rows);
@@ -34,6 +50,8 @@ public class GameActivity extends AppCompatActivity {
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
+        mBoardView.setFirstPlayerColor(firstPlayerColor);
+        mBoardView.setSecondPlayerColor(secondPlayerColor);
 
         mRewindButton = findViewById(R.id.rewindButton);
 
@@ -45,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 v.performClick();
 
-                if (mGameOver) {
+                if (!mGameOver) {
                     return false;
                 }
 
@@ -85,7 +103,7 @@ public class GameActivity extends AppCompatActivity {
 
         switch (mGameModel.getGameState()) {
             case 0: // Game is in play
-                mCurrentPlayer = mCurrentPlayer == 0 ? 1 : 0;
+                mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
                 break;
 
             case 1:  // Game is won
@@ -104,9 +122,9 @@ public class GameActivity extends AppCompatActivity {
         String winner;
         mBoardView.highlightTokens(mGameModel.getWinners(), mCurrentPlayer);
         if (mCurrentPlayer == 0)
-            winner = new String("player one");
+            winner = mFirstPlayerTextView.getText().toString();
         else
-            winner = new String("player two");
+            winner = mSecondPlayerTextView.getText().toString();
         Toast.makeText(this, "The winner is" + winner, Toast.LENGTH_SHORT).show();
     }
 

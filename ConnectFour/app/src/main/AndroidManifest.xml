@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GamePlay.GameActivity"></activity>
+        <activity android:name=".GamePlay.GameActivity" android:exported="true"></activity>
     </application>
 
 </manifest>

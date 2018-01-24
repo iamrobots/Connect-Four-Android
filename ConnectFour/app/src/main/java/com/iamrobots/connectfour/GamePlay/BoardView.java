@@ -129,10 +129,6 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mBackBoardBitmap == null || mBoardBitmap == null) {
-            initBoard(getWidth(), getHeight());
-        }
-
         canvas.drawBitmap(mBackBoardBitmap, 0, 0, null);
         canvas.drawBitmap(mAnimationBitmap, 0, 0, null);
         canvas.drawBitmap(mBoardBitmap, 0, 0, null);
@@ -149,6 +145,13 @@ public class BoardView extends View {
         int h = resolveSize(minh, heightMeasureSpec);
 
         setMeasuredDimension(w, h);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        initBoard(right - left, bottom - top);
     }
 
     private void initBoard(int width, int height) {
@@ -190,7 +193,6 @@ public class BoardView extends View {
 
     /*
      * Drops a ball of the players color at the given row and column.
-     * TODO: Animate ball drop!
      */
     public boolean dropToken(final int row,final int column, int player) {
         final Paint playerPaint;
@@ -274,14 +276,6 @@ public class BoardView extends View {
         mSecondPlayerPaint.setColor(color);
     }
 
-    public int getRows() {
-        return mRows;
-    }
-
-    public int getColumns() {
-        return mColumns;
-    }
-
     // TODO: figure out what to do when out of bounds (above, below, margins, padding) on getRow and getColumn
     public int getRow(float y) {
         if (y < 0 || y > getMeasuredHeight())
@@ -332,5 +326,6 @@ public class BoardView extends View {
 
     public void clear() {
         initBoard(getWidth(), getHeight());
+        invalidate();
     }
 }
