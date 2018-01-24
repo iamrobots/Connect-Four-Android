@@ -6,42 +6,52 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.util.Pair;
+import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
 
-import java.util.Stack;
-
 public class GameActivity extends AppCompatActivity {
-    GameModel gameModel;
+
+    GameModel mGameModel;
     BoardView mBoardView;
     ImageButton mRewindButton;
+
     int mCurrentPlayer;
-    Stack<Pair<Integer, Integer >> stackRowColumn;
+    boolean mGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        mCurrentPlayer = 0;
+        // Temporary Variables. Will get rows and columns from Player selection.
+        int rows = 6;
+        int columns = 7;
+
+        mGameModel = new GameModel();
+        mGameModel.setRows(rows);
+        mGameModel.setColumns(columns);
+
         mBoardView = findViewById(R.id.boardView);
+        mBoardView.setRowsColumns(rows, columns);
+
         mRewindButton = findViewById(R.id.rewindButton);
-        stackRowColumn = new Stack<>();
+
+        mCurrentPlayer = 0;
+        mGameOver = false;
 
         mBoardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.performClick();
+
+                if (mGameOver) {
+                    return false;
+                }
+
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        float x = event.getX();
-                        float y = event.getY();
-                        int row = mBoardView.getRow(y);
-                        int column = mBoardView.getColumn(x);
-                        if (x < 0 || y < 0) break;
-                        if (mBoardView.addToken(row, column, mCurrentPlayer))
-                            mCurrentPlayer = mCurrentPlayer == 0 ? 1: 0;
-                        stackRowColumn.push(new Pair<>(row, column));
+                        viewClicked(event.getX(), event.getY());
                         break;
                 }
                 return true;
@@ -51,13 +61,67 @@ public class GameActivity extends AppCompatActivity {
         mRewindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!stackRowColumn.isEmpty()) {
-                    Pair<Integer, Integer> pair = stackRowColumn.pop();
-                    mBoardView.removeToken(pair.first, pair.second);
-                    mCurrentPlayer = mCurrentPlayer == 0 ? 1 : 0;
-                }
+                rewind();
             }
         });
-
     }
+
+    public void viewClicked(float x, float y) {
+        int column = mBoardView.getColumn(x);
+        int row = mBoardView.getRow(y);
+
+        if (row < 0 || column < 0)
+            return;
+
+        playToken(row, column);
+    }
+
+    public void playToken(int row, int column) {
+        if (!mGameModel.dropToken(column)) {
+            // Invalid position
+            return;
+        }
+        mBoardView.dropToken(row, column, mCurrentPlayer);
+
+        switch (mGameModel.getGameState()) {
+            case 0: // Game is in play
+                mCurrentPlayer = mCurrentPlayer == 0 ? 1 : 0;
+                break;
+
+            case 1:  // Game is won
+                gameWon();
+                break;
+
+            case 2:  // Game is draw
+                mGameOver = true;
+                Toast.makeText(this, "The game is a draw", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    public void gameWon() {
+        mGameOver = true;
+        String winner;
+        mBoardView.highlightTokens(mGameModel.getWinners(), mCurrentPlayer);
+        if (mCurrentPlayer == 0)
+            winner = new String("player one");
+        else
+            winner = new String("player two");
+        Toast.makeText(this, "The winner is" + winner, Toast.LENGTH_SHORT).show();
+    }
+
+    public void rewind() {
+        Pair<Integer, Integer> rowColumn = mGameModel.rewind();
+        if (rowColumn != null) {
+            mBoardView.removeToken(rowColumn.first, rowColumn.second);
+        }
+    }
+
+    public void newGame() {
+        mGameModel.reset();
+        mBoardView.clear();
+        mGameOver = false;
+        mCurrentPlayer = 0;
+    }
+
 }

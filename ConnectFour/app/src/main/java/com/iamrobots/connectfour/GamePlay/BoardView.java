@@ -192,7 +192,7 @@ public class BoardView extends View {
      * Drops a ball of the players color at the given row and column.
      * TODO: Animate ball drop!
      */
-    public boolean addToken(final int row,final int column, int player) {
+    public boolean dropToken(final int row,final int column, int player) {
         final Paint playerPaint;
 
         if (column < 0 || column >= mColumns)
@@ -328,5 +328,9 @@ public class BoardView extends View {
         animator.setRepeatCount(5);
         animator.setDuration(1000);
         animator.start();
+    }
+
+    public void clear() {
+        initBoard(getWidth(), getHeight());
     }
 }
