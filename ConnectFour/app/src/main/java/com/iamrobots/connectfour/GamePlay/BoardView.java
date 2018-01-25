@@ -33,6 +33,7 @@ public class BoardView extends View {
 
     private static final int DEFAULT_ROWS = 6;
     private static final int DEFAULT_COLUMNS = 7;
+    private static final int BOARD_HOLE_PADDING = 6;
     private static final int DEFAULT_BOARD_COLOR = Color.parseColor("#3498db");
     private static final int DEFAULT_PLAYER1_COLOR = Color.parseColor("#f1c40f");
     private static final int DEFAULT_PLAYER2_COLOR = Color.parseColor("#e74c3c");
@@ -154,9 +155,9 @@ public class BoardView extends View {
         initBoard(right - left, bottom - top);
     }
 
-    private void initBoard(int width, int height) {
-        int circlePadding = 6;
 
+    // TODO: move createBitmap to onLayout or sizeChanged (use drawPaint here) and think about moving mPos and mRadius.
+    private void initBoard(int width, int height) {
         mRadius = Math.min(width / mColumns, height / mRows) / 2;
         mPosX[0] = mRadius + ((float) width - (mRadius * mColumns) * 2) / 2;
         mPosY[mRows - 1] = mRadius + ((float) height - (mRadius * mRows) * 2) / 2;
@@ -181,7 +182,7 @@ public class BoardView extends View {
 
         for (int i = 0; i < mRows; ++i) {
             for (int j = 0; j < mColumns; ++j) {
-                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - circlePadding, mEraser);
+                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - BOARD_HOLE_PADDING, mEraser);
             }
         }
     }
@@ -299,7 +300,7 @@ public class BoardView extends View {
         final Canvas canvas = new Canvas(mBoardBitmap);
         paint = player == 0 ? mFirstPlayerPaint : mSecondPlayerPaint;
 
-        ValueAnimator animator = ValueAnimator.ofFloat(6f, 0f);
+        ValueAnimator animator = ValueAnimator.ofFloat(BOARD_HOLE_PADDING, 0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -322,6 +323,18 @@ public class BoardView extends View {
         animator.setRepeatCount(5);
         animator.setDuration(1000);
         animator.start();
+    }
+
+    public void unhighlightTokens() {
+        Canvas boardCanvas = new Canvas(mBoardBitmap);
+        boardCanvas.drawPaint(mBoardPaint);
+
+        for (int i = 0; i < mRows; ++i) {
+            for (int j = 0; j < mColumns; ++j) {
+                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - BOARD_HOLE_PADDING, mEraser);
+            }
+        }
+
     }
 
     public void clear() {
