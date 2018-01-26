@@ -1,5 +1,8 @@
 package com.iamrobots.connectfour.GamePlay;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.iamrobots.connectfour.R;
 
@@ -20,8 +24,12 @@ import com.iamrobots.connectfour.R;
 public class TokenView extends View {
 
     private static final int DEFAULT_COLOR = 0xff000000;
+    private static final float PADDING = 6.0f;
 
     Paint mCirclePaint;
+    float mCenterX;
+    float mCenterY;
+    float mRadius;
 
     private void init(AttributeSet attrs) {
 
@@ -67,12 +75,74 @@ public class TokenView extends View {
         super.onDraw(canvas);
 
         if (canvas != null) {
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2, mCirclePaint);
+            canvas.drawCircle(mCenterX, mCenterY, mRadius, mCirclePaint);
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        mCenterX = (right - left) / 2;
+        mCenterY = (bottom - top) / 2;
+        mRadius = Math.min(mCenterX, mCenterY) - PADDING;
     }
 
     public void setColor(int color) {
         mCirclePaint.setColor(color);
         invalidate();
+    }
+
+    public void selected() {
+
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                mRadius += value;
+                invalidate();
+            }
+        });
+
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mRadius = Math.min(mCenterX, mCenterY);
+                invalidate();
+            }
+        });
+
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(300);
+        animator.start();
+
+    }
+
+    public void unselected() {
+
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                mRadius -= value;
+                invalidate();
+            }
+        });
+
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mRadius = Math.min(mCenterX, mCenterY) - PADDING;
+                invalidate();
+            }
+        });
+
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(200);
+        animator.start();
+
     }
 }

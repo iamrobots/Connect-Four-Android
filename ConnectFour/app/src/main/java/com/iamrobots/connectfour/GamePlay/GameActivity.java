@@ -14,9 +14,9 @@ import com.iamrobots.connectfour.R;
 
 /*
  * TODO: Get player selection information from Share Preferences
- * TODO: Show who's turn it is
  * TODO: Implement a back button that takes the user back to Player Selection
  * TODO: Implement multiple rounds.
+ * TODO: Implement onPause and onResume
  */
 
 public class GameActivity extends AppCompatActivity {
@@ -120,7 +120,7 @@ public class GameActivity extends AppCompatActivity {
 
         switch (mGameModel.getGameState()) {
             case 0: // Game is in play
-                mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
+                gameInPlay();
                 break;
 
             case 1:  // Game is won
@@ -134,7 +134,21 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    public void gameInPlay() {
+
+        mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
+
+        if (mCurrentPlayer == 0) {
+            mFirstPlayerToken.selected();
+            mSecondPlayerToken.unselected();
+        } else {
+            mSecondPlayerToken.selected();
+            mFirstPlayerToken.unselected();
+        }
+    }
+
     public void gameWon() {
+
         mGameOver = true;
         String winner;
         mBoardView.highlightTokens(mGameModel.getWinners(), mCurrentPlayer);
