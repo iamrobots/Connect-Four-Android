@@ -12,19 +12,30 @@ import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
 
+/*
+ * TODO: Get player selection information from Share Preferences
+ * TODO: Show who's turn it is
+ * TODO: Implement a back button that takes the user back to Player Selection
+ * TODO: Implement multiple rounds.
+ */
+
 public class GameActivity extends AppCompatActivity {
+
+    // Game Layout Components
     TextView mFirstPlayerTextView;
     TextView mSecondPlayerTextView;
-
-    GameModel mGameModel;
+    TokenView mFirstPlayerToken;
+    TokenView mSecondPlayerToken;
     BoardView mBoardView;
     ImageButton mRewindButton;
 
+    // Game Model/State
+    GameModel mGameModel;
     int mCurrentPlayer;
     boolean mGameOver;
 
-    int mRounds;
-    int mCurrentRound;
+//    int mRounds;
+//    int mCurrentRound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +50,16 @@ public class GameActivity extends AppCompatActivity {
         int firstPlayerColor = Color.parseColor("#f1c40f");
         int secondPlayerColor = Color.parseColor("#e74c3c");
 
+
         mFirstPlayerTextView = findViewById(R.id.player1_id);
-        mSecondPlayerTextView = findViewById(R.id.player2_id);
         mFirstPlayerTextView.setText(firstPlayerName);
+        mFirstPlayerToken = findViewById(R.id.player1_token_id);
+        mFirstPlayerToken.setColor(firstPlayerColor);
+
+        mSecondPlayerTextView = findViewById(R.id.player2_id);
         mSecondPlayerTextView.setText(secondPlayerName);
+        mSecondPlayerToken = findViewById(R.id.player2_token_id);
+        mSecondPlayerToken.setColor(secondPlayerColor);
 
         mGameModel = new GameModel();
         mGameModel.setRows(rows);

@@ -7,4 +7,7 @@
         <attr name="player1_color" format="color" />
         <attr name="player2_color" format="color" />
     </declare-styleable>
+    <declare-styleable name="TokenView">
+        <attr name="color" format="color"/>
+    </declare-styleable>
 </resources>

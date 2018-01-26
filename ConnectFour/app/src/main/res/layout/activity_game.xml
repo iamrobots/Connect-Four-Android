@@ -30,22 +30,35 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
-            android:contentDescription="@string/player1_color_image"
-            app:srcCompat="@drawable/yellow_circle" />
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView2"-->
+            <!--android:layout_width="55dp"-->
+            <!--android:layout_height="55dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:adjustViewBounds="false"-->
+            <!--android:contentDescription="@string/player1_color_image" />-->
 
-        <ImageView
-            android:id="@+id/imageView3"
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView3"-->
+            <!--android:layout_width="55dp"-->
+            <!--android:layout_height="55dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:contentDescription="@string/player2_color_image"-->
+            <!--app:srcCompat="@drawable/red_circle" />-->
+
+        <com.iamrobots.connectfour.GamePlay.TokenView
+            android:id="@+id/player1_token_id"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/player2_color_image"
-            app:srcCompat="@drawable/red_circle" />
+            android:layout_marginRight="10dp"
+            app:color="@color/defaultPlayerOne"/>
+
+        <com.iamrobots.connectfour.GamePlay.TokenView
+            android:id="@+id/player2_token_id"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="10dp"
+            app:color="@color/defaultSecondPlayer"/>
 
         <TextView
             android:id="@+id/player2_id"
