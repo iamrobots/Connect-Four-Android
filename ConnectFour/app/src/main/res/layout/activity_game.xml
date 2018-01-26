@@ -51,6 +51,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginRight="10dp"
+            app:selected="true"
             app:color="@color/defaultPlayerOne"/>
 
         <com.iamrobots.connectfour.GamePlay.TokenView
@@ -58,6 +59,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginLeft="10dp"
+            app:selected="false"
             app:color="@color/defaultSecondPlayer"/>
 
         <TextView

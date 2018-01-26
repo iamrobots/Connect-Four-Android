@@ -9,5 +9,6 @@
     </declare-styleable>
     <declare-styleable name="TokenView">
         <attr name="color" format="color"/>
+        <attr name="selected" format="boolean"/>
     </declare-styleable>
 </resources>

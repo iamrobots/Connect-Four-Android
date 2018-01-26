@@ -55,11 +55,13 @@ public class GameActivity extends AppCompatActivity {
         mFirstPlayerTextView.setText(firstPlayerName);
         mFirstPlayerToken = findViewById(R.id.player1_token_id);
         mFirstPlayerToken.setColor(firstPlayerColor);
+        mFirstPlayerToken.selected();
 
         mSecondPlayerTextView = findViewById(R.id.player2_id);
         mSecondPlayerTextView.setText(secondPlayerName);
         mSecondPlayerToken = findViewById(R.id.player2_token_id);
         mSecondPlayerToken.setColor(secondPlayerColor);
+        mSecondPlayerToken.unselected();
 
         mGameModel = new GameModel();
         mGameModel.setRows(rows);
@@ -171,6 +173,8 @@ public class GameActivity extends AppCompatActivity {
         mBoardView.clear();
         mGameOver = false;
         mCurrentPlayer = 0;
+        mFirstPlayerToken.selected();
+        mSecondPlayerToken.unselected();
     }
 
 }

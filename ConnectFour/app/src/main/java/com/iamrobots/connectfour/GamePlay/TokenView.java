@@ -24,28 +24,33 @@ import com.iamrobots.connectfour.R;
 public class TokenView extends View {
 
     private static final int DEFAULT_COLOR = 0xff000000;
-    private static final float PADDING = 6.0f;
+    private static final float PADDING = 8.0f;
 
-    Paint mCirclePaint;
-    float mCenterX;
-    float mCenterY;
-    float mRadius;
+    private Paint mCirclePaint;
+    private float mCenterX;
+    private float mCenterY;
+    private float mRadius;
+
+    private boolean mSelected;
 
     private void init(AttributeSet attrs) {
 
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setStyle(Paint.Style.FILL);
 
+
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TokenView, 0, 0);
 
             try {
                 mCirclePaint.setColor(a.getColor(R.styleable.TokenView_color, DEFAULT_COLOR));
+                mSelected = a.getBoolean(R.styleable.TokenView_selected, false);
             } finally {
                 a.recycle();
             }
         } else {
             mCirclePaint.setColor(DEFAULT_COLOR);
+            mSelected = false;
         }
     }
 
@@ -84,7 +89,11 @@ public class TokenView extends View {
         super.onLayout(changed, left, top, right, bottom);
         mCenterX = (right - left) / 2;
         mCenterY = (bottom - top) / 2;
-        mRadius = Math.min(mCenterX, mCenterY) - PADDING;
+        mRadius = Math.min(mCenterX, mCenterY);
+
+        if (!mSelected) {
+            mRadius -= PADDING;
+        }
     }
 
     public void setColor(int color) {
@@ -93,6 +102,8 @@ public class TokenView extends View {
     }
 
     public void selected() {
+
+        if (mSelected) return;
 
         ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -120,6 +131,8 @@ public class TokenView extends View {
     }
 
     public void unselected() {
+
+        if (!mSelected) return;
 
         ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
