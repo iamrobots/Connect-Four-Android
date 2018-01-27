@@ -47,6 +47,8 @@ public class PlayerSelectionActivity extends AppCompatActivity {
             }
         });
 
+        // NewPlayerActivity and activity_new_player are the two files i added after finishing
+        // the player select screen. tried having this button link to NewPlayerActivity
         Button fab = (Button)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
