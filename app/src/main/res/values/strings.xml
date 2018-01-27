@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Connect Four</string>
+    <string name="player1_string">Player 1</string>
+    <string name="player2_string">Player 2</string>
+    <string name="rewind_button">Rewind</string>
+    <string name="player1_color_image">Player One Color</string>
+    <string name="player2_color_image">Player Two Color</string>
+    <string name="title_activity_player_selection">PlayerSelectionActivity</string>
+    <string name="title_player_mode">Choose your playing mode</string>
+    <string name="player">Offline Mode</string>
+    <string name="aimode">AI      Mode</string>
+    <string name="player_multi">Online Mode</string>
+
+</resources>
