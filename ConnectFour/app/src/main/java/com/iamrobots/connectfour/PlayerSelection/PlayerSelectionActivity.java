@@ -33,12 +33,12 @@ public class PlayerSelectionActivity extends AppCompatActivity {
             }
         });*/
 
-        Button btnPlayer1 = (Button)findViewById(R.id.btnPlayer1);
+        /*Button btnPlayer1 = (Button)findViewById(R.id.btnPlayer1);
         btnPlayer1.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
-//               Intent i = new Intent(PlayerSelectionActivity.this, MainActivity.class);
-//               startActivity(i);
+               Intent i = new Intent(PlayerSelectionActivity.this, GameActivity.class);
+               startActivity(i);
            }
         });
 
@@ -46,21 +46,19 @@ public class PlayerSelectionActivity extends AppCompatActivity {
         btnPlayer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(PlayerSelectionActivity.this, MainActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(PlayerSelectionActivity.this, GameActivity.class);
+                startActivity(i);
             }
-        });
+        });*/
 
-        // NewPlayerActivity and activity_new_player are the two files i added after finishing
-        // the player select screen.7
-        Button fab = (Button)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        /*Button addPlyr = (Button)findViewById(R.id.fab);
+        addPlyr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(PlayerSelectionActivity.this, NewPlayerActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(PlayerSelectionActivity.this, NewPlayerActivity.class);
+                startActivity(i);
             }
-        });
+        });*/
     }
 
 }
