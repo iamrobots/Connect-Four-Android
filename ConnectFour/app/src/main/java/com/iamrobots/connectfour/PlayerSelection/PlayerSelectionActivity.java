@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
-import com.iamrobots.connectfour.MainActivity;
 import com.iamrobots.connectfour.R;
 
 public class PlayerSelectionActivity extends AppCompatActivity {
@@ -33,8 +32,8 @@ public class PlayerSelectionActivity extends AppCompatActivity {
         btnPlayer1.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
-               Intent i = new Intent(PlayerSelectionActivity.this, MainActivity.class);
-               startActivity(i);
+//               Intent i = new Intent(PlayerSelectionActivity.this, MainActivity.class);
+//               startActivity(i);
            }
         });
 
@@ -42,8 +41,8 @@ public class PlayerSelectionActivity extends AppCompatActivity {
         btnPlayer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(PlayerSelectionActivity.this, MainActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(PlayerSelectionActivity.this, MainActivity.class);
+//                startActivity(i);
             }
         });
 
