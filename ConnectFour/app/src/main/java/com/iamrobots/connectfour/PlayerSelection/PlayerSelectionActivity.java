@@ -11,6 +11,11 @@ import android.content.Intent;
 
 import com.iamrobots.connectfour.R;
 
+// TODO: Add a Start/Play button that brings you to the GameActivity!
+// TODO: Implement Shared preferences to pass information to GameActivity!.
+// TODO: Add member variables to hold the First and Second Player information.
+// TODO: Add member variables for number or rows and columns
+
 public class PlayerSelectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

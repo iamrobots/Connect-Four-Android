@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+// TODO: Rename this class to PlayerActivity or PlayerEditAcitvity.
+
 public class Player extends AppCompatActivity {
 
     AppDatabase db;

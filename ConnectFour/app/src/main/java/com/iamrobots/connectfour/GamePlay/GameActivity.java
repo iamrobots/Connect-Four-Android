@@ -1,6 +1,10 @@
 package com.iamrobots.connectfour.GamePlay;
 
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +15,15 @@ import android.util.Pair;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iamrobots.connectfour.PlayerSelection.AppDatabase;
+import com.iamrobots.connectfour.PlayerSelection.Player;
+import com.iamrobots.connectfour.PlayerSelection.PlayerDetls;
 import com.iamrobots.connectfour.R;
 
 /*
  * TODO: Get player selection information from Share Preferences
  * TODO: Implement a back button that takes the user back to Player Selection
+ * TODO: Figure out Database access.
  * TODO: Implement multiple rounds.
  * TODO: Implement onPause and onResume
  */
@@ -33,7 +41,10 @@ public class GameActivity extends AppCompatActivity {
     // Game Model/State
     GameModel mGameModel;
     int mCurrentPlayer;
-    boolean mGameOver;
+
+    // Player information
+    int mFirstPlayerID;
+    int mSecondPlayerID;
 
 //    int mRounds;
 //    int mCurrentRound;
@@ -43,14 +54,125 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        setup();
+
+        mBoardView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("debug" , "calledactivity");
+                v.performClick();
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        Log.i("debug" , "about to call getGameState");
+
+                        switch (mGameModel.getGameState()) {
+                            case 0: // Game is in play
+                                gameInPlay(event.getX(), event.getY());
+                                break;
+
+                            case 1:  // Game is won
+                                gameWon();
+                                break;
+
+                            case 2:  // Game is draw
+                                Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
+
+        mRewindButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rewind();
+            }
+        });
+    }
+
+    public void gameInPlay(float x, float y) {
+
+        //Get the current player from getCurrentPlayer().
+        mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
+
+        int column = mBoardView.getColumn(x);
+        int row = mBoardView.getRow(y);
+
+        if (row < 0 || column < 0)
+            return;
+
+        if (!mGameModel.dropToken(column)) {
+            // Invalid position
+            return;
+        }
+        mBoardView.dropToken(row, column, mCurrentPlayer);
+
+        if (mGameModel.getGameState() == 1) {
+            gameWon();
+        }
+
+        if (mCurrentPlayer == 0) {
+            mFirstPlayerToken.selected();
+            mSecondPlayerToken.unselected();
+        } else {
+            mSecondPlayerToken.selected();
+            mFirstPlayerToken.unselected();
+        }
+    }
+
+    public void gameWon() {
+
+        String winner;
+        mBoardView.highlightTokens(mGameModel.getWinners(), mCurrentPlayer);
+        if (mCurrentPlayer == 0)
+            winner = mFirstPlayerTextView.getText().toString();
+        else
+            winner = mSecondPlayerTextView.getText().toString();
+        Toast.makeText(this, "The winner is" + winner, Toast.LENGTH_SHORT).show();
+    }
+
+    public void rewind() {
+        Pair<Integer, Integer> rowColumn = mGameModel.rewind();
+        if (rowColumn != null) {
+            mBoardView.removeToken(rowColumn.first, rowColumn.second);
+        }
+    }
+
+    public void newGame() {
+        mGameModel.reset();
+        mBoardView.clear();
+        mCurrentPlayer = 0;
+        mFirstPlayerToken.selected();
+        mSecondPlayerToken.unselected();
+    }
+
+    private void setup() {
+        String firstPlayerName;
+        String secondPlayerName;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mFirstPlayerID = preferences.getInt("PlayerOne", 0);
+        mSecondPlayerID = preferences.getInt("PlayerTwo", 1);
+        int rows = preferences.getInt("Rows", 6);
+        int columns = preferences.getInt("Columns", 7);
+
         // Temporary Variables. Will get rows and columns from Player selection.
-        int rows = 6;
-        int columns = 7;
-        String firstPlayerName = "Player 1";
-        String secondPlayerName = "Player 2";
         int firstPlayerColor = Color.parseColor("#f1c40f");
         int secondPlayerColor = Color.parseColor("#e74c3c");
 
+//        AppDatabase database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production").build();
+//
+//        firstPlayerName = database.playerDao().getPlayerNameById(mFirstPlayerID);
+//        secondPlayerName = database.playerDao().getPlayerNameById(mSecondPlayerID);
+
+//        if (firstPlayerName == null)
+            firstPlayerName = "Player 1";
+//        if (secondPlayerName == null)
+            secondPlayerName = "Player 2";
 
         mFirstPlayerTextView = findViewById(R.id.player1_id);
         mFirstPlayerTextView.setText(firstPlayerName);
@@ -74,109 +196,6 @@ public class GameActivity extends AppCompatActivity {
         mRewindButton = findViewById(R.id.rewindButton);
 
         mCurrentPlayer = 0;
-        mGameOver = false;
-
-        mBoardView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.i("debug" , "calledactivity");
-                v.performClick();
-//commented by aniketha to check the disk drop
-//                if (!mGameOver) {
-//                    return false;
-//                }
-
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        Log.i("debug" , "about to call viewclicked");
-                        viewClicked(event.getX(), event.getY());
-                        break;
-                }
-                return true;
-            }
-        });
-
-        mRewindButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rewind();
-            }
-        });
-    }
-
-    public void viewClicked(float x, float y) {
-        int column = mBoardView.getColumn(x);
-        int row = mBoardView.getRow(y);
-
-        if (row < 0 || column < 0)
-            return;
-
-        playToken(row, column);
-    }
-
-    public void playToken(int row, int column) {
-        if (!mGameModel.dropToken(column)) {
-            // Invalid position
-            return;
-        }
-        mBoardView.dropToken(row, column, mCurrentPlayer);
-
-        switch (mGameModel.getGameState()) {
-            case 0: // Game is in play
-                gameInPlay();
-                break;
-
-            case 1:  // Game is won
-                gameWon();
-                break;
-
-            case 2:  // Game is draw
-                mGameOver = true;
-                Toast.makeText(this, "The game is a draw", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
-
-    public void gameInPlay() {
-
-        mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
-
-        if (mCurrentPlayer == 0) {
-            mFirstPlayerToken.selected();
-            mSecondPlayerToken.unselected();
-        } else {
-            mSecondPlayerToken.selected();
-            mFirstPlayerToken.unselected();
-        }
-    }
-
-    public void gameWon() {
-
-        mGameOver = true;
-        String winner;
-        mBoardView.highlightTokens(mGameModel.getWinners(), mCurrentPlayer);
-        if (mCurrentPlayer == 0)
-            winner = mFirstPlayerTextView.getText().toString();
-        else
-            winner = mSecondPlayerTextView.getText().toString();
-        Toast.makeText(this, "The winner is" + winner, Toast.LENGTH_SHORT).show();
-    }
-
-    public void rewind() {
-        Pair<Integer, Integer> rowColumn = mGameModel.rewind();
-        if (rowColumn != null) {
-            mBoardView.removeToken(rowColumn.first, rowColumn.second);
-        }
-    }
-
-    public void newGame() {
-        mGameModel.reset();
-        mBoardView.clear();
-        mGameOver = false;
-        mCurrentPlayer = 0;
-        mFirstPlayerToken.selected();
-        mSecondPlayerToken.unselected();
     }
 
 }

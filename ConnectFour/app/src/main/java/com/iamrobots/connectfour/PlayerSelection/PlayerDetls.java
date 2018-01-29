@@ -10,6 +10,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 
+// TODO: Rename this class to just Player.
+// TODO: Have color saved as an int.
+
 @Entity(tableName = "players")
 public class PlayerDetls {
     public PlayerDetls(String name, String color) {
