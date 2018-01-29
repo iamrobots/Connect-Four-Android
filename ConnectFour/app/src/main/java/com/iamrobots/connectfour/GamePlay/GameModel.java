@@ -7,9 +7,19 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
- * Created by David Lively on 1/22/18.
- * lively@iamrobots.com
+ * Created by Aniketha Katakam on 1/22/18.
+ *
  */
+
+    // TODO: Make all member variables private.
+    // TODO: Refactor member variables to be of the form mBoardArray, mRows, mColumns ect.
+    // TODO: Create a mGameState member variable to keep track of what state the game is in instead of checking in getGameState.
+    // TODO: Have dropToken method return a Pair<Integer, Integer> that corresponds to Row and Column that the token was put into.
+    //
+    // TODO: Make internal methods private (checkHorizontal, checkVertical ect).
+    // TODO: mGameState should be checked and set in the dropToken method.
+    // TODO: Add a stack of the columns that where selected to keep track of what was played.
+
 
 public class GameModel {
 
