@@ -25,7 +25,8 @@ import com.iamrobots.connectfour.R;
 public class TokenView extends View {
 
     private static final int DEFAULT_COLOR = 0xff000000;
-    private static final float PADDING = 8.0f;
+    private static final float SMALL_CIRCLE_PADDING = 8.0f;
+    private static final float BIG_CIRCLE_PADDING = 2.0f;
     private static final float STROKE_WIDTH = 4.0f;
 
     private Paint mCircleFillPaint;
@@ -102,10 +103,10 @@ public class TokenView extends View {
         super.onLayout(changed, left, top, right, bottom);
         mCenterX = (right - left) / 2;
         mCenterY = (bottom - top) / 2;
-        mRadius = Math.min(mCenterX, mCenterY);
+        mRadius = Math.min(mCenterX, mCenterY) - BIG_CIRCLE_PADDING;
 
         if (!mSelected) {
-            mRadius -= PADDING;
+            mRadius -= SMALL_CIRCLE_PADDING;
         }
     }
 
@@ -121,7 +122,7 @@ public class TokenView extends View {
 
         mCircleStrokePaint.setColor(Color.BLACK);
 
-        ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, SMALL_CIRCLE_PADDING);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -135,7 +136,7 @@ public class TokenView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mRadius = Math.min(mCenterX, mCenterY);
+                mRadius = Math.min(mCenterX, mCenterY) - BIG_CIRCLE_PADDING;
                 mSelected = true;
                 invalidate();
             }
@@ -153,7 +154,7 @@ public class TokenView extends View {
 
         mCircleStrokePaint.setColor(mColor);
 
-        ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, SMALL_CIRCLE_PADDING);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -167,7 +168,7 @@ public class TokenView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mRadius = Math.min(mCenterX, mCenterY) - PADDING;
+                mRadius = Math.min(mCenterX, mCenterY) - SMALL_CIRCLE_PADDING;
                 mSelected = false;
                 invalidate();
             }
