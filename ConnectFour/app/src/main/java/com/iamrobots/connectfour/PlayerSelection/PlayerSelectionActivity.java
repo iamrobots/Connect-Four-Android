@@ -53,8 +53,8 @@ public class PlayerSelectionActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(PlayerSelectionActivity.this, NewPlayerActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(PlayerSelectionActivity.this, NewPlayerActivity.class);
+//                startActivity(i);
             }
         });
     }
