@@ -296,6 +296,11 @@ public class BoardView extends View {
 
 
     public void highlightTokens(final ArrayList<Pair<Integer, Integer>> rowColumnArray, int player) {
+
+        if (rowColumnArray == null || player < 0 || player > 1) {
+            return;
+        }
+
         final Paint paint;
         final Canvas canvas = new Canvas(mBoardBitmap);
         paint = player == 0 ? mFirstPlayerPaint : mSecondPlayerPaint;

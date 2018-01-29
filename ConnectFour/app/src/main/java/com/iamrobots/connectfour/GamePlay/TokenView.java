@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -25,33 +26,44 @@ public class TokenView extends View {
 
     private static final int DEFAULT_COLOR = 0xff000000;
     private static final float PADDING = 8.0f;
+    private static final float STROKE_WIDTH = 4.0f;
 
-    private Paint mCirclePaint;
+    private Paint mCircleFillPaint;
+    private Paint mCircleStrokePaint;
     private float mCenterX;
     private float mCenterY;
     private float mRadius;
+    private int mColor;
 
     private boolean mSelected;
 
     private void init(AttributeSet attrs) {
 
-        mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mCirclePaint.setStyle(Paint.Style.FILL);
-
+        mCircleFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCircleFillPaint.setStyle(Paint.Style.FILL);
+        mCircleStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCircleStrokePaint.setStyle(Paint.Style.STROKE);
+        mCircleStrokePaint.setStrokeWidth(STROKE_WIDTH);
 
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TokenView, 0, 0);
 
             try {
-                mCirclePaint.setColor(a.getColor(R.styleable.TokenView_color, DEFAULT_COLOR));
+                mColor = a.getColor(R.styleable.TokenView_color, DEFAULT_COLOR);
                 mSelected = a.getBoolean(R.styleable.TokenView_selected, false);
             } finally {
                 a.recycle();
             }
         } else {
-            mCirclePaint.setColor(DEFAULT_COLOR);
+            mColor = DEFAULT_COLOR;
             mSelected = false;
         }
+
+        mCircleFillPaint.setColor(mColor);
+        if (mSelected)
+            mCircleStrokePaint.setColor(Color.BLACK);
+        else
+            mCircleStrokePaint.setColor(mColor);
     }
 
     public TokenView(Context context) {
@@ -80,7 +92,8 @@ public class TokenView extends View {
         super.onDraw(canvas);
 
         if (canvas != null) {
-            canvas.drawCircle(mCenterX, mCenterY, mRadius, mCirclePaint);
+            canvas.drawCircle(mCenterX, mCenterY, mRadius, mCircleFillPaint);
+            canvas.drawCircle(mCenterX, mCenterY, mRadius, mCircleStrokePaint);
         }
     }
 
@@ -97,13 +110,16 @@ public class TokenView extends View {
     }
 
     public void setColor(int color) {
-        mCirclePaint.setColor(color);
+        mColor = color;
+        mCircleFillPaint.setColor(mColor);
         invalidate();
     }
 
     public void selected() {
 
         if (mSelected) return;
+
+        mCircleStrokePaint.setColor(Color.BLACK);
 
         ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -120,6 +136,7 @@ public class TokenView extends View {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mRadius = Math.min(mCenterX, mCenterY);
+                mSelected = true;
                 invalidate();
             }
         });
@@ -133,6 +150,8 @@ public class TokenView extends View {
     public void unselected() {
 
         if (!mSelected) return;
+
+        mCircleStrokePaint.setColor(mColor);
 
         ValueAnimator animator = ValueAnimator.ofFloat(0f, PADDING);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -149,6 +168,7 @@ public class TokenView extends View {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mRadius = Math.min(mCenterX, mCenterY) - PADDING;
+                mSelected = false;
                 invalidate();
             }
         });
