@@ -1,8 +1,10 @@
 package com.iamrobots.connectfour.GamePlay;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by David Lively on 1/22/18.
@@ -11,17 +13,45 @@ import java.util.ArrayList;
 
 public class GameModel {
 
-    public void setRows(int rows) {
+    int[][] mboardArray;
+    int boardRow,boardColumn;
+    int currentPlayer=0;
+    GameModel(int rows,int columns) {
+        mboardArray = new int[rows][columns];
+        boardRow = rows;
+        boardColumn = columns;
+        for (int i = 0; i < mboardArray.length; i++)
+        {
+            for (int j = 0; j < mboardArray[i].length; j++)
+            {
+
+                mboardArray[i][j] = -1;
+            }
+        }
+
+        Stack<Integer>[] mboardColumn = (Stack<Integer>[]) new Stack[columns];
 
     }
 
-    public void setColumns(int columns) {
-
+    public int getPlayer(){
+       return currentPlayer;
+    }
+    public void setPlayer(){
+        currentPlayer = (currentPlayer == 0) ? 1 : 0;
     }
 
     public boolean dropToken(int column) {
 
-        return false;
+     for(int i =0 ; i < boardRow ; i++)
+     {
+    if(mboardArray[i][column] == -1) {
+        mboardArray[i][column] = getPlayer();
+        setPlayer();
+        return true;
+    }
+    }
+
+     return false;
     }
 
     // Return Pair<row, column> to be removed
@@ -30,10 +60,105 @@ public class GameModel {
         return null;
     }
 
+    public boolean checkHorizontal(){
+        for(int i = 0 ; i < boardRow ; i++ )
+        {
+            for(int j=0 ; j <= boardColumn-4 ; j++ )
+            {
+                if((mboardArray[i][j] == 0
+                        && mboardArray[i][j+1] == 0
+                        && mboardArray[i][j+2] == 0
+                        && mboardArray[i][j+3] == 0) || (mboardArray[i][j] == 1
+                        && mboardArray[i][j+1] == 1
+                        && mboardArray[i][j+2] == 1
+                        && mboardArray[i][j+3] == 1))
+                {
+                    return true;
+                }
+
+            }
+        }
+        return false;
+
+    }
+
+    public boolean checkVertical(){
+        for(int i = 0 ; i < boardColumn ; i++ )
+        {
+            for(int j=0 ; j <= boardRow-4 ; j++ )
+            {
+                if((mboardArray[j][i] == 0
+                        && mboardArray[j+1][i] == 0
+                        && mboardArray[j+2][i] == 0
+                        && mboardArray[j+3][i] == 0) || (mboardArray[j][i] == 1
+                    && mboardArray[j+1][i] == 1
+                    && mboardArray[j+2][i] == 1
+                    && mboardArray[j+3][i] == 1))
+                {
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    public boolean checkDiagonalUpwards(){
+        for(int i = 0 ; i <= boardRow-4 ; i++ )
+        {
+            for(int j=3 ; j <=boardColumn-1  ; j++ )
+            {
+                if((mboardArray[i][j] == 0
+                        && mboardArray[i+1][j-1] == 0
+                        && mboardArray[i+2][j-2] == 0
+                        && mboardArray[i+3][j-3] == 0) || (mboardArray[i][j] == 1
+                        && mboardArray[i+1][j-1] == 1
+                        && mboardArray[i+2][j-2] == 1
+                        && mboardArray[i+3][j-3] == 1))
+                {
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    public boolean checkDiagonalDownwards(){
+        for(int i = 0 ; i <= boardRow-4 ; i++ )
+        {
+            for(int j=0 ; j <= boardColumn-4 ; j++ )
+            {
+                if((mboardArray[i][j] == 0
+                        && mboardArray[i+1][j+1] == 0
+                        && mboardArray[i+2][j+2] == 0
+                        && mboardArray[i+3][j+3] == 0) || (mboardArray[i][j] == 1
+                        && mboardArray[i+1][j+1] == 1
+                        && mboardArray[i+2][j+2] == 1
+                        && mboardArray[i+3][j+3] == 1))
+                {
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
     public int getGameState() {
 
-        return 0;
+        boolean horz = checkHorizontal();
+        boolean vert = checkVertical();
+        boolean diagUp = checkDiagonalUpwards();
+        boolean diagDown = checkDiagonalDownwards();
+
+        if (horz || vert || diagUp || diagDown)
+            return 1;
+        else
+            //yet to add draw logic
+            return 0;
     }
+
 
     // Return list of winners Pair<row, column>
     public ArrayList<Pair<Integer, Integer>> getWinners() {

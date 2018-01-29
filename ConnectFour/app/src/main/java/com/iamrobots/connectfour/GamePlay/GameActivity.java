@@ -3,6 +3,7 @@ package com.iamrobots.connectfour.GamePlay;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -63,9 +64,7 @@ public class GameActivity extends AppCompatActivity {
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
 
-        mGameModel = new GameModel();
-        mGameModel.setRows(rows);
-        mGameModel.setColumns(columns);
+        mGameModel = new GameModel(rows,columns);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
@@ -78,16 +77,19 @@ public class GameActivity extends AppCompatActivity {
         mGameOver = false;
 
         mBoardView.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Log.i("debug" , "calledactivity");
                 v.performClick();
-
-                if (!mGameOver) {
-                    return false;
-                }
+//commented by aniketha to check the disk drop
+//                if (!mGameOver) {
+//                    return false;
+//                }
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
+                        Log.i("debug" , "about to call viewclicked");
                         viewClicked(event.getX(), event.getY());
                         break;
                 }
