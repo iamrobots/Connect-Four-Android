@@ -309,7 +309,7 @@ public class BoardView extends View {
                     int row = rowColumnPair.first;
                     int column = rowColumnPair.second;
                     canvas.drawRect(mPosX[column] - mRadius, mPosY[row] - mRadius, mPosX[column] + mRadius, mPosY[row] + mRadius, mBoardPaint);
-                    if (row > 0 && row < mRows && column > 0 && column < mColumns) {
+                    if (row >= 0 && row < mRows && column >= 0 && column < mColumns) {
                         canvas.drawCircle(mPosX[column], mPosY[row], mRadius - value, paint);
                     }
                 }
