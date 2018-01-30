@@ -98,20 +98,20 @@ public class GameActivity extends AppCompatActivity {
         if (row < 0 || column < 0)
             return;
 
+        int player = mGameModel.getCurrentPlayer();
         coordinates = mGameModel.dropToken(column);
 
         if (coordinates == null) {
             return;
         }
 
-        int player = (mGameModel.getPlayer() == 0) ? 1 : 0;
         mBoardView.dropToken(coordinates.first, coordinates.second, player);
 
         if (mGameModel.getGameState() == 1) {
             gameWon();
         }
 
-        if (mGameModel.getPlayer() == 0) {
+        if (mGameModel.getCurrentPlayer() == 0) {
             mFirstPlayerToken.selected();
             mSecondPlayerToken.unselected();
         } else {
@@ -123,8 +123,8 @@ public class GameActivity extends AppCompatActivity {
     public void gameWon() {
 
         String winner;
-        mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getPlayer());
-        if (mGameModel.getPlayer() == 0)
+        mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
+        if (mGameModel.getCurrentPlayer() == 0)
             winner = mFirstPlayerTextView.getText().toString();
         else
             winner = mSecondPlayerTextView.getText().toString();
@@ -178,6 +178,7 @@ public class GameActivity extends AppCompatActivity {
         mBoardView.setSecondPlayerColor(secondPlayerColor);
 
         mRewindButton = findViewById(R.id.rewindButton);
+        mRewindButton.setVisibility(View.GONE);
     }
 
 }
