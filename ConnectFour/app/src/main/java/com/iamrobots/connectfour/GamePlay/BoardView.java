@@ -298,31 +298,43 @@ public class BoardView extends View {
 
         final Paint paint;
         final Canvas canvas = new Canvas(mBoardBitmap);
-        paint = player == 0 ? mFirstPlayerPaint : mSecondPlayerPaint;
+        paint = player == 0 ? new Paint(mFirstPlayerPaint) : new Paint(mSecondPlayerPaint);
 
-        ValueAnimator animator = ValueAnimator.ofFloat(BOARD_HOLE_PADDING, 0f);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                for (Pair<Integer, Integer> rowColumnPair : rowColumnArray) {
-                    int row = rowColumnPair.first;
-                    int column = rowColumnPair.second;
-                    canvas.drawRect(mPosX[column] - mRadius, mPosY[row] - mRadius, mPosX[column] + mRadius, mPosY[row] + mRadius, mBoardPaint);
-                    if (row >= 0 && row < mRows && column >= 0 && column < mColumns) {
-                        canvas.drawCircle(mPosX[column], mPosY[row], mRadius - value, paint);
-                    }
-                }
-                invalidate();
-            }
+        // Begin new code (remove new Paint from above if not used)
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(6.0f);
+        paint.setColor(Color.BLACK);
 
-        });
+        for (Pair<Integer, Integer> rowColumnPair : rowColumnArray) {
+            int row = rowColumnPair.first;
+            int column = rowColumnPair.second;
+            canvas.drawCircle(mPosX[column], mPosY[row], mRadius - BOARD_HOLE_PADDING, paint);
+        }
+        // End new code
 
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.setRepeatCount(5);
-        animator.setDuration(1000);
-        animator.start();
+//        ValueAnimator animator = ValueAnimator.ofFloat(BOARD_HOLE_PADDING, 0f);
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                float value = (float) animation.getAnimatedValue();
+//                for (Pair<Integer, Integer> rowColumnPair : rowColumnArray) {
+//                    int row = rowColumnPair.first;
+//                    int column = rowColumnPair.second;
+//                    canvas.drawRect(mPosX[column] - mRadius, mPosY[row] - mRadius, mPosX[column] + mRadius, mPosY[row] + mRadius, mBoardPaint);
+//                    if (row >= 0 && row < mRows && column >= 0 && column < mColumns) {
+//                        canvas.drawCircle(mPosX[column], mPosY[row], mRadius - value, paint);
+//                    }
+//                }
+//                invalidate();
+//            }
+//
+//        });
+//
+//        animator.setInterpolator(new LinearInterpolator());
+//        animator.setRepeatMode(ValueAnimator.REVERSE);
+//        animator.setRepeatCount(5);
+//        animator.setDuration(1000);
+//        animator.start();
     }
 
 //    public void unhighlightTokens() {
