@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -26,15 +27,17 @@ public class GameModel {
     int[][] mboardArray;
     int boardRow,boardColumn;
     int currentPlayer=0;
+    int mGameState;
+    ArrayList<Pair<Integer, Integer>> mWinCoordinates;
     GameModel(int rows,int columns) {
         mboardArray = new int[rows][columns];
         boardRow = rows;
         boardColumn = columns;
+        mWinCoordinates = new ArrayList<Pair<Integer, Integer>>();
         for (int i = 0; i < mboardArray.length; i++)
         {
             for (int j = 0; j < mboardArray[i].length; j++)
             {
-
                 mboardArray[i][j] = -1;
             }
         }
@@ -58,6 +61,20 @@ public class GameModel {
         mboardArray[i][column] = getPlayer();
         returnRow=i;
         setPlayer();
+
+        boolean horz = checkHorizontal();
+        boolean vert = checkVertical();
+        boolean diagUp = checkDiagonalUpwards();
+        boolean diagDown = checkDiagonalDownwards();
+
+        if (horz || vert || diagUp || diagDown) {
+            mGameState = 1; //game won
+        Log.i("debug testing","coordinates "+mWinCoordinates);
+        }
+            else
+            //yet to add draw logic
+            mGameState = 0;
+
         return Pair.create(returnRow,column);
     }
     }
@@ -84,6 +101,10 @@ public class GameModel {
                         && mboardArray[i][j+2] == 1
                         && mboardArray[i][j+3] == 1))
                 {
+                    mWinCoordinates.add( Pair.create(i, j));
+                    mWinCoordinates.add( Pair.create(i, j+1));
+                    mWinCoordinates.add( Pair.create(i, j+2));
+                    mWinCoordinates.add( Pair.create(i, j+3));
                     return true;
                 }
 
@@ -106,6 +127,10 @@ public class GameModel {
                     && mboardArray[j+2][i] == 1
                     && mboardArray[j+3][i] == 1))
                 {
+                    mWinCoordinates.add( Pair.create(j, i));
+                    mWinCoordinates.add( Pair.create(j+1,i));
+                    mWinCoordinates.add( Pair.create(j+2,i));
+                    mWinCoordinates.add( Pair.create(j+3,i));
                     return true;
                 }
 
@@ -127,6 +152,10 @@ public class GameModel {
                         && mboardArray[i+2][j-2] == 1
                         && mboardArray[i+3][j-3] == 1))
                 {
+                    mWinCoordinates.add( Pair.create(i, j));
+                    mWinCoordinates.add( Pair.create(i+1, j-1));
+                    mWinCoordinates.add( Pair.create(i+2, j-2));
+                    mWinCoordinates.add( Pair.create(i+3, j-3));
                     return true;
                 }
 
@@ -148,6 +177,10 @@ public class GameModel {
                         && mboardArray[i+2][j+2] == 1
                         && mboardArray[i+3][j+3] == 1))
                 {
+                    mWinCoordinates.add( Pair.create(i, j));
+                    mWinCoordinates.add( Pair.create(i+1, j+1));
+                    mWinCoordinates.add( Pair.create(i+2, j+2));
+                    mWinCoordinates.add( Pair.create(i+3, j+3));
                     return true;
                 }
 
@@ -158,23 +191,14 @@ public class GameModel {
 
     public int getGameState() {
 
-        boolean horz = checkHorizontal();
-        boolean vert = checkVertical();
-        boolean diagUp = checkDiagonalUpwards();
-        boolean diagDown = checkDiagonalDownwards();
-
-        if (horz || vert || diagUp || diagDown)
-            return 1;
-        else
-            //yet to add draw logic
-            return 0;
+       return mGameState;
     }
 
 
     // Return list of winners Pair<row, column>
     public ArrayList<Pair<Integer, Integer>> getWinners() {
 
-        return null;
+        return mWinCoordinates;
     }
 
     public void reset() {
