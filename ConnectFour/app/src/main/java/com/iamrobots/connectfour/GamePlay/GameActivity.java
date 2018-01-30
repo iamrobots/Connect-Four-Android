@@ -104,7 +104,8 @@ public class GameActivity extends AppCompatActivity {
             return;
         }
 
-        mBoardView.dropToken(coordinates.first, coordinates.second, mGameModel.getPlayer());
+        int player = (mGameModel.getPlayer() == 0) ? 1 : 0;
+        mBoardView.dropToken(coordinates.first, coordinates.second, player);
 
         if (mGameModel.getGameState() == 1) {
             gameWon();
@@ -127,7 +128,7 @@ public class GameActivity extends AppCompatActivity {
             winner = mFirstPlayerTextView.getText().toString();
         else
             winner = mSecondPlayerTextView.getText().toString();
-        Toast.makeText(this, "The winner is " + winner, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
     }
 
     public void rewind() {
