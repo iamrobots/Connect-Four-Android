@@ -30,6 +30,8 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
     private static final String COLUMNS_KEY = "Columns";
 
     private Button mPlayButton;
+    private Button mFirstPlayerButton;
+    private Button mSecondPlayerButton;
     private Spinner mBoardSizeSpinner;
 
     private String mFirstPlayerName;
@@ -37,7 +39,7 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
     private int mRows;
     private int mColumns;
 
-    private String[] mBoardSizeArray = {"7x6", "8x7", "10x8"};
+    private String[] mBoardSizeArray = {"7 x 6", "8 x 7", "10 x 8"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,15 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
         mFirstPlayerName = "Alice";
         mSecondPlayerName = "Bob";
 
+        mFirstPlayerButton = findViewById(R.id.btnPlayer1);
+        mSecondPlayerButton = findViewById(R.id.btnPlayer2);
         mBoardSizeSpinner = findViewById(R.id.board_size_spinner);
         mPlayButton = findViewById(R.id.play_button);
 
+        mFirstPlayerButton.setText(mFirstPlayerName);
+        mSecondPlayerButton.setText(mSecondPlayerName);
 
-        mBoardSizeSpinner.setOnItemSelectedListener(this);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mBoardSizeArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mBoardSizeSpinner.setAdapter(adapter);
-
+        spinnerSetup();
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +117,17 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
         });*/
     }
 
+
+    /*
+     * Spinner Methods
+     */
+
+    public void spinnerSetup() {
+        mBoardSizeSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mBoardSizeArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBoardSizeSpinner.setAdapter(adapter);
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
