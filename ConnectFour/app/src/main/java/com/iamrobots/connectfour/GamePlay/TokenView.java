@@ -26,8 +26,8 @@ public class TokenView extends View {
 
     private static final int DEFAULT_COLOR = 0xff000000;
     private static final float SMALL_CIRCLE_PADDING = 8.0f;
-    private static final float BIG_CIRCLE_PADDING = 2.0f;
-    private static final float STROKE_WIDTH = 4.0f;
+    private static final float BIG_CIRCLE_PADDING = 4.0f;
+    private static final float STROKE_WIDTH = 8.0f;
 
     private Paint mCircleFillPaint;
     private Paint mCircleStrokePaint;

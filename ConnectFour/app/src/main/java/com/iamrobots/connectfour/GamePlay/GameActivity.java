@@ -1,7 +1,5 @@
 package com.iamrobots.connectfour.GamePlay;
 
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -15,14 +13,11 @@ import android.util.Pair;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iamrobots.connectfour.PlayerSelection.AppDatabase;
-import com.iamrobots.connectfour.PlayerSelection.Player;
-import com.iamrobots.connectfour.PlayerSelection.PlayerDetls;
 import com.iamrobots.connectfour.R;
 
 /*
  * TODO: Get player selection information from Share Preferences
- * TODO: Implement a back button that takes the user back to Player Selection
+ * TODO: Implement a back button that takes the user back to PlayerActivity Selection
  * TODO: Figure out Database access.
  * TODO: Implement multiple rounds.
  * TODO: Implement onPause and onResume
@@ -30,21 +25,26 @@ import com.iamrobots.connectfour.R;
 
 public class GameActivity extends AppCompatActivity {
 
+    private static final String FIRST_PLAYER_KEY = "PlayerOne";
+    private static final String SECOND_PLAYER_KEY = "PlayerTwo";
+    private static final String ROW_KEY = "Rows";
+    private static final String COLUMNS_KEY = "Columns";
+
     // Game Layout Components
-    TextView mFirstPlayerTextView;
-    TextView mSecondPlayerTextView;
-    TokenView mFirstPlayerToken;
-    TokenView mSecondPlayerToken;
-    BoardView mBoardView;
-    ImageButton mRewindButton;
+    private TextView mFirstPlayerTextView;
+    private TextView mSecondPlayerTextView;
+    private TokenView mFirstPlayerToken;
+    private TokenView mSecondPlayerToken;
+    private BoardView mBoardView;
+    private ImageButton mRewindButton;
 
     // Game Model/State
-    GameModel mGameModel;
-    int mCurrentPlayer;
+    private GameModel mGameModel;
+    private int mCurrentPlayer;
 
-    // Player information
-    int mFirstPlayerID;
-    int mSecondPlayerID;
+    // PlayerActivity information
+    private String mFirstPlayerName;
+    private String mSecondPlayerName;
 
 //    int mRounds;
 //    int mCurrentRound;
@@ -155,33 +155,24 @@ public class GameActivity extends AppCompatActivity {
         String secondPlayerName;
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mFirstPlayerID = preferences.getInt("PlayerOne", 0);
-        mSecondPlayerID = preferences.getInt("PlayerTwo", 1);
-        int rows = preferences.getInt("Rows", 6);
-        int columns = preferences.getInt("Columns", 7);
+        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "One");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Two");
+        int rows = preferences.getInt(ROW_KEY, 6);
+        int columns = preferences.getInt(COLUMNS_KEY, 7);
 
-        // Temporary Variables. Will get rows and columns from Player selection.
+        // Temporary Variables. Will get rows and columns from PlayerActivity selection.
         int firstPlayerColor = Color.parseColor("#f1c40f");
         int secondPlayerColor = Color.parseColor("#e74c3c");
 
-//        AppDatabase database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production").build();
-//
-//        firstPlayerName = database.playerDao().getPlayerNameById(mFirstPlayerID);
-//        secondPlayerName = database.playerDao().getPlayerNameById(mSecondPlayerID);
-
-//        if (firstPlayerName == null)
-            firstPlayerName = "Player 1";
-//        if (secondPlayerName == null)
-            secondPlayerName = "Player 2";
 
         mFirstPlayerTextView = findViewById(R.id.player1_id);
-        mFirstPlayerTextView.setText(firstPlayerName);
+        mFirstPlayerTextView.setText(mFirstPlayerName);
         mFirstPlayerToken = findViewById(R.id.player1_token_id);
         mFirstPlayerToken.setColor(firstPlayerColor);
         mFirstPlayerToken.selected();
 
         mSecondPlayerTextView = findViewById(R.id.player2_id);
-        mSecondPlayerTextView.setText(secondPlayerName);
+        mSecondPlayerTextView.setText(mSecondPlayerName);
         mSecondPlayerToken = findViewById(R.id.player2_token_id);
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();

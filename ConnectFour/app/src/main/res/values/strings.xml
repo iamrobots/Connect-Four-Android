@@ -10,5 +10,6 @@
     <string name="player">Offline Mode</string>
     <string name="aimode">AI      Mode</string>
     <string name="player_multi">Online Mode</string>
+    <string name="play">Play!</string>
 
 </resources>

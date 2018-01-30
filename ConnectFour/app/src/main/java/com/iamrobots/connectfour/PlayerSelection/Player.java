@@ -1,53 +1,54 @@
 package com.iamrobots.connectfour.PlayerSelection;
 
 /**
- * Created by David Lively on 1/25/18.
- * lively@iamrobots.com
+ * Created by namrathamanjunatha on 1/28/18.
  */
 
-import android.arch.persistence.room.Room;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 
-// TODO: Rename this class to PlayerActivity or PlayerEditAcitvity.
+// TODO: Rename this class to just PlayerActivity.
+// TODO: Have color saved as an int.
 
-public class Player extends AppCompatActivity {
+@Entity(tableName = "players")
+public class Player {
+    public Player(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
+//Add fields if required
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    @ColumnInfo(name = "player_name")
+    private String name;
+    @ColumnInfo(name = "player_color")
+    private String color;
 
-    AppDatabase db;
+    public int getId() {
+        return id;
+    }
 
-    EditText pName;
-    EditText pColor;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    Button button;
+    public String getName() {
+        return name;
+    }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // -- Add your xml part here
-       // setContentView(R.layout.create_user);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        //pName = findViewById(R.id.player_name);
-       // pColor = findViewById(R.id.player_color);
-       // button = findViewById(R.id.button);
+    public String getColor() {
+        return color;
+    }
 
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "production")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // PlayerDetls pdt = new PlayerDetls(pName.getText().toString(), pColor.getText().toString());
-                //db.playerDao().insertAll(pdt);
-                //startActivity(new Intent(Player.this, MainActivity.class));
-            }
-        });
+    public void setColor(String color) {
+        this.color = color;
     }
 }
+
