@@ -105,10 +105,13 @@ public class GameActivity extends AppCompatActivity {
         if (row < 0 || column < 0)
             return;
 
-        if (!mGameModel.dropToken(column)) {
+        Pair<Integer,Integer> mDropCoord = mGameModel.dropToken(column);
+
+        if (mDropCoord == null) {
             // Invalid position
             return;
         }
+
         mBoardView.dropToken(row, column, mCurrentPlayer);
 
         if (mGameModel.getGameState() == 1) {

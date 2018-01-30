@@ -50,18 +50,19 @@ public class GameModel {
         currentPlayer = (currentPlayer == 0) ? 1 : 0;
     }
 
-    public boolean dropToken(int column) {
-
+    public Pair<Integer, Integer> dropToken(int column) {
+       int returnRow;
      for(int i =0 ; i < boardRow ; i++)
      {
     if(mboardArray[i][column] == -1) {
         mboardArray[i][column] = getPlayer();
+        returnRow=i;
         setPlayer();
-        return true;
+        return Pair.create(returnRow,column);
     }
     }
 
-     return false;
+     return null;
     }
 
     // Return Pair<row, column> to be removed
