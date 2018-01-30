@@ -11,6 +11,6 @@
     <string name="aimode">AI</string>
     <string name="player_multi">Online</string>
     <string name="play">Play!</string>
-    <string name="board_size">Size</string>
+    <string name="board_size">Board Size</string>
 
 </resources>
