@@ -18,15 +18,14 @@
         </activity>
         <activity
             android:name=".PlayerSelection.GameMenuActivity"
-            android:label="@string/title_player_mode"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_player_mode"/>
         <activity
             android:name=".GamePlay.GameActivity"
             android:exported="true" />
         <activity
             android:name=".PlayerSelection.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

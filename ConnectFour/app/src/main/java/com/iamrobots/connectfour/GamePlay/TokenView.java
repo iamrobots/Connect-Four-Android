@@ -8,9 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -25,7 +23,7 @@ import com.iamrobots.connectfour.R;
 public class TokenView extends View {
 
     private static final int DEFAULT_COLOR = 0xff000000;
-    private static final float SMALL_CIRCLE_PADDING = 8.0f;
+    private static final float SMALL_CIRCLE_PADDING = 20.0f;
     private static final float BIG_CIRCLE_PADDING = 4.0f;
     private static final float STROKE_WIDTH = 8.0f;
 
@@ -82,12 +80,6 @@ public class TokenView extends View {
         init(attrs);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public TokenView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(attrs);
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -127,7 +119,7 @@ public class TokenView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
-                mRadius += value;
+                mRadius += value / 2;
                 invalidate();
             }
         });

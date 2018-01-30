@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.iamrobots.connectfour.R;
 
 /*
- * TODO: Get player selection information from Share Preferences
  * TODO: Implement a back button that takes the user back to PlayerActivity Selection
  * TODO: Figure out Database access.
  * TODO: Implement multiple rounds.
@@ -40,11 +39,7 @@ public class GameActivity extends AppCompatActivity {
 
     // Game Model/State
     private GameModel mGameModel;
-    private int mCurrentPlayer;
 
-    // PlayerActivity information
-    private String mFirstPlayerName;
-    private String mSecondPlayerName;
 
 //    int mRounds;
 //    int mCurrentRound;
@@ -96,29 +91,26 @@ public class GameActivity extends AppCompatActivity {
 
     public void gameInPlay(float x, float y) {
 
-        //Get the current player from getCurrentPlayer().
-        mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
-
+        Pair<Integer,Integer> coordinates;
         int column = mBoardView.getColumn(x);
         int row = mBoardView.getRow(y);
 
         if (row < 0 || column < 0)
             return;
 
-        Pair<Integer,Integer> mDropCoord = mGameModel.dropToken(column);
+        coordinates = mGameModel.dropToken(column);
 
-        if (mDropCoord == null) {
-            // Invalid position
+        if (coordinates == null) {
             return;
         }
 
-        mBoardView.dropToken(row, column, mCurrentPlayer);
+        mBoardView.dropToken(coordinates.first, coordinates.second, mGameModel.getPlayer());
 
         if (mGameModel.getGameState() == 1) {
             gameWon();
         }
 
-        if (mCurrentPlayer == 0) {
+        if (mGameModel.getPlayer() == 0) {
             mFirstPlayerToken.selected();
             mSecondPlayerToken.unselected();
         } else {
@@ -130,12 +122,12 @@ public class GameActivity extends AppCompatActivity {
     public void gameWon() {
 
         String winner;
-        mBoardView.highlightTokens(mGameModel.getWinners(), mCurrentPlayer);
-        if (mCurrentPlayer == 0)
+        mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getPlayer());
+        if (mGameModel.getPlayer() == 0)
             winner = mFirstPlayerTextView.getText().toString();
         else
             winner = mSecondPlayerTextView.getText().toString();
-        Toast.makeText(this, "The winner is" + winner, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "The winner is " + winner, Toast.LENGTH_SHORT).show();
     }
 
     public void rewind() {
@@ -145,21 +137,18 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void newGame() {
-        mGameModel.reset();
-        mBoardView.clear();
-        mCurrentPlayer = 0;
-        mFirstPlayerToken.selected();
-        mSecondPlayerToken.unselected();
-    }
+//    public void newGame() {
+//        mGameModel.reset();
+//        mBoardView.clear();
+//        mFirstPlayerToken.selected();
+//        mSecondPlayerToken.unselected();
+//    }
 
     private void setup() {
-        String firstPlayerName;
-        String secondPlayerName;
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "One");
-        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Two");
+        String firstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
+        String secondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
         int rows = preferences.getInt(ROW_KEY, 6);
         int columns = preferences.getInt(COLUMNS_KEY, 7);
 
@@ -169,13 +158,13 @@ public class GameActivity extends AppCompatActivity {
 
 
         mFirstPlayerTextView = findViewById(R.id.player1_id);
-        mFirstPlayerTextView.setText(mFirstPlayerName);
+        mFirstPlayerTextView.setText(firstPlayerName);
         mFirstPlayerToken = findViewById(R.id.player1_token_id);
         mFirstPlayerToken.setColor(firstPlayerColor);
         mFirstPlayerToken.selected();
 
         mSecondPlayerTextView = findViewById(R.id.player2_id);
-        mSecondPlayerTextView.setText(mSecondPlayerName);
+        mSecondPlayerTextView.setText(secondPlayerName);
         mSecondPlayerToken = findViewById(R.id.player2_token_id);
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
@@ -188,8 +177,6 @@ public class GameActivity extends AppCompatActivity {
         mBoardView.setSecondPlayerColor(secondPlayerColor);
 
         mRewindButton = findViewById(R.id.rewindButton);
-
-        mCurrentPlayer = 0;
     }
 
 }

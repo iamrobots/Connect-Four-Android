@@ -120,11 +120,11 @@ public class BoardView extends View {
         init(attrs);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public BoardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(attrs);
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    public BoardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        init(attrs);
+//    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -195,17 +195,17 @@ public class BoardView extends View {
     /*
      * Drops a ball of the players color at the given row and column.
      */
-    public boolean dropToken(final int row,final int column, int player) {
+    public void dropToken(final int row, final int column, int player) {
         final Paint playerPaint;
 
         if (column < 0 || column >= mColumns)
-            return false;
+            return;
         if (row < 0 || row >= mRows)
-            return false;
+            return;
         if (player > 1 || player < 0)
-            return false;
+            return;
         if (mBackBoardBitmap == null)
-            return false;
+            return;
 
         if (player == 1)
             playerPaint = mSecondPlayerPaint;
@@ -240,7 +240,6 @@ public class BoardView extends View {
         animation.setInterpolator(new AccelerateInterpolator());
         animation.setDuration(120 * (mRows - row));
         animation.start();
-        return true;
     }
 
     public void removeToken(int row, int column) {
@@ -263,10 +262,6 @@ public class BoardView extends View {
         mColumns = columns;
         mPosX = new float[columns];
         mPosY = new float[rows];
-    }
-
-    public void setBoardColor(int color) {
-        mBoardPaint.setColor(color);
     }
 
     public void setFirstPlayerColor(int color) {
@@ -330,17 +325,17 @@ public class BoardView extends View {
         animator.start();
     }
 
-    public void unhighlightTokens() {
-        Canvas boardCanvas = new Canvas(mBoardBitmap);
-        boardCanvas.drawPaint(mBoardPaint);
-
-        for (int i = 0; i < mRows; ++i) {
-            for (int j = 0; j < mColumns; ++j) {
-                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - BOARD_HOLE_PADDING, mEraser);
-            }
-        }
-
-    }
+//    public void unhighlightTokens() {
+//        Canvas boardCanvas = new Canvas(mBoardBitmap);
+//        boardCanvas.drawPaint(mBoardPaint);
+//
+//        for (int i = 0; i < mRows; ++i) {
+//            for (int j = 0; j < mColumns; ++j) {
+//                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - BOARD_HOLE_PADDING, mEraser);
+//            }
+//        }
+//
+//    }
 
     public void clear() {
         initBoard(getWidth(), getHeight());
