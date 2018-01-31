@@ -1,5 +1,6 @@
 package com.iamrobots.connectfour.GamePlay;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.util.Pair;
 import android.widget.TextView;
@@ -18,7 +20,6 @@ import com.iamrobots.connectfour.R;
 /*
  * TODO: Implement a back button that takes the user back to PlayerActivity Selection
  * TODO: Figure out Database access.
- * TODO: Implement multiple rounds.
  * TODO: Implement onPause and onResume
  */
 
@@ -28,6 +29,7 @@ public class GameActivity extends AppCompatActivity {
     private static final String SECOND_PLAYER_KEY = "PlayerTwo";
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
+    private static final String ROUNDS_KEY = "Rounds";
 
     // Game Layout Components
     private TextView mFirstPlayerTextView;
@@ -36,13 +38,14 @@ public class GameActivity extends AppCompatActivity {
     private TokenView mSecondPlayerToken;
     private BoardView mBoardView;
     private ImageButton mRewindButton;
+    private Button mRoundsButton;
 
     // Game Model/State
     private GameModel mGameModel;
 
 
-//    int mRounds;
-//    int mCurrentRound;
+    private int mRounds;
+    private int mCurrentRound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,16 @@ public class GameActivity extends AppCompatActivity {
                         break;
                 }
                 return true;
+            }
+        });
+
+        mRoundsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGameModel.getGameState() > 0 && mCurrentRound < mRounds) {
+                    mCurrentRound++;
+                    newGame();
+                }
             }
         });
 
@@ -129,6 +142,11 @@ public class GameActivity extends AppCompatActivity {
         else
             winner = mSecondPlayerTextView.getText().toString();
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+
+        if (mCurrentRound < mRounds) {
+            mRoundsButton.setText(R.string.next_round);
+            mRoundsButton.setEnabled(true);
+        }
     }
 
     public void rewind() {
@@ -138,13 +156,18 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-//    public void newGame() {
-//        mGameModel.reset();
-//        mBoardView.clear();
-//        mFirstPlayerToken.selected();
-//        mSecondPlayerToken.unselected();
-//    }
+    @SuppressLint("SetTextI18n")
+    public void newGame() {
+        mGameModel.reset();
+        mBoardView.clear();
+        mFirstPlayerToken.selected();
+        mSecondPlayerToken.unselected();
+        mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
+        mRoundsButton.setTextColor(Color.BLACK);
+        mRoundsButton.setEnabled(false);
+    }
 
+    @SuppressLint("SetTextI18n")
     private void setup() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -152,6 +175,8 @@ public class GameActivity extends AppCompatActivity {
         String secondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
         int rows = preferences.getInt(ROW_KEY, 6);
         int columns = preferences.getInt(COLUMNS_KEY, 7);
+        mRounds = preferences.getInt(ROUNDS_KEY, 1);
+        mCurrentRound = 1;
 
         // Temporary Variables. Will get rows and columns from PlayerActivity selection.
         int firstPlayerColor = Color.parseColor("#f1c40f");
@@ -177,8 +202,13 @@ public class GameActivity extends AppCompatActivity {
         mBoardView.setFirstPlayerColor(firstPlayerColor);
         mBoardView.setSecondPlayerColor(secondPlayerColor);
 
+        mRoundsButton = findViewById(R.id.roundsButton);
+        mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
+        mRoundsButton.setTextColor(Color.BLACK);
+        mRoundsButton.setEnabled(false);
+
         mRewindButton = findViewById(R.id.rewindButton);
-        mRewindButton.setVisibility(View.GONE);
+//        mRewindButton.setVisibility(View.GONE);
     }
 
 }

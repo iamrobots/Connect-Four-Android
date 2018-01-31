@@ -95,16 +95,26 @@
 
     <ImageButton
         android:id="@+id/rewindButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
 
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:contentDescription="@string/rewind_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_revert" />
+
+    <Button
+        android:id="@+id/roundsButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/default_rounds"
+        app:layout_constraintBottom_toBottomOf="@+id/rewindButton"
+        app:layout_constraintEnd_toStartOf="@+id/rewindButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rewindButton" />
 </android.support.constraint.ConstraintLayout>

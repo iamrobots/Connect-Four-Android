@@ -10,7 +10,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 
-// TODO: Rename this class to just PlayerActivity.
 // TODO: Have color saved as an int.
 
 @Entity(tableName = "players")

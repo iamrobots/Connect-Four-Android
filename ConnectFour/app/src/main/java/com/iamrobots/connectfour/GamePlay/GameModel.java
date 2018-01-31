@@ -4,20 +4,12 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * Created by Aniketha Katakam on 1/22/18.
  *
  */
 
-// TODO: Make all member variables private.
-// TODO: Refactor member variables to be of the form mBoardArray, mRows, mColumns ect.
-// TODO: Create a mGameState member variable to keep track of what state the game is in instead of checking in getGameState.
-// TODO: Have dropToken method return a Pair<Integer, Integer> that corresponds to Row and Column that the token was put into.
-//
-// TODO: Make internal methods private (checkHorizontal, checkVertical ect).
-// TODO: mGameState should be checked and set in the dropToken method.
 // TODO: Add a stack of the columns that where selected to keep track of what was played.
 
 
@@ -26,12 +18,14 @@ public class GameModel {
     private int[][] mBoardArray;
     private int mBoardRow;
     private int mBoardColumn;
-    private int mCurrentPlayer = 0;
+    private int mCurrentPlayer;
     private int mGameState;
 
     private ArrayList<Pair<Integer, Integer>> mWinCoordinates;
 
     GameModel(int rows,int columns) {
+        mCurrentPlayer = 0;
+        mGameState = 0;
         mBoardArray = new int[rows][columns];
         mBoardRow = rows;
         mBoardColumn = columns;
@@ -203,6 +197,14 @@ public class GameModel {
     }
 
     public void reset() {
-
+        mGameState = 0;
+        mCurrentPlayer = 0;
+        for (int i = 0; i < mBoardArray.length; i++)
+        {
+            for (int j = 0; j < mBoardArray[i].length; j++)
+            {
+                mBoardArray[i][j] = -1;
+            }
+        }
     }
 }

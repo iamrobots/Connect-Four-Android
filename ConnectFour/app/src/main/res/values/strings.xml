@@ -12,5 +12,7 @@
     <string name="player_multi">Online</string>
     <string name="play">Play!</string>
     <string name="board_size">Board Size</string>
-
+    <string name="rounds">Rounds</string>
+    <string name="default_rounds">Round 0/1</string>
+    <string name="next_round">Next Round</string>
 </resources>
