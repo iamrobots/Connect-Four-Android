@@ -221,6 +221,8 @@ public class GameModel {
     public void reset() {
         mGameState = 0;
         mCurrentPlayer = 0;
+        mWinCoordinates = new ArrayList<>();
+
         for (int i = 0; i < mBoardArray.length; i++)
         {
             for (int j = 0; j < mBoardArray[i].length; j++)
