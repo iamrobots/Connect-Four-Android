@@ -60,13 +60,35 @@ public class GameModel {
                 boolean diagUp = checkDiagonalUpwards();
                 boolean diagDown = checkDiagonalDownwards();
 
-                if (horz || vert || diagUp || diagDown) {
+                if (horz|| vert || diagUp || diagDown) {
                     mGameState = 1; //game won
                     Log.i("debug testing","coordinates "+mWinCoordinates);
                 }
                 else {
+                    int stalemateCounter=0;
+                    int inplayCounter=0;
+                    int boardSize;
                     //yet to add draw logic
-                    mGameState = 0;
+                    for (int k = 0; k < mBoardArray.length; k++)
+                    {
+                        for (int j = 0; j < mBoardArray[k].length; j++)
+                        {
+                            if(mBoardArray[k][j]== 1 || mBoardArray[k][j]== 0)
+                                stalemateCounter++;
+                            if(mBoardArray[k][j]== -1)
+                                inplayCounter++;
+                        }
+                    }
+
+                    boardSize = (mBoardArray.length)*(mBoardArray[0].length);
+
+                    if(boardSize > inplayCounter )
+                        mGameState = 0;
+                    if(stalemateCounter+1 == boardSize)
+                        mGameState=2;
+                    Log.i("boardsize","size is "+ boardSize);
+                    Log.i("stalemateCounter","stalemate is "+ stalemateCounter);
+                    Log.i("inplayCounter","inplayCounter is "+ inplayCounter);
                     setCurrentPlayer();
                 }
 
