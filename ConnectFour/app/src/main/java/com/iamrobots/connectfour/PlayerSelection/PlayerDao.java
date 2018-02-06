@@ -1,5 +1,6 @@
 package com.iamrobots.connectfour.PlayerSelection;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
@@ -17,7 +18,7 @@ import java.util.List;
 public interface PlayerDao {
 
     @Query("Select * from players")
-    public List<Player> getAll();
+    public LiveData<List<Player>> getAll();
 
     @Query("SELECT player_name FROM players WHERE id = :id")
     public String getPlayerNameById(int id);
