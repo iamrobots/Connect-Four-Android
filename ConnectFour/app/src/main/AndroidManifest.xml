@@ -26,6 +26,9 @@
             android:name=".PlayerSelection.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Online.OnlineActivity" />
+        <activity android:name=".TopScoresActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".PlayerSelection.PlayerListActivity"></activity>
     </application>
 

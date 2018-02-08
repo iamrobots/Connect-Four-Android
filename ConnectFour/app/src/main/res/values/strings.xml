@@ -15,4 +15,5 @@
     <string name="rounds">Rounds</string>
     <string name="default_rounds">Round 0/1</string>
     <string name="next_round">Next Round</string>
+    <string name="top_scores">Top Scores</string>
 </resources>
