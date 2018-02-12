@@ -1,17 +1,15 @@
 package com.iamrobots.connectfour.PlayerSelection;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.content.Intent;
 import android.widget.Spinner;
 
 import com.iamrobots.connectfour.GamePlay.GameActivity;
@@ -81,6 +79,13 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
             }
         });
 
+        mFirstPlayerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PlayerSelectionActivity.this, PlayerListActivity.class);
+                startActivity(i);
+            }
+        });
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

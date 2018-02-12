@@ -4,12 +4,13 @@ package com.iamrobots.connectfour.PlayerSelection;
  * Created by namrathamanjunatha on 1/26/18.
  */
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import com.iamrobots.connectfour.R;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.content.Intent;
+
+import com.iamrobots.connectfour.R;
 
 public class GameMenuActivity extends AppCompatActivity{
 
@@ -24,6 +25,7 @@ public class GameMenuActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(GameMenuActivity.this, PlayerSelectionActivity.class);
+                // change PlayerSelectionActivity to PlayerSelectActivity for tabbed view
                 startActivity(i);
             }
         });

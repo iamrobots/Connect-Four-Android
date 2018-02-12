@@ -26,7 +26,13 @@
             android:name=".PlayerSelection.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PlayerSelection.PlayerListActivity"></activity>
+        <activity
+            android:name=".PlayerSelection.PlayerListActivity"
+            android:label="@string/title_activity_player_list" />
+        <activity
+            android:name=".PlayerSelection.PlayerSelectActivity"
+            android:label="@string/title_activity_player_select"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
