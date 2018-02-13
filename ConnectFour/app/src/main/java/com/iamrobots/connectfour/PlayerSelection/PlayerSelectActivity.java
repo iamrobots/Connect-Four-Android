@@ -7,8 +7,11 @@ package com.iamrobots.connectfour.PlayerSelection;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.iamrobots.connectfour.R;
 
@@ -19,13 +22,24 @@ public class PlayerSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_select);
 
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        ViewPager mPager = (ViewPager) findViewById(R.id.container);
+
+        ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),PlayerSelectActivity.this);
+        mPager.setAdapter(mPagerAdapter);
+        tabLayout.setupWithViewPager(mPager);
+
+        //set first tab
+        View tab1 = (View) LayoutInflater.from(this).inflate()
+                //in process
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+
         tabs.addTab(tabs.newTab().setText("Human"));
-        tabs.addTab(tabs.newTab().setText("AI"));
-        tabs.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabs.addTab(tabs.newTab().setText("Computer"));
+        //tabs.setTabGravity(TabLayout.GRAVITY_FILL);
 
         //final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
     }
