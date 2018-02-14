@@ -2,8 +2,11 @@ package com.iamrobots.connectfour.PlayerSelection;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -18,17 +21,17 @@ import java.util.List;
 public interface PlayerDao {
 
     @Query("Select * from players")
-    public List<Player> getPlayerList();
+    public List<Player> getPlayers();
 
     @Query("SELECT player_name FROM players WHERE id = :id")
     public String getPlayerNameById(int id);
 
-    @Insert
-    public void insertPlayer(Player player);
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertAll(Player... users);
 
-   // @Query("DELETE FROM players")
-  //  public void deleteTable();
+    @Update
+    public void updatePlayers(Player... players);
+
+    @Delete
+    public void deletePlayers(Player... players);
 }

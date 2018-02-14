@@ -9,11 +9,12 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.graphics.Color;
 
 
 // TODO: prefill database with two default players.
 
-@Database(entities = {Player.class}, version = 1)
+@Database(entities = {Player.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PlayerDao playerDao();
 
@@ -29,10 +30,20 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static AppDatabase create(final Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
+        AppDatabase database = Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
                         .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()
                         .build();
+
+        database.playerDao().insertAll(new Player("Alice", Color.RED),
+                new Player("Bob", Color.BLACK),
+                new Player("Jane", Color.YELLOW),
+                new Player("David", Color.BLUE),
+                new Player("Abraham", Color.GREEN),
+                new Player("Aniketha", Color.MAGENTA),
+                new Player("Namratha", Color.GRAY));
+
+        return database;
     }
 
 }
