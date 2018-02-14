@@ -18,10 +18,13 @@ import java.util.List;
 public interface PlayerDao {
 
     @Query("Select * from players")
-    public LiveData<List<Player>> getAll();
+    public List<Player> getPlayerList();
 
     @Query("SELECT player_name FROM players WHERE id = :id")
     public String getPlayerNameById(int id);
+
+    @Insert
+    public void insertPlayer(Player player);
 
     @Insert
     public void insertAll(Player... users);

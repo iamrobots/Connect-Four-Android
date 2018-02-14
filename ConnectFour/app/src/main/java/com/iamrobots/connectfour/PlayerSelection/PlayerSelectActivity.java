@@ -24,13 +24,13 @@ public class PlayerSelectActivity extends AppCompatActivity {
 
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         ViewPager mPager = (ViewPager) findViewById(R.id.container);
-
-        ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),PlayerSelectActivity.this);
-        mPager.setAdapter(mPagerAdapter);
-        tabLayout.setupWithViewPager(mPager);
+//
+//        ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),PlayerSelectActivity.this);
+//        mPager.setAdapter(mPagerAdapter);
+//        tabLayout.setupWithViewPager(mPager);
 
         //set first tab
-        View tab1 = (View) LayoutInflater.from(this).inflate()
+//        View tab1 = (View) LayoutInflater.from(this).inflate();
                 //in process
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

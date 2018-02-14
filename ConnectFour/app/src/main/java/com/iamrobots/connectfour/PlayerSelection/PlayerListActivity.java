@@ -1,6 +1,9 @@
 package com.iamrobots.connectfour.PlayerSelection;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,43 +18,63 @@ import java.util.ArrayList;
 
 public class PlayerListActivity extends AppCompatActivity {
 
-    //private LiveData<List<Player>> playersList = null;
-    //private AppDatabase db;
+    private static final String FIRST_PLAYER_KEY = "PlayerOne";
+    private static final String SECOND_PLAYER_KEY = "PlayerTwo";
+    private static final String FROM_BUTTON_KEY = "From";
+
+    private ListView mPlayerListView;
+    private String mPlayerKey;
+    private String mCurrentPlayerName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_list);
 
+        // Temporary player names
+        String[] testPlayers = new String[] { "Alice", "Bob", "Jane", "Mei" };
+
+        if (getIntent().getStringExtra(FROM_BUTTON_KEY).equals(FIRST_PLAYER_KEY)) {
+            mPlayerKey = FIRST_PLAYER_KEY;
+        } else {
+            mPlayerKey = SECOND_PLAYER_KEY;
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mCurrentPlayerName = preferences.getString(mPlayerKey, "");
+
         //db = AppDatabase.getInstance(this.getApplicationContext());
         //playersList = db.playerDao().getAll();
 
-        ListView plyrList = findViewById(R.id.playerList);
-        String[] testPlayers = new String[] { "Alice", "Bob", "Jane", "Mei" };
+        mPlayerListView = findViewById(R.id.playerList);
 
-        final ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < testPlayers.length; ++i) {
+            if (mCurrentPlayerName.equals(testPlayers[i]))
+                continue;
             list.add(testPlayers[i]);
         }
 
         ArrayAdapter<String> playerListAdapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_list_item_1, list);
-        plyrList.setAdapter(playerListAdapter);
+        mPlayerListView.setAdapter(playerListAdapter);
 
         // clicking list item should either mark the item or switch back to
         // PlayerSelectionActivity with button updated.
-        plyrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                // mark selection and pass to PlayerSelectionActivity
-                //Button mFirstPlyrBtn = findViewById(R.id.btnPlayer1);
-                //mFirstPlyrBtn.setText(item);
+                String name = (String) parent.getItemAtPosition(position);
 
-                //Intent i = new Intent(PlayerListActivity.this, PlayerSelectionActivity.class);
-                //startActivity(i);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(mPlayerKey, name);
+                editor.apply();
+
+                Intent i = new Intent(PlayerListActivity.this, PlayerSelectionActivity.class);
+                startActivity(i);
             }
 
         });

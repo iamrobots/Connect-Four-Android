@@ -22,6 +22,7 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
+    private static final String FROM_BUTTON_KEY = "From";
 
     private Button mPlayButton;
     private Button mFirstPlayerButton;
@@ -45,11 +46,12 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mRows = 8;
-        mColumns = 10;
-        mFirstPlayerName = "Alice";
-        mSecondPlayerName = "Bob";
-        mRounds = 1;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        mRows = preferences.getInt(ROW_KEY, 6);
+        mColumns = preferences.getInt(COLUMNS_KEY, 7);
+        mRounds = preferences.getInt(ROUNDS_KEY, 1);
 
         mFirstPlayerButton = findViewById(R.id.btnPlayer1);
         mSecondPlayerButton = findViewById(R.id.btnPlayer2);
@@ -83,47 +85,20 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(PlayerSelectionActivity.this, PlayerListActivity.class);
+                i.putExtra(FROM_BUTTON_KEY, FIRST_PLAYER_KEY);
                 startActivity(i);
             }
         });
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mSecondPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-        /*Button btnPlayer1 = (Button)findViewById(R.id.btnPlayer1);
-        btnPlayer1.setOnClickListener(new View.OnClickListener() {
-           @Override
             public void onClick(View v) {
-               Intent i = new Intent(PlayerSelectionActivity.this, GameActivity.class);
-               startActivity(i);
-           }
+                Intent i = new Intent(PlayerSelectionActivity.this, PlayerListActivity.class);
+                i.putExtra(FROM_BUTTON_KEY, SECOND_PLAYER_KEY);
+                startActivity(i);
+            }
         });
-
-        Button btnPlayer2 = (Button)findViewById(R.id.btnPlayer2);
-        btnPlayer2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PlayerSelectionActivity.this, GameActivity.class);
-                startActivity(i);
-            }
-        });*/
-
-        /*Button addPlyr = (Button)findViewById(R.id.fab);
-        addPlyr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PlayerSelectionActivity.this, NewPlayerActivity.class);
-                startActivity(i);
-            }
-        });*/
     }
-
 
     /*
      * Spinner Methods
