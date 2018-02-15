@@ -29,6 +29,7 @@
         <activity android:name=".Online.OnlineActivity" />
         <activity
             android:name=".TopScoresActivity"
+            android:label="@string/top_scores"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PlayerSelection.PlayerListActivity"
@@ -37,6 +38,7 @@
             android:name=".PlayerSelection.PlayerSelectActivity"
             android:label="@string/title_activity_player_select"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PlayerSelection.AddPlayerActivity"></activity>
     </application>
 
 </manifest>

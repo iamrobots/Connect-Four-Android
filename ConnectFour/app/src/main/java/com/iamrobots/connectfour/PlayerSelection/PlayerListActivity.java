@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,8 +14,11 @@ import android.widget.ListView;
 
 import com.iamrobots.connectfour.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+// TODO: clicking list item should either mark the item or switch back to PlayerSelection
 
 public class PlayerListActivity extends AppCompatActivity {
 
@@ -22,14 +26,21 @@ public class PlayerListActivity extends AppCompatActivity {
     private static final String SECOND_PLAYER_KEY = "PlayerTwo";
     private static final String FROM_BUTTON_KEY = "From";
 
+    private AppDatabase mDatabase;
+
+    private FloatingActionButton mAddPlayerFab;
     private ListView mPlayerListView;
     private String mPlayerKey;
     private String mCurrentPlayerName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_list);
+        mDatabase = AppDatabase.getInstance(PlayerListActivity.this);
+        mPlayerListView = findViewById(R.id.playerList);
+        mAddPlayerFab = findViewById(R.id.add_player_fab);
 
         if (getIntent().getStringExtra(FROM_BUTTON_KEY).equals(FIRST_PLAYER_KEY)) {
             mPlayerKey = FIRST_PLAYER_KEY;
@@ -40,39 +51,48 @@ public class PlayerListActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mCurrentPlayerName = preferences.getString(mPlayerKey, null);
 
-        mPlayerListView = findViewById(R.id.playerList);
-
-        LoadPlayerNames loader = new LoadPlayerNames();
+        LoadPlayerNames loader = new LoadPlayerNames(PlayerListActivity.this);
         loader.execute();
 
-        // clicking list item should either mark the item or switch back to
-        // PlayerSelectionActivity with button updated.
         mPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                String name = (String) parent.getItemAtPosition(position);
+                mCurrentPlayerName = (String) parent.getItemAtPosition(position);
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(mPlayerKey, name);
+                editor.putString(mPlayerKey, mCurrentPlayerName);
                 editor.apply();
-
                 Intent i = new Intent(PlayerListActivity.this, PlayerSelectionActivity.class);
                 startActivity(i);
             }
 
         });
+
+        mAddPlayerFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PlayerListActivity.this, AddPlayerActivity.class);
+                i.putExtra(FROM_BUTTON_KEY, mPlayerKey);
+                startActivity(i);
+            }
+        });
     }
 
-    private class LoadPlayerNames extends AsyncTask<Void, Void, List<Player>> {
+    private static class LoadPlayerNames extends AsyncTask<Void, Void, List<Player>> {
 
-        AppDatabase db = AppDatabase.getInstance(PlayerListActivity.this);
+        WeakReference<PlayerListActivity> mActivityReference;
+
+        LoadPlayerNames(PlayerListActivity context) {
+            mActivityReference = new WeakReference<>(context);
+        }
 
         @Override
         protected List<Player> doInBackground(Void... voids) {
-            return db.playerDao().getPlayers();
+
+            return mActivityReference.get().mDatabase.playerDao().getPlayers();
         }
 
         @Override
@@ -85,9 +105,13 @@ public class PlayerListActivity extends AppCompatActivity {
                 playerList.add(player.getName());
             }
 
-            ArrayAdapter<String> playerListAdapter = new ArrayAdapter<String>(PlayerListActivity.this,
-                    android.R.layout.simple_list_item_1, playerList);
-            mPlayerListView.setAdapter(playerListAdapter);
+            mActivityReference.get().updateListView(playerList);
         }
+    }
+
+    private void updateListView(ArrayList<String> playerList) {
+        ArrayAdapter<String> playerListAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, playerList);
+        mPlayerListView.setAdapter(playerListAdapter);
     }
 }

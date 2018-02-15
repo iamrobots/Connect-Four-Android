@@ -6,7 +6,8 @@
     <string name="player1_color_image">Player One Color</string>
     <string name="player2_color_image">Player Two Color</string>
     <string name="title_activity_player_selection">Game Selection</string>
-    <string name="title_activity_player_list">Player List</string>
+    <string name="title_activity_player_list">Players</string>
+    <string name="top_scores">Top Scores</string>
 
     <string name="title_player_mode">Game Mode</string>
     <string name="player">Offline</string>
@@ -17,6 +18,8 @@
     <string name="rounds">Rounds</string>
     <string name="default_rounds">Round 0/1</string>
     <string name="next_round">Next Round</string>
-    <string name="top_scores">Top Scores</string>
     <string name="title_activity_player_select">PlayerSelectActivity</string>
+
+    <string name="add_player">Add Player</string>
+    <string name="player_name">Name</string>
 </resources>
