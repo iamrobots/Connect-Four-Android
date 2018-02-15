@@ -160,6 +160,15 @@ public class GameActivity extends AppCompatActivity {
         Pair<Integer, Integer> rowColumn = mGameModel.rewind();
         mRewindable = false;
         mRewindButton.setEnabled(mRewindable);
+
+        if (mGameModel.getCurrentPlayer() == 0) {
+            mFirstPlayerToken.selected();
+            mSecondPlayerToken.unselected();
+        } else {
+            mSecondPlayerToken.selected();
+            mFirstPlayerToken.unselected();
+        }
+
         if (rowColumn != null) {
             mBoardView.removeToken(rowColumn.first, rowColumn.second);
         }
