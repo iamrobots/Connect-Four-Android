@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity {
 
     private int mRounds;
     private int mCurrentRound;
+    private Boolean mRewindable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,8 @@ public class GameActivity extends AppCompatActivity {
         int column = mBoardView.getColumn(x);
         int row = mBoardView.getRow(y);
 
+        mRewindable = true;
+
         if (row < 0 || column < 0)
             return;
 
@@ -131,11 +134,15 @@ public class GameActivity extends AppCompatActivity {
             mSecondPlayerToken.selected();
             mFirstPlayerToken.unselected();
         }
+
+        mRewindButton.setEnabled(mRewindable);
     }
 
     public void gameWon() {
 
         String winner;
+
+        mRewindable = false;
         mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
         if (mGameModel.getCurrentPlayer() == 0)
             winner = mFirstPlayerTextView.getText().toString();
@@ -151,6 +158,8 @@ public class GameActivity extends AppCompatActivity {
 
     public void rewind() {
         Pair<Integer, Integer> rowColumn = mGameModel.rewind();
+        mRewindable = false;
+        mRewindButton.setEnabled(mRewindable);
         if (rowColumn != null) {
             mBoardView.removeToken(rowColumn.first, rowColumn.second);
         }
@@ -165,6 +174,8 @@ public class GameActivity extends AppCompatActivity {
         mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
         mRoundsButton.setTextColor(Color.BLACK);
         mRoundsButton.setEnabled(false);
+        mRewindable = false;
+        mRewindButton.setEnabled(mRewindable);
     }
 
     @SuppressLint("SetTextI18n")
@@ -207,7 +218,9 @@ public class GameActivity extends AppCompatActivity {
         mRoundsButton.setTextColor(Color.BLACK);
         mRoundsButton.setEnabled(false);
 
+        mRewindable = false;
         mRewindButton = findViewById(R.id.rewindButton);
+        mRewindButton.setEnabled(mRewindable);
 //        mRewindButton.setVisibility(View.GONE);
     }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by Aniketha Katakam on 1/22/18.
@@ -22,6 +23,7 @@ public class GameModel {
     private int mGameState;
 
     private ArrayList<Pair<Integer, Integer>> mWinCoordinates;
+    private Stack<Pair<Integer, Integer>> mMoveStack;
 
     GameModel(int rows,int columns) {
         mCurrentPlayer = 0;
@@ -30,6 +32,7 @@ public class GameModel {
         mBoardRow = rows;
         mBoardColumn = columns;
         mWinCoordinates = new ArrayList<>();
+        mMoveStack = new Stack<>();
         for (int i = 0; i < mBoardArray.length; i++)
         {
             for (int j = 0; j < mBoardArray[i].length; j++)
@@ -91,7 +94,7 @@ public class GameModel {
                     Log.i("inplayCounter","inplayCounter is "+ inplayCounter);
                     setCurrentPlayer();
                 }
-
+                mMoveStack.push(new Pair<>(returnRow, column));
                 return Pair.create(returnRow,column);
             }
         }
@@ -101,8 +104,13 @@ public class GameModel {
 
     // Return Pair<row, column> to be removed
     public Pair<Integer, Integer> rewind() {
+        if (mMoveStack.isEmpty())
+            return null;
 
-        return null;
+        Pair<Integer, Integer> rowColumnPair = mMoveStack.pop();
+        setCurrentPlayer();
+        mBoardArray[rowColumnPair.first][rowColumnPair.second] = -1;
+        return rowColumnPair;
     }
 
     private boolean checkHorizontal(){
