@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.database;
 
 /**
  * Created by namrathamanjunatha on 1/28/18.

@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.GamePlay;
+package com.iamrobots.connectfour.gamePlay;
 
 import android.util.Log;
 import android.util.Pair;

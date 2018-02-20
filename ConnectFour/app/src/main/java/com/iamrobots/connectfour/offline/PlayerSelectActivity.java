@@ -3,15 +3,13 @@
  *  Not fully implemented.
  */
 
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.offline;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.iamrobots.connectfour.R;
 

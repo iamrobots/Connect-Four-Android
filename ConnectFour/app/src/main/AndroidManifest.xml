@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PlayerSelection.SplashActivity">
+        <activity android:name=".offline.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,28 +17,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlayerSelection.GameMenuActivity"
+            android:name=".offline.GameMenuActivity"
             android:label="@string/title_player_mode" />
         <activity
-            android:name=".GamePlay.GameActivity"
+            android:name=".gamePlay.GameActivity"
             android:exported="true" />
         <activity
-            android:name=".PlayerSelection.PlayerSelectionActivity"
+            android:name=".offline.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Online.OnlineActivity" />
+        <activity android:name=".online.OnlineActivity" />
         <activity
             android:name=".TopScoresActivity"
             android:label="@string/top_scores"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PlayerSelection.PlayerListActivity"
+            android:name=".offline.PlayerListActivity"
             android:label="@string/title_activity_player_list" />
         <activity
-            android:name=".PlayerSelection.PlayerSelectActivity"
+            android:name=".offline.PlayerSelectActivity"
             android:label="@string/title_activity_player_select"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PlayerSelection.AddPlayerActivity"></activity>
+        <activity android:name=".offline.AddPlayerActivity"/>
     </application>
 
 </manifest>

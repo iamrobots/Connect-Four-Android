@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.database;
 
 /**
  * Created by namrathamanjunatha on 1/28/18.
@@ -14,14 +14,14 @@ import android.graphics.Color;
 
 // TODO: prefill database with two default players.
 
-@Database(entities = {Player.class}, version = 4)
+@Database(entities = {Player.class}, version = 6)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PlayerDao playerDao();
 
     private static final String DB_NAME = "production";
     private static volatile AppDatabase instance;
 
-    static synchronized AppDatabase getInstance(Context context) {
+    public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
             instance = create(context);
         }

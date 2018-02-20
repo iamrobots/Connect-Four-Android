@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.offline;
 
 /**
  * Created by namrathamanjunatha on 1/26/18.
@@ -7,7 +7,7 @@ package com.iamrobots.connectfour.PlayerSelection;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.iamrobots.connectfour.Online.OnlineActivity;
+import com.iamrobots.connectfour.online.OnlineActivity;
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.TopScoresActivity;
 

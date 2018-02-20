@@ -2,7 +2,7 @@
  *  Used by PlayerSelectActivity. Not fully implemented.
  */
 
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.offline;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

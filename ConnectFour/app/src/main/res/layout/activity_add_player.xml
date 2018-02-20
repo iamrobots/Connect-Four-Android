@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iamrobots.connectfour.PlayerSelection.AddPlayerActivity">
+    tools:context="com.iamrobots.connectfour.offline.AddPlayerActivity">
 
     <EditText
         android:id="@+id/name_edit_text"

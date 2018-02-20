@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.offline;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.iamrobots.connectfour.GamePlay.GameActivity;
+import com.iamrobots.connectfour.gamePlay.GameActivity;
 import com.iamrobots.connectfour.R;
 
 public class PlayerSelectionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

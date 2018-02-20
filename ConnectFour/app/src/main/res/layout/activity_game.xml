@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iamrobots.connectfour.GamePlay.GameActivity">
+    tools:context="com.iamrobots.connectfour.gamePlay.GameActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -46,7 +46,7 @@
             <!--android:contentDescription="@string/player2_color_image"-->
             <!--app:srcCompat="@drawable/red_circle" />-->
 
-        <com.iamrobots.connectfour.GamePlay.TokenView
+        <com.iamrobots.connectfour.gamePlay.TokenView
             android:id="@+id/player1_token_id"
             android:layout_width="55dp"
             android:layout_height="55dp"
@@ -56,7 +56,7 @@
             android:layout_marginEnd="10dp" />
 
 
-        <com.iamrobots.connectfour.GamePlay.TokenView
+        <com.iamrobots.connectfour.gamePlay.TokenView
             android:id="@+id/player2_token_id"
             android:layout_width="55dp"
             android:layout_height="55dp"
@@ -81,7 +81,7 @@
 
     </LinearLayout>
 
-    <com.iamrobots.connectfour.GamePlay.BoardView
+    <com.iamrobots.connectfour.gamePlay.BoardView
         android:id="@+id/boardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

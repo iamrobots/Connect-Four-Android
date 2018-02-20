@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.GamePlay;
+package com.iamrobots.connectfour.gamePlay;
 
 /**
  * Created by David Lively on 1/29/18.

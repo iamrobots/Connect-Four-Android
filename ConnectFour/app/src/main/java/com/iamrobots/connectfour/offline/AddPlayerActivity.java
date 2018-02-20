@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.offline;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.iamrobots.connectfour.R;
+import com.iamrobots.connectfour.database.AppDatabase;
+import com.iamrobots.connectfour.database.Player;
 
 import java.lang.ref.WeakReference;
 

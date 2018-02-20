@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.PlayerSelection;
+package com.iamrobots.connectfour.offline;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.iamrobots.connectfour.R;
+import com.iamrobots.connectfour.database.AppDatabase;
+import com.iamrobots.connectfour.database.Player;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

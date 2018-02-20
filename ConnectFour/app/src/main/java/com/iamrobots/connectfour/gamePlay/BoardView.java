@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.GamePlay;
+package com.iamrobots.connectfour.gamePlay;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,14 +11,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
 import com.iamrobots.connectfour.R;
 

@@ -1,4 +1,4 @@
-package com.iamrobots.connectfour.GamePlay;
+package com.iamrobots.connectfour.gamePlay;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
