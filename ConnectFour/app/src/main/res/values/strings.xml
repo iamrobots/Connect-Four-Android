@@ -1,10 +1,4 @@
 <resources>
-    <string name="app_name">Connect Four</string>
-    <string name="player1_string">Player 1</string>
-    <string name="player2_string">Player 2</string>
-    <string name="rewind_button">Rewind</string>
-    <string name="player1_color_image">Player One Color</string>
-    <string name="player2_color_image">Player Two Color</string>
     <string name="title_activity_player_selection">Game Selection</string>
     <string name="title_activity_player_list">Players</string>
     <string name="top_scores">Top Scores</string>
@@ -13,13 +7,28 @@
     <string name="player">Offline</string>
     <string name="aimode">AI</string>
     <string name="player_multi">Online</string>
-    <string name="play">Play!</string>
     <string name="board_size">Board Size</string>
-    <string name="rounds">Rounds</string>
     <string name="default_rounds">Round 0/1</string>
     <string name="next_round">Next Round</string>
     <string name="title_activity_player_select">PlayerSelectActivity</string>
 
     <string name="add_player">Add Player</string>
     <string name="player_name">Name</string>
+
+    <!-- game layout -->
+
+    <!-- selection layout -->
+    <string name="app_name">Connect Four</string>
+    <string name="player1_string">Player 1</string>
+    <string name="player2_string">Player 2</string>
+    <string name="rewind_button">Rewind</string>
+    <string name="player1_color_image">Player One Color</string>
+    <string name="player2_color_image">Player Two Color</string>
+    <string name="play">Play!</string>
+    <string name="rounds">Rounds</string>
+
+    <!-- online layout -->
+
+    <!-- top scores -->
+
 </resources>

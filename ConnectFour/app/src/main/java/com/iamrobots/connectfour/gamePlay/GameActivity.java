@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
+import com.iamrobots.connectfour.database.AppDatabase;
+import com.iamrobots.connectfour.database.Player;
 
 /*
  * TODO: Implement a back button that takes the user back to PlayerActivity Selection
@@ -47,6 +49,10 @@ public class GameActivity extends AppCompatActivity {
     private int mRounds;
     private int mCurrentRound;
     private Boolean mRewindable;
+
+    private AppDatabase db;
+    private Player mPlayerOne;
+    private Player mPlayerTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,10 +150,18 @@ public class GameActivity extends AppCompatActivity {
 
         mRewindable = false;
         mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
-        if (mGameModel.getCurrentPlayer() == 0)
-            winner = mFirstPlayerTextView.getText().toString();
-        else
-            winner = mSecondPlayerTextView.getText().toString();
+        if (mGameModel.getCurrentPlayer() == 0) {
+            winner = mPlayerOne.getName();
+            mPlayerOne.setWins(mPlayerOne.getWins() + 1);
+            mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
+        }
+        else {
+            winner = mPlayerTwo.getName();
+            mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
+            mPlayerOne.setLosses(mPlayerOne.getDraws() + 1);
+        }
+
+        db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
 
         if (mCurrentRound < mRounds) {
@@ -231,6 +245,10 @@ public class GameActivity extends AppCompatActivity {
         mRewindButton = findViewById(R.id.rewindButton);
         mRewindButton.setEnabled(mRewindable);
 //        mRewindButton.setVisibility(View.GONE);
+
+        db = AppDatabase.getInstance(this);
+        mPlayerOne = db.playerDao().getPlayerByName(firstPlayerName);
+        mPlayerTwo = db.playerDao().getPlayerByName(secondPlayerName);
     }
 
 }

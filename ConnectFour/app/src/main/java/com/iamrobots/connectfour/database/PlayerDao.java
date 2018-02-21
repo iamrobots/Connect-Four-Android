@@ -21,18 +21,21 @@ import java.util.List;
 @Dao
 public interface PlayerDao {
 
-    @Query("Select * from players")
-    public List<Player> getPlayers();
+    @Query("SELECT * FROM players")
+    List<Player> getPlayers();
 
     @Query("SELECT player_name FROM players WHERE id = :id")
-    public String getPlayerNameById(int id);
+    String getPlayerNameById(int id);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAll(Player... users);
+    @Query("SELECT * FROM players WHERE player_name = :name")
+    Player getPlayerByName(String name);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertAll(Player... users);
 
     @Update
-    public void updatePlayers(Player... players);
+    void updatePlayers(Player... players);
 
     @Delete
-    public void deletePlayers(Player... players);
+    void deletePlayers(Player... players);
 }
