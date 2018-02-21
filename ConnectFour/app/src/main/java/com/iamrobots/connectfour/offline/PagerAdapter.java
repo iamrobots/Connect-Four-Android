@@ -4,6 +4,7 @@
 
 package com.iamrobots.connectfour.offline;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,11 +14,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 
 public class PagerAdapter extends FragmentStatePagerAdapter{
-    int mNumOfTabs;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    private Context context;
+
+    public PagerAdapter(FragmentManager fm, PlayerSelectionActivity activity) {
         super(fm);
-        this.mNumOfTabs = NumOfTabs;
+        context = activity;
+        new TabFragmentHuman();
     }
 
     @Override
@@ -30,9 +33,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
             case 1:
                 TabFragmentHuman tab2 = new TabFragmentHuman();
                 return tab2;
-            case 2:
-                TabFragmentHuman tab3 = new TabFragmentHuman();
-                return tab3;
             default:
                 return null;
         }
@@ -40,6 +40,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return 2;
     }
 }

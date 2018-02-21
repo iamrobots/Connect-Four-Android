@@ -20,7 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_player_selection" />
+    <include layout="@layout/fragment_computer_tab" />
 
 
     <android.support.design.widget.FloatingActionButton

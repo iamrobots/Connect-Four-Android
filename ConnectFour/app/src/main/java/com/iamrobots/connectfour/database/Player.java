@@ -9,12 +9,12 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-
+import android.support.annotation.NonNull;
 
 // TODO: Have color saved as an int.
 
 @Entity(tableName = "players", indices = {@Index(value = "player_name", unique = true)})
-public class Player {
+public class Player implements Comparable<Player> {
 //Add fields if required
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -90,6 +90,18 @@ public class Player {
 
     public void setRoundWins(int roundWins) {
         this.roundWins = roundWins;
+    }
+
+    @Override
+    public String toString() {
+        return "[ " + name + ", Wins: " + wins + ", Losses: " + losses + ", Draws: " + draws + "]";
+    }
+
+    public int compareTo(@NonNull Player compare) {
+        int compareScore = ((Player)compare).getWins();
+        if(this.wins > compareScore)
+            return this.wins;
+        return compareScore;
     }
 }
 
