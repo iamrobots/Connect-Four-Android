@@ -67,11 +67,11 @@ public class TabFragmentHuman extends Fragment {
         mSecondPlayerName = "Bob";
         mRounds = 1;
 
-        mFirstPlayerButton = rootView.findViewById(R.id.btnPlayer1);
-        mSecondPlayerButton = rootView.findViewById(R.id.btnPlayer2);
-        mBoardSizeSpinner = rootView.findViewById(R.id.board_size_spinner);
-        mRoundsSpinner = rootView.findViewById(R.id.rounds_spinner);
-        mPlayButton = rootView.findViewById(R.id.play_button);
+        mFirstPlayerButton = rootView.findViewById(R.id.human_btn1);
+        mSecondPlayerButton = rootView.findViewById(R.id.human_btn2);
+        mBoardSizeSpinner = rootView.findViewById(R.id.human_board_spinner);
+        mRoundsSpinner = rootView.findViewById(R.id.human_rounds_spinner);
+        mPlayButton = rootView.findViewById(R.id.human_play_btn);
 
         mFirstPlayerButton.setText(mFirstPlayerName);
         mSecondPlayerButton.setText(mSecondPlayerName);

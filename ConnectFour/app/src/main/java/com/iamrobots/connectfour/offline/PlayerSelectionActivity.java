@@ -53,11 +53,11 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
         mColumns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
 
-        mFirstPlayerButton = findViewById(R.id.btnPlayer1);
-        mSecondPlayerButton = findViewById(R.id.btnPlayer2);
-        mBoardSizeSpinner = findViewById(R.id.board_size_spinner);
-        mRoundsSpinner = findViewById(R.id.rounds_spinner);
-        mPlayButton = findViewById(R.id.play_button);
+        mFirstPlayerButton = findViewById(R.id.human_btn1);
+        mSecondPlayerButton = findViewById(R.id.human_btn2);
+        mBoardSizeSpinner = findViewById(R.id.human_board_spinner);
+        mRoundsSpinner = findViewById(R.id.human_rounds_spinner);
+        mPlayButton = findViewById(R.id.human_play_btn);
 
         mFirstPlayerButton.setText(mFirstPlayerName);
         mSecondPlayerButton.setText(mSecondPlayerName);
@@ -118,7 +118,7 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (parent.getId() == R.id.board_size_spinner) {
+        if (parent.getId() == R.id.human_board_spinner) {
             switch (position) {
                 case 0:
                     mRows = 6;
@@ -136,7 +136,7 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
                     mRows = 6;
                     mColumns = 7;
             }
-        } else if (parent.getId() == R.id.rounds_spinner) {
+        } else if (parent.getId() == R.id.human_rounds_spinner) {
             mRounds = position + 1;
         }
     }
