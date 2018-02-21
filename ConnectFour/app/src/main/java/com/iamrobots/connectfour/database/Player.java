@@ -25,6 +25,7 @@ public class Player {
     private int wins;
     private int losses;
     private int draws;
+    private int roundWins;
 
     public Player(String name, int color) {
         this.name = name;
@@ -32,6 +33,7 @@ public class Player {
         this.wins = 0;
         this.draws = 0;
         this.losses = 0;
+        this.roundWins=0;
     }
 
     public int getId() {
@@ -80,6 +82,14 @@ public class Player {
 
     public void setDraws(int draws) {
         this.draws = draws;
+    }
+
+    public int getRoundWins() {
+        return roundWins;
+    }
+
+    public void setRoundWins(int roundWins) {
+        this.roundWins = roundWins;
     }
 }
 
