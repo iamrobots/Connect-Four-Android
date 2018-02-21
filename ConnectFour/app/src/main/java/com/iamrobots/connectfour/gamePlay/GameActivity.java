@@ -49,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     private int mRounds;
     private int mCurrentRound;
     private Boolean mRewindable;
+    private int mRoundWins;
 
     private AppDatabase db;
     private Player mPlayerOne;
@@ -153,11 +154,13 @@ public class GameActivity extends AppCompatActivity {
         if (mGameModel.getCurrentPlayer() == 0) {
             winner = mPlayerOne.getName();
             mPlayerOne.setWins(mPlayerOne.getWins() + 1);
+            mPlayerOne.setRoundWins(mPlayerOne.getRoundWins() + 1);
             mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
         }
         else {
             winner = mPlayerTwo.getName();
             mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
+            mPlayerTwo.setRoundWins(mPlayerTwo.getRoundWins() + 1);
             mPlayerOne.setLosses(mPlayerOne.getDraws() + 1);
         }
 
@@ -212,6 +215,7 @@ public class GameActivity extends AppCompatActivity {
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
         mCurrentRound = 1;
 
+
         // Temporary Variables. Will get rows and columns from PlayerActivity selection.
         int firstPlayerColor = Color.parseColor("#f1c40f");
         int secondPlayerColor = Color.parseColor("#e74c3c");
@@ -249,6 +253,8 @@ public class GameActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(this);
         mPlayerOne = db.playerDao().getPlayerByName(firstPlayerName);
         mPlayerTwo = db.playerDao().getPlayerByName(secondPlayerName);
+        mPlayerOne.setRoundWins(0);
+        mPlayerTwo.setRoundWins(0);
     }
 
 }
