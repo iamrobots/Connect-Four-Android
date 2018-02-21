@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,19 +25,18 @@ import com.iamrobots.connectfour.gamePlay.GameActivity;
  * Created by Abraham on 2/11/18.
  */
 
-public class TabFragmentHuman extends Fragment {
+public class TabFragmentComputer extends Fragment {
 
-    private static final String TAG = "HumanTabFragment";
+    private static final String TAG = "ComputerTabFragment";
 
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
-    private static final String SECOND_PLAYER_KEY = "PlayerTwo";
+    private static final String SECOND_PLAYER_KEY = "Computer";
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
 
     private Button mPlayButton;
     private Button mFirstPlayerButton;
-    private Button mSecondPlayerButton;
     private Spinner mBoardSizeSpinner;
     private Spinner mRoundsSpinner;
 
@@ -54,24 +52,29 @@ public class TabFragmentHuman extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: started");
+        //return inflater.inflate(R.layout.fragment_human_tab, container, false);
+
+        //@Override
+        //protected void onCreate(Bundle savedInstanceState) {
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_player_selection);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         final View rootView = inflater.inflate(R.layout.fragment_human_tab, container, false);
 
         mRows = 8;
         mColumns = 10;
         mFirstPlayerName = "Alice";
-        mSecondPlayerName = "Bob";
+        mSecondPlayerName = "Computer";
         mRounds = 1;
 
-        mFirstPlayerButton = rootView.findViewById(R.id.human_btn1);
-        mSecondPlayerButton = rootView.findViewById(R.id.human_btn2);
-        mBoardSizeSpinner = rootView.findViewById(R.id.human_board_spinner);
-        mRoundsSpinner = rootView.findViewById(R.id.human_rounds_spinner);
-        mPlayButton = rootView.findViewById(R.id.human_play_btn);
+        mFirstPlayerButton = rootView.findViewById(R.id.comp_btn1);
+        mBoardSizeSpinner = rootView.findViewById(R.id.comp_board_spinner);
+        mRoundsSpinner = rootView.findViewById(R.id.comp_rounds_spinner);
+        mPlayButton = rootView.findViewById(R.id.comp_play_btn);
 
         mFirstPlayerButton.setText(mFirstPlayerName);
-        mSecondPlayerButton.setText(mSecondPlayerName);
 
         //spinnerSetup();
 
@@ -99,6 +102,7 @@ public class TabFragmentHuman extends Fragment {
                 startActivity(i);
             }
         });
+
 
         return rootView;
     }
