@@ -14,7 +14,7 @@ import android.graphics.Color;
 
 // TODO: prefill database with two default players.
 
-@Database(entities = {Player.class}, version = 8)
+@Database(entities = {Player.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PlayerDao playerDao();
 

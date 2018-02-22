@@ -49,7 +49,8 @@ public class GameActivity extends AppCompatActivity {
     private int mRounds;
     private int mCurrentRound;
     private Boolean mRewindable;
-    private int mRoundWins;
+    private int mPlayerOneWins;
+    private int mPlayerTwoWins;
 
     private AppDatabase db;
     private Player mPlayerOne;
@@ -66,20 +67,16 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.i("debug" , "calledactivity");
                 v.performClick();
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        Log.i("debug" , "about to call getGameState");
-
                         switch (mGameModel.getGameState()) {
                             case 0: // Game is in play
                                 gameInPlay(event.getX(), event.getY());
                                 break;
 
                             case 1:  // Game is won
-                                gameWon();
                                 break;
 
                             case 2:  // Game is draw
@@ -131,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
         mBoardView.dropToken(coordinates.first, coordinates.second, player);
 
         if (mGameModel.getGameState() == 1) {
+            mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
             gameWon();
         }
 
@@ -150,19 +148,20 @@ public class GameActivity extends AppCompatActivity {
         String winner;
 
         mRewindable = false;
-        mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
         if (mGameModel.getCurrentPlayer() == 0) {
             winner = mPlayerOne.getName();
             mPlayerOne.setWins(mPlayerOne.getWins() + 1);
-            mPlayerOne.setRoundWins(mPlayerOne.getRoundWins() + 1);
+            mPlayerOneWins += 1;
             mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
         }
         else {
             winner = mPlayerTwo.getName();
             mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
-            mPlayerTwo.setRoundWins(mPlayerTwo.getRoundWins() + 1);
+            mPlayerTwoWins += 1;
             mPlayerOne.setLosses(mPlayerOne.getDraws() + 1);
         }
+//        mFirstPlayerTextView.setText(mPlayerOne.getName() + " (" + mPlayerOneWins + ")");
+//        mSecondPlayerTextView.setText(mPlayerTwo.getName() + " (" + mPlayerTwoWins + ")");
 
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
@@ -253,8 +252,8 @@ public class GameActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(this);
         mPlayerOne = db.playerDao().getPlayerByName(firstPlayerName);
         mPlayerTwo = db.playerDao().getPlayerByName(secondPlayerName);
-        mPlayerOne.setRoundWins(0);
-        mPlayerTwo.setRoundWins(0);
+        mPlayerOneWins = 0;
+        mPlayerTwoWins = 0;
     }
 
 }

@@ -30,7 +30,8 @@
         <activity
             android:name=".TopScoresActivity"
             android:label="@string/top_scores"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true"/>
         <activity
             android:name=".offline.PlayerListActivity"
             android:label="@string/title_activity_player_list" />
@@ -38,7 +39,9 @@
             android:name=".offline.PlayerSelectActivity"
             android:label="@string/title_activity_player_select"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".offline.AddPlayerActivity"/>
+        <activity android:name=".offline.AddPlayerActivity" />
+        <activity android:name=".gamePlay.AIGameActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
