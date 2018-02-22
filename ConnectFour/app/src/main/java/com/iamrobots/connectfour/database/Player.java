@@ -88,10 +88,9 @@ public class Player implements Comparable<Player> {
     }
 
     public int compareTo(@NonNull Player compare) {
-        int compareScore = ((Player)compare).getWins();
-        if(this.wins > compareScore)
-            return this.wins;
-        return compareScore;
+        int compareScore = compare.getWins();
+
+        return this.wins - compareScore;
     }
 }
 

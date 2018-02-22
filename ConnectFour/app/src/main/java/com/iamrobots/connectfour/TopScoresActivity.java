@@ -2,9 +2,16 @@ package com.iamrobots.connectfour;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
@@ -16,14 +23,23 @@ import java.util.List;
 
 public class TopScoresActivity extends AppCompatActivity {
 
+    private ArrayList<Player> mPlayerArray;
     private AppDatabase mDatabase;
-    private ListView mTopScoresView;
+    private RecyclerView mTopScoresRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_scores);
+
+        mPlayerArray = new ArrayList<>();
+
+        mTopScoresRecyclerView = findViewById(R.id.top_scores_recycler_view);
+
         mDatabase = AppDatabase.getInstance(TopScoresActivity.this);
+        LoadPlayerNames loader = new LoadPlayerNames(this);
+        loader.execute();
     }
 
     private static class LoadPlayerNames extends AsyncTask<Void, Void, List<Player>> {
@@ -44,21 +60,21 @@ public class TopScoresActivity extends AppCompatActivity {
         protected void onPostExecute(List<Player> players) {
             super.onPostExecute(players);
 
-            ArrayList<String> playerList = new ArrayList<>();
 
             for (Player player : players) {
-                playerList.add(player.getName());
+                mActivityReference.get().mPlayerArray.add(player);
             }
 
-            Collections.sort(playerList);
 
-            mActivityReference.get().updateListView(playerList);
+            mActivityReference.get().updateListView();
         }
     }
 
-    private void updateListView(ArrayList<String> playerList) {
-        ArrayAdapter<String> playerListAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, playerList);
-        mTopScoresView.setAdapter(playerListAdapter);
+    private void updateListView() {
+        Collections.sort(mPlayerArray, Collections.reverseOrder());
+
+        TopScoresAdaptor adaptor = new TopScoresAdaptor(this, mPlayerArray);
+        mTopScoresRecyclerView.setAdapter(adaptor);
+        mTopScoresRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
