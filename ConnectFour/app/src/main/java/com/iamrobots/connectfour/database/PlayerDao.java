@@ -24,6 +24,9 @@ public interface PlayerDao {
     @Query("SELECT * FROM players")
     List<Player> getPlayers();
 
+    @Query("SELECT * FROM players order by wins DESC limit 5")
+    List<Player> getTopScores();
+
     @Query("SELECT player_name FROM players WHERE id = :id")
     String getPlayerNameById(int id);
 

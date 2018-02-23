@@ -53,7 +53,7 @@ public class TopScoresActivity extends AppCompatActivity {
         @Override
         protected List<Player> doInBackground(Void... voids) {
 
-            return mActivityReference.get().mDatabase.playerDao().getPlayers();
+            return mActivityReference.get().mDatabase.playerDao().getTopScores();
         }
 
         @Override
