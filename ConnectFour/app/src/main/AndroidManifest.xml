@@ -33,6 +33,7 @@
             android:name=".TopScoresActivity"
             android:label="@string/top_scores"
             android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".offline.GameMenuActivity"
             android:exported="true"/>
         <activity
             android:name=".offline.PlayerListActivity"
