@@ -45,6 +45,7 @@ public class PlayerSelectionActivity extends AppCompatActivity implements Adapte
         setContentView(R.layout.activity_player_selection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");

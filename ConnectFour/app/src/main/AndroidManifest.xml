@@ -21,10 +21,12 @@
             android:label="@string/title_player_mode" />
         <activity
             android:name=".gamePlay.GameActivity"
+            android:parentActivityName=".offline.PlayerSelectionActivity"
             android:exported="true" />
         <activity
             android:name=".offline.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
+            android:parentActivityName=".offline.GameMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".online.OnlineActivity" />
         <activity
