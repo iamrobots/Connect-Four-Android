@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,17 +25,18 @@ import java.util.List;
 
 public class PlayerListActivity extends AppCompatActivity {
 
+    private static final String TAG = "PlayerListActivity";
+
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
     private static final String SECOND_PLAYER_KEY = "PlayerTwo";
     private static final String FROM_BUTTON_KEY = "From";
 
-    private AppDatabase mDatabase;
+    protected AppDatabase mDatabase;
 
     private FloatingActionButton mAddPlayerFab;
     private ListView mPlayerListView;
     private String mPlayerKey;
     private String mCurrentPlayerName;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,8 @@ public class PlayerListActivity extends AppCompatActivity {
 
         });
 
+        // add player with activity
+        /*
         mAddPlayerFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +85,30 @@ public class PlayerListActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        */
+
+        // add player with dialog
+        mAddPlayerFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: opening dialog.");
+
+                AddPlayerDialog dialog = new AddPlayerDialog();
+                dialog.show(getFragmentManager(), "AddPlayerDialog");
+            }
+        });
+    }
+
+    protected void updateListView(ArrayList<String> playerList) {
+        ArrayAdapter<String> playerListAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, playerList);
+        mPlayerListView.setAdapter(playerListAdapter);
+    }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        LoadPlayerNames loader = new LoadPlayerNames(PlayerListActivity.this);
+        loader.execute();
     }
 
     private static class LoadPlayerNames extends AsyncTask<Void, Void, List<Player>> {
@@ -109,11 +137,5 @@ public class PlayerListActivity extends AppCompatActivity {
 
             mActivityReference.get().updateListView(playerList);
         }
-    }
-
-    private void updateListView(ArrayList<String> playerList) {
-        ArrayAdapter<String> playerListAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, playerList);
-        mPlayerListView.setAdapter(playerListAdapter);
     }
 }

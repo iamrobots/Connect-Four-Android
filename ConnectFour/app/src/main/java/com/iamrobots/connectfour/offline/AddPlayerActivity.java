@@ -15,6 +15,8 @@ import com.iamrobots.connectfour.database.Player;
 
 import java.lang.ref.WeakReference;
 
+// No longer in use, replaced by AddPlayerDialog
+
 public class AddPlayerActivity extends AppCompatActivity {
 
     private static final String FROM_BUTTON_KEY = "From";
@@ -64,8 +66,6 @@ public class AddPlayerActivity extends AppCompatActivity {
             mActivityReference = new WeakReference<>(context);
             mPlayer = player;
         }
-
-
 
         @Override
         protected Void doInBackground(Void... voids) {
