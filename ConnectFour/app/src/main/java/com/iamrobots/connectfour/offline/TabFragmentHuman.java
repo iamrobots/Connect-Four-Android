@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.gamePlay.GameActivity;
@@ -26,7 +29,7 @@ import com.iamrobots.connectfour.gamePlay.GameActivity;
  * Created by Abraham on 2/11/18.
  */
 
-public class TabFragmentHuman extends Fragment {
+public class TabFragmentHuman extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "HumanTabFragment";
 
@@ -35,6 +38,7 @@ public class TabFragmentHuman extends Fragment {
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
+    private static final String FROM_BUTTON_KEY = "From";
 
     private Button mPlayButton;
     private Button mFirstPlayerButton;
@@ -56,28 +60,45 @@ public class TabFragmentHuman extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: started");
 
-        final View rootView = inflater.inflate(R.layout.fragment_human_tab, container, false);
+        View view = inflater.inflate(R.layout.fragment_human_tab, container, false);
 
-        mRows = 8;
+        /*mRows = 8;
         mColumns = 10;
         mFirstPlayerName = "Alice";
         mSecondPlayerName = "Bob";
         mRounds = 1;
 
-        mFirstPlayerButton = rootView.findViewById(R.id.human_btn1);
-        mSecondPlayerButton = rootView.findViewById(R.id.human_btn2);
-        mBoardSizeSpinner = rootView.findViewById(R.id.human_board_spinner);
-        mRoundsSpinner = rootView.findViewById(R.id.human_rounds_spinner);
-        mPlayButton = rootView.findViewById(R.id.human_play_btn);
+        Intent i = getActivity().getIntent();
+        String plyr1 = i.getStringExtra("plyrCheck");
+        if(plyr1.equals("")) {
+            mFirstPlayerName = "Alice";
+        } else {
+            mFirstPlayerName = plyr1;
+            plyr1 = "";
+        }*/
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        mRows = preferences.getInt(ROW_KEY, 6);
+        mColumns = preferences.getInt(COLUMNS_KEY, 7);
+        mRounds = preferences.getInt(ROUNDS_KEY, 1);
+
+        mFirstPlayerButton = view.findViewById(R.id.human_btn1);
+        mSecondPlayerButton = view.findViewById(R.id.human_btn2);
+        mBoardSizeSpinner = view.findViewById(R.id.human_board_spinner);
+        mRoundsSpinner = view.findViewById(R.id.human_rounds_spinner);
+        mPlayButton = view.findViewById(R.id.human_play_btn);
 
         mFirstPlayerButton.setText(mFirstPlayerName);
         mSecondPlayerButton.setText(mSecondPlayerName);
 
-        //spinnerSetup();
+        spinnerSetup();
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Toast.makeText(getActivity(), "Play Button clicked!", Toast.LENGTH_SHORT).show();
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(FIRST_PLAYER_KEY, mFirstPlayerName);
@@ -95,35 +116,44 @@ public class TabFragmentHuman extends Fragment {
         mFirstPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Toast.makeText(getActivity(), "Player Button clicked!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getActivity(), PlayerListActivity.class);
+                i.putExtra(FROM_BUTTON_KEY, FIRST_PLAYER_KEY);
                 startActivity(i);
             }
         });
 
-        return rootView;
+        mSecondPlayerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), PlayerListActivity.class);
+                i.putExtra(FROM_BUTTON_KEY, SECOND_PLAYER_KEY);
+                startActivity(i);
+            }
+        });
+
+        return view;
     }
 
     /*
      * Spinner Methods
      */
-/*
-    public void spinnerSetup() {
-        //mBoardSizeSpinner.setOnItemSelectedListener(this);
-        mBoardSizeSpinner.setOnItemSelectedListener();
 
-        ArrayAdapter<String> boardSizeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mBoardSizeArray);
+    public void spinnerSetup() {
+        mBoardSizeSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter<String> boardSizeAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mBoardSizeArray);
         boardSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBoardSizeSpinner.setAdapter(boardSizeAdapter);
 
         mRoundsSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> roundsAdaptor = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mRoundsArray);
+        ArrayAdapter<String> roundsAdaptor = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mRoundsArray);
         roundsAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mRoundsSpinner.setAdapter(roundsAdaptor);
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (parent.getId() == R.id.board_size_spinner) {
+        if (parent.getId() == R.id.human_board_spinner) {
             switch (position) {
                 case 0:
                     mRows = 6;
@@ -141,12 +171,12 @@ public class TabFragmentHuman extends Fragment {
                     mRows = 6;
                     mColumns = 7;
             }
-        } else if (parent.getId() == R.id.rounds_spinner) {
+        } else if (parent.getId() == R.id.human_rounds_spinner) {
             mRounds = position + 1;
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-    }*/
+    }
 }

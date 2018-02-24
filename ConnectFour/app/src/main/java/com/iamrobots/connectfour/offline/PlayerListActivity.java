@@ -69,7 +69,13 @@ public class PlayerListActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(mPlayerKey, mCurrentPlayerName);
                 editor.apply();
-                Intent i = new Intent(PlayerListActivity.this, PlayerSelectionActivity.class);
+
+                // return to no tabs
+                /*Intent i = new Intent(PlayerListActivity.this, PlayerSelectionActivity.class);
+                startActivity(i);*/
+
+                // return to tabs
+                Intent i = new Intent(PlayerListActivity.this, PlayerSelectActivity.class);
                 startActivity(i);
             }
 

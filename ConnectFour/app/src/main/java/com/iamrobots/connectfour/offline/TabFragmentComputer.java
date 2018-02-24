@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.gamePlay.GameActivity;
@@ -52,16 +54,9 @@ public class TabFragmentComputer extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.fragment_human_tab, container, false);
+        Log.d(TAG, "onCreateView: started");
 
-        //@Override
-        //protected void onCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_player_selection);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
-        final View rootView = inflater.inflate(R.layout.fragment_human_tab, container, false);
+        View view = inflater.inflate(R.layout.fragment_computer_tab, container, false);
 
         mRows = 8;
         mColumns = 10;
@@ -69,10 +64,10 @@ public class TabFragmentComputer extends Fragment {
         mSecondPlayerName = "Computer";
         mRounds = 1;
 
-        mFirstPlayerButton = rootView.findViewById(R.id.comp_btn1);
-        mBoardSizeSpinner = rootView.findViewById(R.id.comp_board_spinner);
-        mRoundsSpinner = rootView.findViewById(R.id.comp_rounds_spinner);
-        mPlayButton = rootView.findViewById(R.id.comp_play_btn);
+        mFirstPlayerButton = view.findViewById(R.id.comp_btn1);
+        mBoardSizeSpinner = view.findViewById(R.id.comp_board_spinner);
+        mRoundsSpinner = view.findViewById(R.id.comp_rounds_spinner);
+        mPlayButton = view.findViewById(R.id.comp_play_btn);
 
         mFirstPlayerButton.setText(mFirstPlayerName);
 
@@ -81,7 +76,8 @@ public class TabFragmentComputer extends Fragment {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                Toast.makeText(getActivity(), "Play Button clicked!", Toast.LENGTH_SHORT).show();
+                /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(FIRST_PLAYER_KEY, mFirstPlayerName);
                 editor.putString(SECOND_PLAYER_KEY, mSecondPlayerName);
@@ -91,20 +87,20 @@ public class TabFragmentComputer extends Fragment {
                 editor.apply();
 
                 Intent i = new Intent(getActivity(), GameActivity.class);
-                startActivity(i);
+                startActivity(i);*/
             }
         });
 
         mFirstPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), PlayerListActivity.class);
-                startActivity(i);
+                Toast.makeText(getActivity(), "Player Button clicked!", Toast.LENGTH_SHORT).show();
+                /*Intent i = new Intent(getActivity(), PlayerListActivity.class);
+                startActivity(i);*/
             }
         });
 
-
-        return rootView;
+        return view;
     }
 
     /*

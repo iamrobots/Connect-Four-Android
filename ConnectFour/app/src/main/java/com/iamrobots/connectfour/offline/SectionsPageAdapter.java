@@ -17,17 +17,17 @@ import java.util.List;
  * Created by Abraham on 2/11/18.
  */
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class SectionsPageAdapter extends FragmentPagerAdapter {
 
     private Context context;
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    public PagerAdapter(FragmentManager fm) {
+    public SectionsPageAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public PagerAdapter(FragmentManager fm, PlayerSelectionActivity activity) {
+    public SectionsPageAdapter(FragmentManager fm, PlayerSelectionActivity activity) {
         super(fm);
         context = activity;
         new TabFragmentHuman();

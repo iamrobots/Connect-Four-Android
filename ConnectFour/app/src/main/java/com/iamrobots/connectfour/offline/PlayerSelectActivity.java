@@ -16,7 +16,8 @@ import com.iamrobots.connectfour.R;
 public class PlayerSelectActivity extends AppCompatActivity {
 
     private static final String TAG = "PlayerSelectActivity";
-    private PagerAdapter mPagerAdapter;
+
+    private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
 
     @Override
@@ -25,7 +26,7 @@ public class PlayerSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player_select);
         Log.d(TAG, "onCreate: Starting");
 
-        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -35,7 +36,7 @@ public class PlayerSelectActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new TabFragmentHuman(), "Human");
         adapter.addFragment(new TabFragmentComputer(), "Computer");
         viewPager.setAdapter(adapter);

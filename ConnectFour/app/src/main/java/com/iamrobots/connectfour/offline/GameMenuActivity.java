@@ -17,6 +17,8 @@ import android.content.Intent;
 
 public class GameMenuActivity extends AppCompatActivity{
 
+    private static final String FIRST_PLAYER = "Alice";
+    private static final String SECOND_PLAYER = "Bob";
     private Button mOfflineButton;
     private Button mOnlineButton;
     private Button mTopScoresButton;
@@ -33,7 +35,9 @@ public class GameMenuActivity extends AppCompatActivity{
         mOfflineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(GameMenuActivity.this, PlayerSelectionActivity.class);
+                Intent i = new Intent(GameMenuActivity.this, PlayerSelectActivity.class);
+                i.putExtra(FIRST_PLAYER, FIRST_PLAYER);
+                i.putExtra(SECOND_PLAYER, SECOND_PLAYER);
                 startActivity(i);
             }
         });
