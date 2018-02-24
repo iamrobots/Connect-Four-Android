@@ -92,9 +92,18 @@ public class TabFragmentHuman extends Fragment implements AdapterView.OnItemSele
                 editor.putInt(COLUMNS_KEY, mColumns);
                 editor.putInt(ROUNDS_KEY, mRounds);
                 editor.apply();
+                if (mFirstPlayerName.equalsIgnoreCase(mSecondPlayerName))
+                {
+                    Toast.makeText(getActivity(), "Cannot select the same player!", Toast.LENGTH_SHORT).show();
+                    //Intent i = new Intent(getActivity(), PlayerSelectActivity.class);
+                    //startActivity(i);
+                    //return view;
 
-                Intent i = new Intent(getActivity(), GameActivity.class);
-                startActivity(i);
+                }
+                else {
+                    Intent i = new Intent(getActivity(), GameActivity.class);
+                    startActivity(i);
+                }
             }
         });
 
