@@ -46,6 +46,7 @@
         <activity android:name=".gamePlay.AIGameActivity"
             android:parentActivityName=".offline.PlayerSelectionActivity"
             android:exported="true"/>
+        <activity android:name=".offline.RulesActivity"></activity>
     </application>
 
 </manifest>

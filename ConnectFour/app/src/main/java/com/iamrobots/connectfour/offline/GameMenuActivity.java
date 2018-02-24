@@ -11,9 +11,13 @@ import com.iamrobots.connectfour.online.OnlineActivity;
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.TopScoresActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameMenuActivity extends AppCompatActivity{
 
@@ -32,7 +36,7 @@ public class GameMenuActivity extends AppCompatActivity{
         mOnlineButton = findViewById(R.id.button_multi);
         mTopScoresButton = findViewById(R.id.button_top_scores);
 
-        mOfflineButton.setOnClickListener(new View.OnClickListener() {
+       mOfflineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(GameMenuActivity.this, PlayerSelectActivity.class);
@@ -60,4 +64,29 @@ public class GameMenuActivity extends AppCompatActivity{
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.options_menu,menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.rules_id) {
+            Intent intent1 = new Intent(GameMenuActivity.this, RulesActivity.class);
+            this.startActivity(intent1);
+            return true;
+        }
+
+        if (id == R.id.help_id) {
+            Toast.makeText(this, "report a bug if found!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
