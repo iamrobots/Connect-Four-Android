@@ -1,6 +1,7 @@
 package com.iamrobots.connectfour.gamePlay;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
+import com.iamrobots.connectfour.offline.AddPlayerDialog;
 
 /*
  * TODO: Implement a back button that takes the user back to PlayerActivity Selection
@@ -26,6 +28,8 @@ import com.iamrobots.connectfour.database.Player;
  */
 
 public class GameActivity extends AppCompatActivity {
+
+    private static final String TAG = "GameActivity";
 
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
     private static final String SECOND_PLAYER_KEY = "PlayerTwo";
@@ -170,6 +174,13 @@ public class GameActivity extends AppCompatActivity {
         if (mCurrentRound < mRounds) {
             mRoundsButton.setText(R.string.next_round);
             mRoundsButton.setEnabled(true);
+        }
+        // else: show dialog to play again
+        else {
+            Log.d(TAG, "onClick: opening dialog.");
+
+            PlayAgainDialog dialog = new PlayAgainDialog();
+            dialog.show(getFragmentManager(), "AddPlayerDialog");
         }
     }
 

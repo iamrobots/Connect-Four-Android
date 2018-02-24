@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playAgainDialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iamrobots.connectfour.gamePlay.GameActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/againPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Would you like to play again?"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NO"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginEnd="100dp"
+            android:textSize="18sp"
+            android:textColor="#33bbff"
+            android:id="@+id/againNo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YES"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/againNo"
+            android:layout_toEndOf="@id/againNo"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="18sp"
+            android:textColor="#33bbff"
+            android:id="@+id/againYes"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
