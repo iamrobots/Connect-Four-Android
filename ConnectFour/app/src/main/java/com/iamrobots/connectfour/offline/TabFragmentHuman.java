@@ -62,21 +62,6 @@ public class TabFragmentHuman extends Fragment implements AdapterView.OnItemSele
 
         View view = inflater.inflate(R.layout.fragment_human_tab, container, false);
 
-        /*mRows = 8;
-        mColumns = 10;
-        mFirstPlayerName = "Alice";
-        mSecondPlayerName = "Bob";
-        mRounds = 1;
-
-        Intent i = getActivity().getIntent();
-        String plyr1 = i.getStringExtra("plyrCheck");
-        if(plyr1.equals("")) {
-            mFirstPlayerName = "Alice";
-        } else {
-            mFirstPlayerName = plyr1;
-            plyr1 = "";
-        }*/
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
         mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");

@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,7 +29,7 @@ import com.iamrobots.connectfour.gamePlay.GameActivity;
  * Created by Abraham on 2/11/18.
  */
 
-public class TabFragmentComputer extends Fragment {
+public class TabFragmentComputer extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ComputerTabFragment";
 
@@ -58,11 +60,12 @@ public class TabFragmentComputer extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_computer_tab, container, false);
 
-        mRows = 8;
-        mColumns = 10;
-        mFirstPlayerName = "Alice";
-        mSecondPlayerName = "Computer";
-        mRounds = 1;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        mRows = preferences.getInt(ROW_KEY, 6);
+        mColumns = preferences.getInt(COLUMNS_KEY, 7);
+        mRounds = preferences.getInt(ROUNDS_KEY, 1);
 
         mFirstPlayerButton = view.findViewById(R.id.comp_btn1);
         mBoardSizeSpinner = view.findViewById(R.id.comp_board_spinner);
@@ -71,7 +74,7 @@ public class TabFragmentComputer extends Fragment {
 
         mFirstPlayerButton.setText(mFirstPlayerName);
 
-        //spinnerSetup();
+        spinnerSetup();
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,24 +109,22 @@ public class TabFragmentComputer extends Fragment {
     /*
      * Spinner Methods
      */
-/*
-    public void spinnerSetup() {
-        //mBoardSizeSpinner.setOnItemSelectedListener(this);
-        mBoardSizeSpinner.setOnItemSelectedListener();
 
-        ArrayAdapter<String> boardSizeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mBoardSizeArray);
+    public void spinnerSetup() {
+        mBoardSizeSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter<String> boardSizeAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mBoardSizeArray);
         boardSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBoardSizeSpinner.setAdapter(boardSizeAdapter);
 
         mRoundsSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> roundsAdaptor = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mRoundsArray);
+        ArrayAdapter<String> roundsAdaptor = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mRoundsArray);
         roundsAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mRoundsSpinner.setAdapter(roundsAdaptor);
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (parent.getId() == R.id.board_size_spinner) {
+        if (parent.getId() == R.id.comp_board_spinner) {
             switch (position) {
                 case 0:
                     mRows = 6;
@@ -141,12 +142,12 @@ public class TabFragmentComputer extends Fragment {
                     mRows = 6;
                     mColumns = 7;
             }
-        } else if (parent.getId() == R.id.rounds_spinner) {
+        } else if (parent.getId() == R.id.comp_rounds_spinner) {
             mRounds = position + 1;
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-    }*/
+    }
 }
