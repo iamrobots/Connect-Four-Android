@@ -53,6 +53,7 @@ public class AIGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setup();
         mBoardView.setOnTouchListener(new View.OnTouchListener() {
 

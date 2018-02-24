@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
+import com.iamrobots.connectfour.gamePlay.AIGameActivity;
 import com.iamrobots.connectfour.gamePlay.GameActivity;
 
 //import com.iamrobots.connectfour.GamePlay.GameActivity;
@@ -34,7 +35,7 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
     private static final String TAG = "ComputerTabFragment";
 
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
-    private static final String SECOND_PLAYER_KEY = "PlayerTwo";
+    private static final String SECOND_PLAYER_KEY = "Computer";
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
@@ -63,7 +64,7 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
-        //mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
         mRows = preferences.getInt(ROW_KEY, 6);
         mColumns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
@@ -90,7 +91,7 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
                 editor.putInt(ROUNDS_KEY, mRounds);
                 editor.apply();
 
-                Intent i = new Intent(getActivity(), GameActivity.class);
+                Intent i = new Intent(getActivity(), AIGameActivity.class);
                 startActivity(i);
             }
         });
