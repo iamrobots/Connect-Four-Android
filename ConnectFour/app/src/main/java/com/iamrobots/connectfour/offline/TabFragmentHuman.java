@@ -95,10 +95,15 @@ public class TabFragmentHuman extends Fragment implements AdapterView.OnItemSele
                 if (mFirstPlayerName.equalsIgnoreCase(mSecondPlayerName))
                 {
                     Toast.makeText(getActivity(), "Cannot select the same player!", Toast.LENGTH_SHORT).show();
-                    //Intent i = new Intent(getActivity(), PlayerSelectActivity.class);
-                    //startActivity(i);
-                    //return view;
 
+                }
+                else if ( (mFirstPlayerName.equalsIgnoreCase("Player 1")) || (mFirstPlayerName.equalsIgnoreCase("Player 2")))
+                {
+                    Toast.makeText(getActivity(), "Please select Player 1", Toast.LENGTH_SHORT).show();
+                }
+                else if ( (mSecondPlayerName.equalsIgnoreCase("Player 1")) || (mSecondPlayerName.equalsIgnoreCase("Player 2")))
+                {
+                    Toast.makeText(getActivity(), "Please select Player 2", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Intent i = new Intent(getActivity(), GameActivity.class);
