@@ -34,10 +34,11 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
     private static final String TAG = "ComputerTabFragment";
 
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
-    private static final String SECOND_PLAYER_KEY = "Computer";
+    private static final String SECOND_PLAYER_KEY = "PlayerTwo";
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
+    private static final String FROM_BUTTON_KEY = "From";
 
     private Button mPlayButton;
     private Button mFirstPlayerButton;
@@ -45,7 +46,7 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
     private Spinner mRoundsSpinner;
 
     private String mFirstPlayerName;
-    private String mSecondPlayerName;
+    private String mSecondPlayerName = "Computer";
     private int mRows;
     private int mColumns;
     private int mRounds;
@@ -62,7 +63,7 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
-        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        //mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
         mRows = preferences.getInt(ROW_KEY, 6);
         mColumns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
@@ -79,8 +80,8 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Play Button clicked!", Toast.LENGTH_SHORT).show();
-                /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                //Toast.makeText(getActivity(), "Play Button clicked!", Toast.LENGTH_SHORT).show();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(FIRST_PLAYER_KEY, mFirstPlayerName);
                 editor.putString(SECOND_PLAYER_KEY, mSecondPlayerName);
@@ -90,16 +91,17 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
                 editor.apply();
 
                 Intent i = new Intent(getActivity(), GameActivity.class);
-                startActivity(i);*/
+                startActivity(i);
             }
         });
 
         mFirstPlayerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Player Button clicked!", Toast.LENGTH_SHORT).show();
-                /*Intent i = new Intent(getActivity(), PlayerListActivity.class);
-                startActivity(i);*/
+                //Toast.makeText(getActivity(), "Player Button clicked!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), PlayerListActivity.class);
+                i.putExtra(FROM_BUTTON_KEY, FIRST_PLAYER_KEY);
+                startActivity(i);
             }
         });
 

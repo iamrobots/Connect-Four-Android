@@ -21,8 +21,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: clicking list item should either mark the item or switch back to PlayerSelection
-
 public class PlayerListActivity extends AppCompatActivity {
 
     private static final String TAG = "PlayerListActivity";
