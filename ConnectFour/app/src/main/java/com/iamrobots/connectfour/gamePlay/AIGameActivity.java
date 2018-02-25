@@ -3,8 +3,10 @@ package com.iamrobots.connectfour.gamePlay;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,8 @@ import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
 
 public class AIGameActivity extends AppCompatActivity {
+
+    private static final String TAG = AIGameActivity.class.getName();
 
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
     private static final String SECOND_PLAYER_KEY = "PlayerTwo";
@@ -93,6 +97,7 @@ public class AIGameActivity extends AppCompatActivity {
 
     public void gameInPlay(float x, float y) {
 
+        Log.d(TAG, "Game in play");
         Pair<Integer,Integer> coordinates;
         int column = mBoardView.getColumn(x);
         int row = mBoardView.getRow(y);
@@ -113,6 +118,7 @@ public class AIGameActivity extends AppCompatActivity {
         if (mGameModel.getGameState() == 1) {
             mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
             // gameWon();
+            return;
         }
 
         if (mGameModel.getCurrentPlayer() == 0) {
@@ -198,7 +204,7 @@ public class AIGameActivity extends AppCompatActivity {
         mHumanPlayer = db.playerDao().getPlayerByName(firstPlayerName);
         mPlayerOneWins = 0;
         mPlayerTwoWins = 0;
-        mComputer = new AIModel(rows,columns);
+        mComputer = new AIModel(rows,columns, 4);
     }
 
     public void newGame() {
