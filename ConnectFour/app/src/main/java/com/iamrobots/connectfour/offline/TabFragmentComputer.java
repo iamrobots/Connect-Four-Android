@@ -63,8 +63,8 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
         View view = inflater.inflate(R.layout.fragment_computer_tab, container, false);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
-        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Alice");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Bob");
         mRows = preferences.getInt(ROW_KEY, 6);
         mColumns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);

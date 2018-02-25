@@ -63,8 +63,8 @@ public class TabFragmentHuman extends Fragment implements AdapterView.OnItemSele
         View view = inflater.inflate(R.layout.fragment_human_tab, container, false);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
-        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Alice");
+        mSecondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Bob");
         mRows = preferences.getInt(ROW_KEY, 6);
         mColumns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
@@ -96,14 +96,6 @@ public class TabFragmentHuman extends Fragment implements AdapterView.OnItemSele
                 {
                     Toast.makeText(getActivity(), "Cannot select the same player!", Toast.LENGTH_SHORT).show();
 
-                }
-                else if ( (mFirstPlayerName.equalsIgnoreCase("Player 1")) || (mFirstPlayerName.equalsIgnoreCase("Player 2")))
-                {
-                    Toast.makeText(getActivity(), "Please select Player 1", Toast.LENGTH_SHORT).show();
-                }
-                else if ( (mSecondPlayerName.equalsIgnoreCase("Player 1")) || (mSecondPlayerName.equalsIgnoreCase("Player 2")))
-                {
-                    Toast.makeText(getActivity(), "Please select Player 2", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Intent i = new Intent(getActivity(), GameActivity.class);

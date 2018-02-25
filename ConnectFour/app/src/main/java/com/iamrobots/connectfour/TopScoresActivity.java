@@ -75,8 +75,6 @@ public class TopScoresActivity extends AppCompatActivity {
     }
 
     private void updateListView() {
-        Collections.sort(mPlayerArray, Collections.reverseOrder());
-
         TopScoresAdaptor adaptor = new TopScoresAdaptor(this, mPlayerArray);
         mTopScoresRecyclerView.setAdapter(adaptor);
         mTopScoresRecyclerView.setLayoutManager(new LinearLayoutManager(this));
