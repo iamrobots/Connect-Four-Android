@@ -29,7 +29,7 @@ public class AIGameActivity extends AppCompatActivity {
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
 
-    // Game Layout Components
+    // AI Layout Components
     private TextView mFirstPlayerTextView;
     private TextView mSecondPlayerTextView;
     private TokenView mFirstPlayerToken;
@@ -40,7 +40,6 @@ public class AIGameActivity extends AppCompatActivity {
 
     // Game Model/State
     private GameModel mGameModel;
-
     private int mRounds;
     private int mCurrentRound;
     private Boolean mRewindable;
@@ -50,8 +49,6 @@ public class AIGameActivity extends AppCompatActivity {
     private AppDatabase db;
 
     private Player mHumanPlayer;
-    private AIModel mComputer;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +92,8 @@ public class AIGameActivity extends AppCompatActivity {
             }
         });}
 
+
+
     public void gameInPlay(float x, float y) {
 
         Log.d(TAG, "Game in play");
@@ -117,7 +116,7 @@ public class AIGameActivity extends AppCompatActivity {
 
         if (mGameModel.getGameState() == 1) {
             mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
-            // gameWon();
+            gameWon();
             return;
         }
 
@@ -132,7 +131,7 @@ public class AIGameActivity extends AppCompatActivity {
         //mRewindButton.setEnabled(mRewindable);
 
         //create ai method
-        column = mComputer.dropToken(column);
+        column = mGameModel.AIdropToken(column);
         coordinates = mGameModel.dropToken(column);
         if (coordinates == null) {
             return;
@@ -142,7 +141,7 @@ public class AIGameActivity extends AppCompatActivity {
 
         if (mGameModel.getGameState() == 1) {
             mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
-            // gameWon();
+            gameWon();
         }
 
         if (mGameModel.getCurrentPlayer() == 0) {
@@ -154,6 +153,41 @@ public class AIGameActivity extends AppCompatActivity {
         }
     }
 
+    public void gameWon() {
+
+        String winner;
+
+        mRewindable = false;
+        if (mGameModel.getCurrentPlayer() == 0) {
+            winner = mHumanPlayer.getName();
+            mHumanPlayer.setWins(mHumanPlayer.getWins() + 1);
+            mPlayerOneWins += 1;
+            //mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
+        }
+        else {
+            winner = "AI";
+            //mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
+            //mPlayerTwoWins += 1;
+            mHumanPlayer.setLosses(mHumanPlayer.getDraws() + 1);
+        }
+//        mFirstPlayerTextView.setText(mPlayerOne.getName() + " (" + mPlayerOneWins + ")");
+//        mSecondPlayerTextView.setText(mPlayerTwo.getName() + " (" + mPlayerTwoWins + ")");
+
+        db.playerDao().updatePlayers(mHumanPlayer);
+        Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+
+        if (mCurrentRound < mRounds) {
+            mRoundsButton.setText(R.string.next_round);
+            mRoundsButton.setEnabled(true);
+        }
+        // else: show dialog to play again
+        else {
+            Log.d(TAG, "onClick: opening dialog.");
+
+            PlayAgainDialog dialog = new PlayAgainDialog();
+            dialog.show(getFragmentManager(), "AddPlayerDialog");
+        }
+    }
 
 
 
@@ -183,8 +217,8 @@ public class AIGameActivity extends AppCompatActivity {
         mSecondPlayerToken = findViewById(R.id.player2_token_id);
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
-
-        mGameModel = new GameModel(rows,columns);
+        //set depth here
+        mGameModel = new GameModel(rows,columns,11);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
@@ -204,12 +238,10 @@ public class AIGameActivity extends AppCompatActivity {
         mHumanPlayer = db.playerDao().getPlayerByName(firstPlayerName);
         mPlayerOneWins = 0;
         mPlayerTwoWins = 0;
-        mComputer = new AIModel(rows,columns, 4);
     }
 
     public void newGame() {
         mGameModel.reset();
-        mComputer.reset();
         mBoardView.clear();
         mFirstPlayerToken.selected();
         mSecondPlayerToken.unselected();

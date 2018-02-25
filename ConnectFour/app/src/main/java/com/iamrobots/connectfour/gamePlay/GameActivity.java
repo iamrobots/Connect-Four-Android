@@ -243,8 +243,8 @@ public class GameActivity extends AppCompatActivity {
         mSecondPlayerToken = findViewById(R.id.player2_token_id);
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
-
-        mGameModel = new GameModel(rows,columns);
+        //added a new field depth, but this will not affect the actual Game Model
+        mGameModel = new GameModel(rows,columns,1);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
