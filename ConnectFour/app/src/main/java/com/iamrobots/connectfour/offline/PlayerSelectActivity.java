@@ -5,6 +5,7 @@
 
 package com.iamrobots.connectfour.offline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -30,6 +31,13 @@ public class PlayerSelectActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+
+        Intent mIntent = getIntent();
+        String fromTab= mIntent.getStringExtra("FROM_TAB");
+        if(fromTab.equals("ComputerTabFragment"))
+        {
+            mViewPager.setCurrentItem(1);
+        }
 
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(mViewPager);

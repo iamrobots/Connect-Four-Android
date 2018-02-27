@@ -73,7 +73,11 @@ public class PlayerListActivity extends AppCompatActivity {
                 startActivity(i);*/
 
                 // return to tabs
+                Intent mIntent = getIntent();
+                String fromTab= mIntent.getStringExtra("FROM_TAB");
+
                 Intent i = new Intent(PlayerListActivity.this, PlayerSelectActivity.class);
+                i.putExtra("RETURN_TAB", fromTab);
                 startActivity(i);
             }
 
