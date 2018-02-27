@@ -102,7 +102,7 @@ public class TabFragmentComputer extends Fragment implements AdapterView.OnItemS
                 //Toast.makeText(getActivity(), "Player Button clicked!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getActivity(), PlayerListActivity.class);
                 i.putExtra(FROM_BUTTON_KEY, FIRST_PLAYER_KEY);
-                i.putExtra("FROM_TAB", "TAG");
+                i.putExtra("FROM_TAB", TAG);
                 startActivity(i);
             }
         });

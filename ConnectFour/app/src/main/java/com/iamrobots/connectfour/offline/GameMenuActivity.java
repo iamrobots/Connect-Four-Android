@@ -42,6 +42,7 @@ public class GameMenuActivity extends AppCompatActivity{
                 Intent i = new Intent(GameMenuActivity.this, PlayerSelectActivity.class);
                 i.putExtra(FIRST_PLAYER, FIRST_PLAYER);
                 i.putExtra(SECOND_PLAYER, SECOND_PLAYER);
+                i.putExtra("FROM_TAB", "");
                 startActivity(i);
             }
         });

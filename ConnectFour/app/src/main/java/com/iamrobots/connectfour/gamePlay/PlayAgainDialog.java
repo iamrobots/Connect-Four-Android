@@ -44,13 +44,11 @@ public class PlayAgainDialog extends DialogFragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: returning to player selection");
                 Intent i = new Intent(getActivity(), PlayerSelectActivity.class);
+                i.putExtra("FROM_TAB", "");
                 startActivity(i);
             }
         });
 
         return view;
     }
-
-
-
 }
