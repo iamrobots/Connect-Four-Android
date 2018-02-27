@@ -33,6 +33,9 @@ public interface PlayerDao {
     @Query("SELECT * FROM players WHERE player_name = :name")
     Player getPlayerByName(String name);
 
+    @Query("SELECT player_name FROM players order by wins DESC limit 5")
+    List<String> topScores();
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Player... users);
 

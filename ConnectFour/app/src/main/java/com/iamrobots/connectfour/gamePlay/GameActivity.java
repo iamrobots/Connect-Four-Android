@@ -1,7 +1,6 @@
 package com.iamrobots.connectfour.gamePlay;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
-import com.iamrobots.connectfour.offline.AddPlayerDialog;
+import java.util.List;
 
 /*
  * TODO: Implement a back button that takes the user back to PlayerActivity Selection
@@ -59,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
     private AppDatabase db;
     private Player mPlayerOne;
     private Player mPlayerTwo;
+    private List<String> scoreList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
             mPlayerOne.setWins(mPlayerOne.getWins() + 1);
             mPlayerOneWins += 1;
             mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
+
         }
         else {
             winner = mPlayerTwo.getName();
@@ -165,11 +166,20 @@ public class GameActivity extends AppCompatActivity {
             mPlayerTwoWins += 1;
             mPlayerOne.setLosses(mPlayerOne.getDraws() + 1);
         }
-//        mFirstPlayerTextView.setText(mPlayerOne.getName() + " (" + mPlayerOneWins + ")");
-//        mSecondPlayerTextView.setText(mPlayerTwo.getName() + " (" + mPlayerTwoWins + ")");
 
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
+
+
+        //Log.d(TAG,"scoreList"+scoreList.toString());
+
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+        // added to notify a player with new high score
+        scoreList = db.playerDao().topScores();
+        if(scoreList.contains(winner))
+        {
+            Toast.makeText(this, winner + " has a new high score!", Toast.LENGTH_SHORT).show();
+        }
+
 
         if (mCurrentRound < mRounds) {
             mRoundsButton.setText(R.string.next_round);
@@ -267,5 +277,7 @@ public class GameActivity extends AppCompatActivity {
         mPlayerOneWins = 0;
         mPlayerTwoWins = 0;
     }
+
+
 
 }
