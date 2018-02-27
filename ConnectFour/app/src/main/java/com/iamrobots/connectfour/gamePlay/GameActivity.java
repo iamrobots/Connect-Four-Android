@@ -3,7 +3,6 @@ package com.iamrobots.connectfour.gamePlay;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
     private AppDatabase db;
     private Player mPlayerOne;
     private Player mPlayerTwo;
-    private List<String> scoreList;
+    private List<String> mScoreList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,12 +171,12 @@ public class GameActivity extends AppCompatActivity {
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
 
 
-        //Log.d(TAG,"scoreList"+scoreList.toString());
+        //Log.d(TAG,"mScoreList"+mScoreList.toString());
 
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
         // added to notify a player with new high score
-        scoreList = db.playerDao().topScores();
-        if(scoreList.contains(winner))
+        mScoreList = db.playerDao().topScores();
+        if(mScoreList.contains(winner))
         {
             Toast.makeText(this, winner + " has a new high score!", Toast.LENGTH_SHORT).show();
         }
@@ -231,8 +230,8 @@ public class GameActivity extends AppCompatActivity {
     private void setup() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String firstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
-        String secondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Player 2");
+        String firstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Alice");
+        String secondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Bob");
         int rows = preferences.getInt(ROW_KEY, 6);
         int columns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
