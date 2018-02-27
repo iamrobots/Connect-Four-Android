@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class GameModelTest {
     @Test
     public void currentPlayerSwitchesAfterDropToken() throws Exception {
-        GameModel tester = new GameModel(6, 7);
+        GameModel tester = new GameModel(6, 7, 11);
 
         assertEquals( "current player should be 0", 0, tester.getCurrentPlayer());
         tester.dropToken(1);
