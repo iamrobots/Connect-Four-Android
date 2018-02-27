@@ -1,11 +1,9 @@
 package com.iamrobots.connectfour.gamePlay;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +26,6 @@ public class AIGameActivity extends AppCompatActivity {
     private static final String TAG = AIGameActivity.class.getName();
 
     private static final String FIRST_PLAYER_KEY = "PlayerOne";
-    private static final String SECOND_PLAYER_KEY = "PlayerTwo";
     private static final String ROW_KEY = "Rows";
     private static final String COLUMNS_KEY = "Columns";
     private static final String ROUNDS_KEY = "Rounds";
@@ -53,6 +50,7 @@ public class AIGameActivity extends AppCompatActivity {
     private AppDatabase db;
 
     private Player mHumanPlayer;
+    private Boolean mAIPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +66,9 @@ public class AIGameActivity extends AppCompatActivity {
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
+                        if (mAIPlaying == true) {
+                            return true;
+                        }
                         switch (mGameModel.getGameState()) {
                             case 0: // Game is in play
                                 gameInPlay(event.getX(), event.getY());
@@ -132,10 +133,9 @@ public class AIGameActivity extends AppCompatActivity {
             mFirstPlayerToken.unselected();
         }
 
-
-        AiPlay playAI = new AiPlay(this);
+        mAIPlaying = true;
+        AIPlay playAI = new AIPlay(this);
         playAI.execute(column);
-//        column = mGameModel.AIdropToken(column);
     }
 
     public void gameWon() {
@@ -221,6 +221,8 @@ public class AIGameActivity extends AppCompatActivity {
         mHumanPlayer = db.playerDao().getPlayerByName(firstPlayerName);
         mPlayerOneWins = 0;
         mPlayerTwoWins = 0;
+
+        mAIPlaying = false;
     }
 
     public void newGame() {
@@ -236,11 +238,11 @@ public class AIGameActivity extends AppCompatActivity {
     }
 
 
-    private static class AiPlay extends AsyncTask<Integer, Void, Integer> {
+    private static class AIPlay extends AsyncTask<Integer, Void, Integer> {
 
         WeakReference<AIGameActivity> mActivityReference;
 
-        AiPlay(AIGameActivity context) {
+        AIPlay(AIGameActivity context) {
             mActivityReference = new WeakReference<AIGameActivity>(context);
         }
 
@@ -277,5 +279,7 @@ public class AIGameActivity extends AppCompatActivity {
             mSecondPlayerToken.selected();
             mFirstPlayerToken.unselected();
         }
+
+        mAIPlaying = false;
     }
 }
