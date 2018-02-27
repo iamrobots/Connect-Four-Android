@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -35,6 +36,11 @@ public class TokenView extends View {
     private float mRadius;
     private int mColor;
 
+    private Paint mTextPaint;
+    private int mScoreTextSize;
+    private String mScore;
+    private Rect mTextBounds;
+
     private boolean mSelected;
 
     private void init(AttributeSet attrs) {
@@ -51,12 +57,14 @@ public class TokenView extends View {
             try {
                 mColor = a.getColor(R.styleable.TokenView_color, DEFAULT_COLOR);
                 mSelected = a.getBoolean(R.styleable.TokenView_selected, false);
+                mScoreTextSize = a.getDimensionPixelSize(R.styleable.TokenView_text_size, 80);
             } finally {
                 a.recycle();
             }
         } else {
             mColor = DEFAULT_COLOR;
             mSelected = false;
+            mScoreTextSize = 20;
         }
 
         mCircleFillPaint.setColor(mColor);
@@ -64,6 +72,13 @@ public class TokenView extends View {
             mCircleStrokePaint.setColor(Color.BLACK);
         else
             mCircleStrokePaint.setColor(mColor);
+
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setTextSize(Math.round(mScoreTextSize * getResources().getDisplayMetrics().scaledDensity));
+        mTextBounds = new Rect();
+        mTextPaint.getTextBounds("a", 0, 1, mTextBounds);
+        mScore = "";
     }
 
     public TokenView(Context context) {
@@ -85,9 +100,13 @@ public class TokenView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        float textXOffset = mCenterX - mTextPaint.measureText(mScore) / 2;
+        float textYOffset = mCenterY + mTextBounds.height() / 2;
+
         if (canvas != null) {
             canvas.drawCircle(mCenterX, mCenterY, mRadius, mCircleFillPaint);
             canvas.drawCircle(mCenterX, mCenterY, mRadius, mCircleStrokePaint);
+            canvas.drawText(mScore, textXOffset, textYOffset, mTextPaint);
         }
     }
 
@@ -173,5 +192,10 @@ public class TokenView extends View {
         animator.setDuration(200);
         animator.start();
 
+    }
+
+    public void setScore(String score) {
+        mScore = score;
+        invalidate();
     }
 }

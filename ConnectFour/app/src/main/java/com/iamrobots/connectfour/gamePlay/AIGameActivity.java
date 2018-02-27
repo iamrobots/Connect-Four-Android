@@ -1,7 +1,9 @@
 package com.iamrobots.connectfour.gamePlay;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,8 @@ import android.widget.Toast;
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
+
+import java.lang.ref.WeakReference;
 
 public class AIGameActivity extends AppCompatActivity {
 
@@ -128,29 +132,10 @@ public class AIGameActivity extends AppCompatActivity {
             mFirstPlayerToken.unselected();
         }
 
-        //mRewindButton.setEnabled(mRewindable);
 
-        //create ai method
-        column = mGameModel.AIdropToken(column);
-        coordinates = mGameModel.dropToken(column);
-        if (coordinates == null) {
-            return;
-        }
-
-        mBoardView.dropToken(coordinates.first,coordinates.second,1);
-
-        if (mGameModel.getGameState() == 1) {
-            mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
-            gameWon();
-        }
-
-        if (mGameModel.getCurrentPlayer() == 0) {
-            mFirstPlayerToken.selected();
-            mSecondPlayerToken.unselected();
-        } else {
-            mSecondPlayerToken.selected();
-            mFirstPlayerToken.unselected();
-        }
+        AiPlay playAI = new AiPlay(this);
+        playAI.execute(column);
+//        column = mGameModel.AIdropToken(column);
     }
 
     public void gameWon() {
@@ -162,16 +147,14 @@ public class AIGameActivity extends AppCompatActivity {
             winner = mHumanPlayer.getName();
             mHumanPlayer.setWins(mHumanPlayer.getWins() + 1);
             mPlayerOneWins += 1;
-            //mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
+            mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
         }
         else {
             winner = "AI";
-            //mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
-            //mPlayerTwoWins += 1;
             mHumanPlayer.setLosses(mHumanPlayer.getDraws() + 1);
+            mPlayerTwoWins += 1;
+            mSecondPlayerToken.setScore(String.valueOf(mPlayerTwoWins));
         }
-//        mFirstPlayerTextView.setText(mPlayerOne.getName() + " (" + mPlayerOneWins + ")");
-//        mSecondPlayerTextView.setText(mPlayerTwo.getName() + " (" + mPlayerTwoWins + ")");
 
         db.playerDao().updatePlayers(mHumanPlayer);
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
@@ -194,7 +177,7 @@ public class AIGameActivity extends AppCompatActivity {
     private void setup() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String firstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Player 1");
+        String firstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Alice");
         int rows = preferences.getInt(ROW_KEY, 6);
         int columns = preferences.getInt(COLUMNS_KEY, 7);
         mRounds = preferences.getInt(ROUNDS_KEY, 1);
@@ -250,5 +233,49 @@ public class AIGameActivity extends AppCompatActivity {
         mRoundsButton.setEnabled(false);
         mRewindable = false;
         mRewindButton.setEnabled(mRewindable);
+    }
+
+
+    private static class AiPlay extends AsyncTask<Integer, Void, Integer> {
+
+        WeakReference<AIGameActivity> mActivityReference;
+
+        AiPlay(AIGameActivity context) {
+            mActivityReference = new WeakReference<AIGameActivity>(context);
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            return mActivityReference.get().mGameModel.AIdropToken(integers[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Integer column) {
+            super.onPostExecute(column);
+            mActivityReference.get().aiTurn(column);
+        }
+    }
+
+    private void aiTurn(int column) {
+
+        Pair<Integer, Integer> coordinates = mGameModel.dropToken(column);
+        if (coordinates == null) {
+            return;
+        }
+
+        mBoardView.dropToken(coordinates.first,coordinates.second,1);
+
+        if (mGameModel.getGameState() == 1) {
+            mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
+            gameWon();
+        }
+
+        if (mGameModel.getCurrentPlayer() == 0) {
+            mFirstPlayerToken.selected();
+            mSecondPlayerToken.unselected();
+        } else {
+            mSecondPlayerToken.selected();
+            mFirstPlayerToken.unselected();
+        }
     }
 }

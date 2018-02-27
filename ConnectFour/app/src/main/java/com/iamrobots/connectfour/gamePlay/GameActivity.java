@@ -3,6 +3,7 @@ package com.iamrobots.connectfour.gamePlay;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -158,13 +159,14 @@ public class GameActivity extends AppCompatActivity {
             mPlayerOne.setWins(mPlayerOne.getWins() + 1);
             mPlayerOneWins += 1;
             mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
-
+            mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
         }
         else {
             winner = mPlayerTwo.getName();
             mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
             mPlayerTwoWins += 1;
             mPlayerOne.setLosses(mPlayerOne.getDraws() + 1);
+            mSecondPlayerToken.setScore(String.valueOf(mPlayerTwoWins));
         }
 
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
@@ -277,7 +279,6 @@ public class GameActivity extends AppCompatActivity {
         mPlayerOneWins = 0;
         mPlayerTwoWins = 0;
     }
-
 
 
 }

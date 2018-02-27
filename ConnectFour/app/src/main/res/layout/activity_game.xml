@@ -53,6 +53,7 @@
             android:layout_marginRight="10dp"
             app:selected="true"
             app:color="@color/defaultPlayerOne"
+            app:text_size="10sp"
             android:layout_marginEnd="10dp" />
 
 
@@ -63,6 +64,7 @@
             android:layout_marginLeft="10dp"
             app:selected="false"
             app:color="@color/defaultSecondPlayer"
+            app:text_size="10sp"
             android:layout_marginStart="10dp" />
 
         <TextView
@@ -104,7 +106,8 @@
         android:contentDescription="@string/rewind_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
+        app:srcCompat="@android:drawable/ic_menu_revert"
+        android:layout_marginRight="8dp" />
 
     <Button
         android:id="@+id/roundsButton"
