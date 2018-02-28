@@ -34,7 +34,7 @@ public class PlayerSelectActivity extends AppCompatActivity {
 
         Intent mIntent = getIntent();
         String fromTab= mIntent.getStringExtra("FROM_TAB");
-        if(fromTab.equals("ComputerTabFragment"))
+        if(fromTab != null && fromTab.equals("ComputerTabFragment"))
         {
             mViewPager.setCurrentItem(1);
         }

@@ -68,10 +68,6 @@ public class PlayerListActivity extends AppCompatActivity {
                 editor.putString(mPlayerKey, mCurrentPlayerName);
                 editor.apply();
 
-                // return to no tabs
-                /*Intent i = new Intent(PlayerListActivity.this, PlayerSelectionActivity.class);
-                startActivity(i);*/
-
                 // return to tabs
                 Intent mIntent = getIntent();
                 String fromTab= mIntent.getStringExtra("FROM_TAB");
@@ -82,18 +78,6 @@ public class PlayerListActivity extends AppCompatActivity {
             }
 
         });
-
-        // add player with activity
-        /*
-        mAddPlayerFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PlayerListActivity.this, AddPlayerActivity.class);
-                i.putExtra(FROM_BUTTON_KEY, mPlayerKey);
-                startActivity(i);
-            }
-        });
-        */
 
         // add player with dialog
         mAddPlayerFab.setOnClickListener(new View.OnClickListener() {
