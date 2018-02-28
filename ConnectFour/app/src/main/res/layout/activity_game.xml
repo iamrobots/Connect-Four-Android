@@ -30,22 +30,6 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!--<ImageView-->
-            <!--android:id="@+id/imageView2"-->
-            <!--android:layout_width="55dp"-->
-            <!--android:layout_height="55dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:adjustViewBounds="false"-->
-            <!--android:contentDescription="@string/player1_color_image" />-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/imageView3"-->
-            <!--android:layout_width="55dp"-->
-            <!--android:layout_height="55dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:contentDescription="@string/player2_color_image"-->
-            <!--app:srcCompat="@drawable/red_circle" />-->
-
         <com.iamrobots.connectfour.gamePlay.TokenView
             android:id="@+id/player1_token_id"
             android:layout_width="55dp"
@@ -98,26 +82,26 @@
     <ImageButton
         android:id="@+id/rewindButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:contentDescription="@string/rewind_button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintTop_toTopOf="@+id/roundsButton"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
     <Button
         android:id="@+id/roundsButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/default_rounds"
-        app:layout_constraintBottom_toBottomOf="@+id/rewindButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rewindButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rewindButton" />
+        />
 </android.support.constraint.ConstraintLayout>

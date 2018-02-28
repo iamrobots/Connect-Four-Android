@@ -215,7 +215,7 @@ public class AIGameActivity extends AppCompatActivity {
         mRewindable = false;
         mRewindButton = findViewById(R.id.rewindButton);
         mRewindButton.setEnabled(mRewindable);
-//        mRewindButton.setVisibility(View.GONE);
+        mRewindButton.setVisibility(View.GONE);
 
         db = AppDatabase.getInstance(this);
         mHumanPlayer = db.playerDao().getPlayerByName(firstPlayerName);
