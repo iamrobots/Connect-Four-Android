@@ -20,6 +20,7 @@ import android.view.animation.AccelerateInterpolator;
 import com.iamrobots.connectfour.R;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by David Lively on 1/18/18.
@@ -50,7 +51,10 @@ public class BoardView extends View {
     private Paint mFirstPlayerPaint;
     private Paint mSecondPlayerPaint;
 
-    private Bitmap mAnimationBitmap;
+//    private Bitmap mAnimationBitmap;
+
+    private LinkedList<Token> mTokenList;
+    private Token mToken;
 
 
     private void init(@Nullable AttributeSet attrs) {
@@ -100,6 +104,8 @@ public class BoardView extends View {
 
         mPosY = new float[mRows];
         mPosX = new float[mColumns];
+
+        mTokenList = new LinkedList<>();
     }
 
     public BoardView(Context context) {
@@ -128,7 +134,12 @@ public class BoardView extends View {
         super.onDraw(canvas);
 
         canvas.drawBitmap(mBackBoardBitmap, 0, 0, null);
-        canvas.drawBitmap(mAnimationBitmap, 0, 0, null);
+//        canvas.drawBitmap(mAnimationBitmap, 0, 0, null);
+        if (!mTokenList.isEmpty()) {
+            for (Token token : mTokenList) {
+                canvas.drawCircle(token.getX(), token.getY(), mRadius, token.getTokenPaint());
+            }
+        }
         canvas.drawBitmap(mBoardBitmap, 0, 0, null);
     }
 
@@ -171,7 +182,7 @@ public class BoardView extends View {
         Canvas backboardCanvas = new Canvas(mBackBoardBitmap);
         backboardCanvas.drawRect(0f, 0f, width, height, mBackBoardPaint);
 
-        mAnimationBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//        mAnimationBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         mBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas boardCanvas = new Canvas(mBoardBitmap);
@@ -209,7 +220,8 @@ public class BoardView extends View {
         else
             playerPaint = mFirstPlayerPaint;
 
-        final Canvas animationCanvas = new Canvas(mAnimationBitmap);
+        final Token token = new Token(mPosY[row], mPosX[column], new Paint(playerPaint));
+        mTokenList.add(token);
 
 
         ValueAnimator animation = ValueAnimator.ofFloat(0f, mPosY[row]);
@@ -217,8 +229,7 @@ public class BoardView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
-                animationCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                animationCanvas.drawCircle(mPosX[column], value, mRadius, playerPaint);
+                token.setY(value);
                 invalidate();
             }
         });
@@ -227,7 +238,7 @@ public class BoardView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                animationCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                mTokenList.remove(token);
                 Canvas backBoardCanvas = new Canvas(mBackBoardBitmap);
                 backBoardCanvas.drawCircle(mPosX[column], mPosY[row], mRadius, playerPaint);
                 invalidate();
@@ -307,47 +318,46 @@ public class BoardView extends View {
             int column = rowColumnPair.second;
             canvas.drawCircle(mPosX[column], mPosY[row], mRadius - BOARD_HOLE_PADDING, paint);
         }
-        // End new code
-
-//        ValueAnimator animator = ValueAnimator.ofFloat(BOARD_HOLE_PADDING, 0f);
-//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                float value = (float) animation.getAnimatedValue();
-//                for (Pair<Integer, Integer> rowColumnPair : rowColumnArray) {
-//                    int row = rowColumnPair.first;
-//                    int column = rowColumnPair.second;
-//                    canvas.drawRect(mPosX[column] - mRadius, mPosY[row] - mRadius, mPosX[column] + mRadius, mPosY[row] + mRadius, mBoardPaint);
-//                    if (row >= 0 && row < mRows && column >= 0 && column < mColumns) {
-//                        canvas.drawCircle(mPosX[column], mPosY[row], mRadius - value, paint);
-//                    }
-//                }
-//                invalidate();
-//            }
-//
-//        });
-//
-//        animator.setInterpolator(new LinearInterpolator());
-//        animator.setRepeatMode(ValueAnimator.REVERSE);
-//        animator.setRepeatCount(5);
-//        animator.setDuration(1000);
-//        animator.start();
     }
-
-//    public void unhighlightTokens() {
-//        Canvas boardCanvas = new Canvas(mBoardBitmap);
-//        boardCanvas.drawPaint(mBoardPaint);
-//
-//        for (int i = 0; i < mRows; ++i) {
-//            for (int j = 0; j < mColumns; ++j) {
-//                boardCanvas.drawCircle(mPosX[j], mPosY[i], mRadius - BOARD_HOLE_PADDING, mEraser);
-//            }
-//        }
-//
-//    }
 
     public void clear() {
         initBoard(getWidth(), getHeight());
         invalidate();
+    }
+
+    private static class Token {
+        private Paint mTokenPaint;
+        private float Y;
+        private float X;
+
+        Token(float y, float x, Paint paint) {
+            mTokenPaint= paint;
+            Y = y;
+            X = x;
+        }
+
+        public Paint getTokenPaint() {
+            return mTokenPaint;
+        }
+
+        public void setTokenPaint(Paint tokenPaint) {
+            mTokenPaint = tokenPaint;
+        }
+
+        public float getY() {
+            return Y;
+        }
+
+        public void setY(float y) {
+            Y = y;
+        }
+
+        public float getX() {
+            return X;
+        }
+
+        public void setX(float x) {
+            X = x;
+        }
     }
 }
