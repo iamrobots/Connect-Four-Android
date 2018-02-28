@@ -85,6 +85,10 @@ public class GameActivity extends AppCompatActivity {
                                 break;
 
                             case 2:  // Game is draw
+                                if (mCurrentRound < mRounds) {
+                                    mRoundsButton.setText(R.string.next_round);
+                                    mRoundsButton.setEnabled(true);
+                                }
                                 Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -170,9 +174,6 @@ public class GameActivity extends AppCompatActivity {
 
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
 
-
-        //Log.d(TAG,"mScoreList"+mScoreList.toString());
-
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
         // added to notify a player with new high score
         mScoreList = db.playerDao().topScores();
@@ -188,8 +189,6 @@ public class GameActivity extends AppCompatActivity {
         }
         // else: show dialog to play again
         else {
-            Log.d(TAG, "onClick: opening dialog.");
-
             PlayAgainDialog dialog = new PlayAgainDialog();
             dialog.show(getFragmentManager(), "AddPlayerDialog");
         }

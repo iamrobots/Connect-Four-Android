@@ -66,7 +66,7 @@ public class AIGameActivity extends AppCompatActivity {
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        if (mAIPlaying == true) {
+                        if (mAIPlaying) {
                             return true;
                         }
                         switch (mGameModel.getGameState()) {
@@ -78,6 +78,10 @@ public class AIGameActivity extends AppCompatActivity {
                                 break;
 
                             case 2:  // Game is draw
+                                if (mCurrentRound < mRounds) {
+                                    mRoundsButton.setText(R.string.next_round);
+                                    mRoundsButton.setEnabled(true);
+                                }
                                 Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -92,7 +96,7 @@ public class AIGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mGameModel.getGameState() > 0 && mCurrentRound < mRounds) {
                     mCurrentRound++;
-                    // newGame();
+                    newGame();
                 }
             }
         });}
@@ -100,8 +104,6 @@ public class AIGameActivity extends AppCompatActivity {
 
 
     public void gameInPlay(float x, float y) {
-
-        Log.d(TAG, "Game in play");
         Pair<Integer,Integer> coordinates;
         int column = mBoardView.getColumn(x);
         int row = mBoardView.getRow(y);
@@ -165,8 +167,6 @@ public class AIGameActivity extends AppCompatActivity {
         }
         // else: show dialog to play again
         else {
-            Log.d(TAG, "onClick: opening dialog.");
-
             PlayAgainDialog dialog = new PlayAgainDialog();
             dialog.show(getFragmentManager(), "AddPlayerDialog");
         }
@@ -243,7 +243,7 @@ public class AIGameActivity extends AppCompatActivity {
         WeakReference<AIGameActivity> mActivityReference;
 
         AIPlay(AIGameActivity context) {
-            mActivityReference = new WeakReference<AIGameActivity>(context);
+            mActivityReference = new WeakReference<>(context);
         }
 
         @Override

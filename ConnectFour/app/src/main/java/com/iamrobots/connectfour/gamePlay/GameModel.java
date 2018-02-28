@@ -1,7 +1,6 @@
 package com.iamrobots.connectfour.gamePlay;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -226,7 +225,6 @@ public class GameModel {
 
                 if (horz|| vert || diagUp || diagDown) {
                     mGameState = 1; //game won
-                    Log.i("debug testing","coordinates "+mWinCoordinates);
                 }
                 else {
                     int stalemateCounter=0;
@@ -250,9 +248,6 @@ public class GameModel {
                         mGameState = 0;
                     if(stalemateCounter+1 == boardSize)
                         mGameState=2;
-                    Log.i("boardsize","size is "+ boardSize);
-                    Log.i("stalemateCounter","stalemate is "+ stalemateCounter);
-                    Log.i("inplayCounter","inplayCounter is "+ inplayCounter);
                     setCurrentPlayer();
                 }
                 mMoveStack.push(new Pair<>(returnRow, column));

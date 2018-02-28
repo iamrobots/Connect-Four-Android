@@ -11,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -141,7 +140,6 @@ public class TokenView extends View {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 mRadius = Math.min(mCenterX, mCenterY)  - SMALL_CIRCLE_PADDING + value;
-                Log.i("INFO", "animation radius: " + mRadius + " + value: " + value);
                 invalidate();
             }
         });
@@ -151,7 +149,6 @@ public class TokenView extends View {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mRadius = Math.min(mCenterX, mCenterY) - BIG_CIRCLE_PADDING;
-                Log.i("INFO", "final radius: " + mRadius);
                 invalidate();
             }
         });
