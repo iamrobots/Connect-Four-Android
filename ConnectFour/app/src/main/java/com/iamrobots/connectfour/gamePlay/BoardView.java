@@ -220,7 +220,7 @@ public class BoardView extends View {
         else
             playerPaint = mFirstPlayerPaint;
 
-        final Token token = new Token(mPosY[row], mPosX[column], new Paint(playerPaint));
+        final Token token = new Token(row, column, mPosY[row], mPosX[column], new Paint(playerPaint));
         mTokenList.add(token);
 
 
@@ -238,10 +238,12 @@ public class BoardView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mTokenList.remove(token);
-                Canvas backBoardCanvas = new Canvas(mBackBoardBitmap);
-                backBoardCanvas.drawCircle(mPosX[column], mPosY[row], mRadius, playerPaint);
-                invalidate();
+                if (mTokenList.contains(token) == true) {
+                    mTokenList.remove(token);
+                    Canvas backBoardCanvas = new Canvas(mBackBoardBitmap);
+                    backBoardCanvas.drawCircle(mPosX[token.getColumn()], mPosY[token.getRow()], mRadius, token.getTokenPaint());
+                    invalidate();
+                }
             }
         });
 
@@ -259,10 +261,14 @@ public class BoardView extends View {
         if (mBackBoardBitmap == null)
             return;
 
-        Canvas canvas = new Canvas(mBackBoardBitmap);
-        canvas.drawCircle(mPosX[column], mPosY[row], mRadius, mBackBoardPaint);
-        invalidate();
+        if (mTokenList.isEmpty() == false) {
+            Token token = mTokenList.removeLast();
+        } else {
+            Canvas canvas = new Canvas(mBackBoardBitmap);
+            canvas.drawCircle(mPosX[column], mPosY[row], mRadius, mBackBoardPaint);
+        }
 
+        invalidate();
     }
 
     public void setRowsColumns(int rows, int columns) {
@@ -327,13 +333,17 @@ public class BoardView extends View {
 
     private static class Token {
         private Paint mTokenPaint;
-        private float Y;
-        private float X;
+        private int mRow;
+        private int mColumn;
+        private float mY;
+        private float mX;
 
-        Token(float y, float x, Paint paint) {
+        Token(int row, int column, float y, float x, Paint paint) {
             mTokenPaint= paint;
-            Y = y;
-            X = x;
+            mRow = row;
+            mColumn = column;
+            mY = y;
+            mX = x;
         }
 
         public Paint getTokenPaint() {
@@ -345,19 +355,35 @@ public class BoardView extends View {
         }
 
         public float getY() {
-            return Y;
+            return mY;
         }
 
         public void setY(float y) {
-            Y = y;
+            mY = y;
         }
 
         public float getX() {
-            return X;
+            return mX;
         }
 
         public void setX(float x) {
-            X = x;
+            mX = x;
+        }
+
+        public int getRow() {
+            return mRow;
+        }
+
+        public void setRow(int row) {
+            mRow = row;
+        }
+
+        public int getColumn() {
+            return mColumn;
+        }
+
+        public void setColumn(int column) {
+            mColumn = column;
         }
     }
 }
