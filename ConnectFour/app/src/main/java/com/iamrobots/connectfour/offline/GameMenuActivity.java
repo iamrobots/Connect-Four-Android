@@ -84,8 +84,8 @@ public class GameMenuActivity extends AppCompatActivity{
         }
 
         if (id == R.id.help_id) {
-            Toast.makeText(this, "report a bug if found!", Toast.LENGTH_SHORT).show();
-            return true;
+            Intent intent2 = new Intent(GameMenuActivity.this, FeedbackActivity.class);
+            this.startActivity(intent2);
         }
 
         return super.onOptionsItemSelected(item);
