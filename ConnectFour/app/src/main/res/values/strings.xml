@@ -41,12 +41,11 @@
     <!-- Feedback layout -->
     <string name="button_feedback">Send feedback</string>
     <string name="title_send_feedback">Send feedback</string>
+    <!-- can create a group email and add it here-->
     <string name="mail_feedback_email">namratha17.bm@gmail.com</string>
     <string name="mail_feedback_subject">Feedback on Connect 4 </string>
     <string name="mail_feedback_message">Hi,
     \n\nYour Connect 4 app rocks! I would like to give you some feedback:</string>
-
-
 
 
 </resources>

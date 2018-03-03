@@ -201,7 +201,7 @@ public class AIGameActivity extends AppCompatActivity {
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
         //set depth here
-        mGameModel = new GameModel(rows,columns,11);
+        mGameModel = new GameModel(rows,columns,10);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
