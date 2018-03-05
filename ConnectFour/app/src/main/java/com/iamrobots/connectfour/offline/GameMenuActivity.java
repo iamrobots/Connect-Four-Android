@@ -36,7 +36,7 @@ public class GameMenuActivity extends AppCompatActivity{
         mOnlineButton = findViewById(R.id.button_multi);
         mTopScoresButton = findViewById(R.id.button_top_scores);
 
-       mOfflineButton.setOnClickListener(new View.OnClickListener() {
+        mOfflineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(GameMenuActivity.this, PlayerSelectActivity.class);
@@ -71,7 +71,6 @@ public class GameMenuActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.options_menu,menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

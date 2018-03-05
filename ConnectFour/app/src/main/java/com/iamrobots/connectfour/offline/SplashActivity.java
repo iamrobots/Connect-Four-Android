@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.iamrobots.connectfour.R;
+import com.iamrobots.connectfour.gamePlay.GameActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
                     // This method will be executed once the timer is over
                     // Start your app main activity
                     Intent i = new Intent(SplashActivity.this, GameMenuActivity.class);
+                    i.putExtra("FROM_TAB", "");
                     startActivity(i);
 
                     // close this activity

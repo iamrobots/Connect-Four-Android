@@ -21,8 +21,8 @@
             android:label="@string/title_player_mode" />
         <activity
             android:name=".gamePlay.GameActivity"
-            android:parentActivityName=".offline.PlayerSelectionActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".offline.PlayerSelectionActivity" />
         <activity
             android:name=".offline.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
@@ -31,10 +31,10 @@
         <activity android:name=".online.OnlineActivity" />
         <activity
             android:name=".TopScoresActivity"
+            android:exported="true"
             android:label="@string/top_scores"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".offline.GameMenuActivity"
-            android:exported="true"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".offline.PlayerListActivity"
             android:label="@string/title_activity_player_list" />
@@ -43,11 +43,15 @@
             android:label="@string/title_activity_player_select"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".offline.AddPlayerActivity" />
-        <activity android:name=".gamePlay.AIGameActivity"
-            android:parentActivityName=".offline.PlayerSelectionActivity"
-            android:exported="true"/>
-        <activity android:name=".offline.RulesActivity"></activity>
-        <activity android:name=".offline.FeedbackActivity"></activity>
+        <activity
+            android:name=".gamePlay.AIGameActivity"
+            android:exported="true"
+            android:parentActivityName=".offline.PlayerSelectionActivity" />
+        <activity android:name=".offline.RulesActivity" />
+        <activity android:name=".offline.FeedbackActivity" />
+        <activity
+            android:name=".offline.GameHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

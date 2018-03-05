@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ic_offline"
+        android:icon="@drawable/ic_offline"
+        android:title="Offline"/>
+
+    <item
+        android:id="@+id/ic_online"
+        android:icon="@drawable/ic_online"
+        android:title="Online"/>
+
+    <item
+        android:id="@+id/ic_highscore"
+        android:icon="@drawable/ic_highscore"
+        android:title="Highscore"/>
+
+</menu>

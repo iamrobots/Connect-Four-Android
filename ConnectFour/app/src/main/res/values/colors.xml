@@ -7,4 +7,8 @@
     <color name="defaultPlayerOne">#f1c40f</color>
     <color name="defaultSecondPlayer">#e74c3c</color>
     <color name="defaultBoard">#3498db</color>
+
+    <color name="greyBorder">#c3c3c3</color>
+    <color name="colorWhite">#FFF</color>
+
 </resources>
