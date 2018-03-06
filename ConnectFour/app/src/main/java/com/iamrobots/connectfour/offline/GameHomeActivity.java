@@ -17,6 +17,8 @@ import com.iamrobots.connectfour.TopScoresActivity;
 import com.iamrobots.connectfour.gamePlay.GameActivity;
 import com.iamrobots.connectfour.online.OnlineActivity;
 
+// Home screen of app, replaces GameMenuActivity. Not fully implemented.
+
 public class GameHomeActivity extends AppCompatActivity {
     private static final String TAG = "GameHomeActivity";
 
@@ -31,7 +33,7 @@ public class GameHomeActivity extends AppCompatActivity {
 
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.home_container);
         setupViewPager(mViewPager);
 
         Intent mIntent = getIntent();
@@ -41,7 +43,7 @@ public class GameHomeActivity extends AppCompatActivity {
             mViewPager.setCurrentItem(1);
         }
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabs = (TabLayout) findViewById(R.id.home_tabs);
         tabs.setupWithViewPager(mViewPager);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);

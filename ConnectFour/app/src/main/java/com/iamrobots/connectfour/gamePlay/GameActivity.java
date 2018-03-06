@@ -1,6 +1,7 @@
 package com.iamrobots.connectfour.gamePlay;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
+import com.iamrobots.connectfour.offline.GameHomeActivity;
+
 import java.util.List;
 
 /*
@@ -173,8 +176,8 @@ public class GameActivity extends AppCompatActivity {
         }
 
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
-
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+
         // added to notify a player with new high score
         mScoreList = db.playerDao().topScores();
         if(mScoreList.contains(winner))
@@ -188,10 +191,12 @@ public class GameActivity extends AppCompatActivity {
             mRoundsButton.setEnabled(true);
         }
         // else: show dialog to play again
-        else {
-            PlayAgainDialog dialog = new PlayAgainDialog();
-            dialog.show(getFragmentManager(), "AddPlayerDialog");
-        }
+        /*else {
+            //PlayAgainDialog dialog = new PlayAgainDialog();
+            //dialog.show(getFragmentManager(), "AddPlayerDialog");
+            //Intent i = new Intent(GameActivity.this, GameHomeActivity.class);
+            //startActivity(i);
+        }*/
     }
 
     public void rewind() {

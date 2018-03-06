@@ -1,5 +1,5 @@
 /*
- *  Used by PlayerSelectActivity. Not fully implemented.
+ *  Used by PlayerSelectActivity to manage tab fragments.
  */
 
 package com.iamrobots.connectfour.offline;
@@ -13,13 +13,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Abraham on 2/11/18.
- */
-
 public class SectionsPageAdapter extends FragmentPagerAdapter {
 
-    private Context context;
+    //private Context context;
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -27,11 +23,11 @@ public class SectionsPageAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    public SectionsPageAdapter(FragmentManager fm, PlayerSelectionActivity activity) {
+    /*public SectionsPageAdapter(FragmentManager fm, PlayerSelectionActivity activity) {
         super(fm);
         context = activity;
         new TabFragmentHuman();
-    }
+    }*/
 
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);

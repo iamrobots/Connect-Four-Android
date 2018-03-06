@@ -166,10 +166,10 @@ public class AIGameActivity extends AppCompatActivity {
             mRoundsButton.setEnabled(true);
         }
         // else: show dialog to play again
-        else {
+        /*else {
             PlayAgainDialog dialog = new PlayAgainDialog();
             dialog.show(getFragmentManager(), "AddPlayerDialog");
-        }
+        }*/
     }
 
 
