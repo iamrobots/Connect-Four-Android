@@ -165,7 +165,7 @@ public class AIGameActivity extends AppCompatActivity {
             mRoundsButton.setText(R.string.next_round);
             mRoundsButton.setEnabled(true);
         }
-        // else: show dialog to play again
+        // else: show dialog to play again, no longer used
         /*else {
             PlayAgainDialog dialog = new PlayAgainDialog();
             dialog.show(getFragmentManager(), "AddPlayerDialog");

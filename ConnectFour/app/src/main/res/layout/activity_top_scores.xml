@@ -26,4 +26,15 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="?attr/actionBarSize" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/homeBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/grey_bottom_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/home_bottom_menu" />
+
 </android.support.constraint.ConstraintLayout>

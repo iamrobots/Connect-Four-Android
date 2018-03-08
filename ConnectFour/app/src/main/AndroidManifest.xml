@@ -21,8 +21,29 @@
         </activity>
 
         <activity
-            android:name=".offline.GameMenuActivity"
-            android:label="@string/title_player_mode" />
+            android:name=".offline.GameHomeActivity"
+            android:theme="@style/NoBarNoAnimation"/>
+
+        <activity
+            android:name=".online.OnlineActivity"
+            android:theme="@style/NoBarNoAnimation"/>
+
+        <activity
+            android:name=".TopScoresActivity"
+            android:exported="true"
+            android:label="@string/top_scores"
+            android:parentActivityName=".offline.GameMenuActivity"
+            android:theme="@style/NoBarNoAnimation" />
+
+        <activity android:name=".offline.RulesActivity" />
+
+        <activity android:name=".offline.FeedbackActivity" />
+
+        <activity
+            android:name=".offline.PlayerListActivity"
+            android:label="@string/title_activity_player_list" />
+
+        <activity android:name=".offline.AddPlayerActivity" />
 
         <activity
             android:name=".gamePlay.GameActivity"
@@ -30,43 +51,9 @@
             android:parentActivityName=".offline.PlayerSelectionActivity" />
 
         <activity
-            android:name=".offline.PlayerSelectionActivity"
-            android:label="@string/title_activity_player_selection"
-            android:parentActivityName=".offline.GameMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".online.OnlineActivity" />
-
-        <activity
-            android:name=".TopScoresActivity"
-            android:exported="true"
-            android:label="@string/top_scores"
-            android:parentActivityName=".offline.GameMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".offline.PlayerListActivity"
-            android:label="@string/title_activity_player_list" />
-
-        <activity
-            android:name=".offline.PlayerSelectActivity"
-            android:label="@string/title_activity_player_select"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".offline.AddPlayerActivity" />
-
-        <activity
             android:name=".gamePlay.AIGameActivity"
             android:exported="true"
             android:parentActivityName=".offline.PlayerSelectionActivity" />
-
-        <activity android:name=".offline.RulesActivity" />
-
-        <activity android:name=".offline.FeedbackActivity" />
-
-        <activity
-            android:name=".offline.GameHomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".online.GameActivity"
@@ -77,6 +64,25 @@
             android:name=".online.OnlinedemoActivity"
             android:label="@string/title_activity_onlinedemo"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!-- activity no longer used -->
+        <activity
+            android:name=".offline.GameMenuActivity"
+            android:label="@string/title_player_mode" />
+
+        <!-- activity no longer used -->
+        <activity
+            android:name=".offline.PlayerSelectionActivity"
+            android:label="@string/title_activity_player_selection"
+            android:parentActivityName=".offline.GameMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- activity no longer used -->
+        <activity
+            android:name=".offline.PlayerSelectActivity"
+            android:label="@string/title_activity_player_select"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
