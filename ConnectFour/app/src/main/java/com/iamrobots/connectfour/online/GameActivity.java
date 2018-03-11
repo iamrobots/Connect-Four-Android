@@ -72,35 +72,35 @@ public class GameActivity extends AppCompatActivity {
 
         setup();
 
-        mBoardView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.performClick();
-
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        switch (mGameModel.getGameState()) {
-                            case 0: // Game is in play
-                                gameInPlay(event.getX(), event.getY());
-                                break;
-
-                            case 1:  // Game is won
-                                break;
-
-                            case 2:  // Game is draw
-                                if (mCurrentRound < mRounds) {
-                                    mRoundsButton.setText(R.string.next_round);
-                                    mRoundsButton.setEnabled(true);
-                                }
-                                Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        break;
-                }
-                return true;
-            }
-        });
+//        mBoardView.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.performClick();
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_UP:
+//                        switch (mGameModel.getGameState()) {
+//                            case 0: // Game is in play
+//                                gameInPlay(event.getX(), event.getY());
+//                                break;
+//
+//                            case 1:  // Game is won
+//                                break;
+//
+//                            case 2:  // Game is draw
+//                                if (mCurrentRound < mRounds) {
+//                                    mRoundsButton.setText(R.string.next_round);
+//                                    mRoundsButton.setEnabled(true);
+//                                }
+//                                Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         mRoundsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,11 +120,11 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void gameInPlay(float x, float y) {
+    public void gameInPlay(int x, int y) {
 
         Pair<Integer,Integer> coordinates;
-        int column = mBoardView.getColumn(x);
-        int row = mBoardView.getRow(y);
+        int column = y;
+        int row = x;
 
         mRewindable = true;
 

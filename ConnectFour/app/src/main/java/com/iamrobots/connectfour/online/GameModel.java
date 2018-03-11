@@ -71,6 +71,7 @@ public class GameModel {
                 int score = 0;
                 if (checkBoard()) {
                     score = player == 1 ? 1 : -1;
+                    score = player == 1 ? 1 : -1;
                 } else if (depth > 1) {
                     score = chooseMove(opponent, player, alpha, beta, depth - 1).getScore();
                 }
@@ -218,6 +219,8 @@ public class GameModel {
         {
             if(mBoardArray[i][column] == -1) {
                 mBoardArray[i][column] = getCurrentPlayer();
+
+                setCurrentPlayer();
                 returnRow=i;
 
                 boolean horz = checkHorizontal();
@@ -250,7 +253,7 @@ public class GameModel {
                         mGameState = 0;
                     if(stalemateCounter+1 == boardSize)
                         mGameState=2;
-                    setCurrentPlayer();
+                    //setCurrentPlayer();
                 }
                 mMoveStack.push(new Pair<>(returnRow, column));
                 return Pair.create(returnRow,column);

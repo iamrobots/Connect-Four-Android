@@ -1,5 +1,6 @@
 package com.iamrobots.connectfour.online;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.emitter.Emitter;
@@ -25,7 +29,7 @@ import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
 import com.iamrobots.connectfour.gamePlay.BoardView;
 import com.iamrobots.connectfour.gamePlay.TokenView;
-import com.iamrobots.connectfour.online.GameModel;
+
 import com.iamrobots.connectfour.gamePlay.PlayAgainDialog;
 import java.util.List;
 
@@ -51,7 +55,9 @@ public class OnlinedemoActivity extends AppCompatActivity {
     // Game Model/State
     private GameModel mGameModel;
 
-    private Socket mSocket;
+    private GameActivity mGameActivity;
+
+    private Context mContext;
     private int mRounds;
     private int mCurrentRound;
     private Boolean mRewindable;
@@ -62,23 +68,28 @@ public class OnlinedemoActivity extends AppCompatActivity {
     private Player mPlayerOne;
     private Player mPlayerTwo;
     private List<String> mScoreList;
-
+    private Socket mSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_game);
-
-        try {
-            mSocket = IO.socket("http://10.0.0.31:3001");
-            Log.e("message :  ", "Fine!");
-            String msg = "connected successfully!!";
-            mSocket.emit("new msg", msg);
-        } catch (Exception e) {
-            Log.e("message     :   ", "Error Connecting to IP!" + e.getMessage());
+mContext=this;
+        {
+            try {
+                mSocket = IO.socket("http://10.0.0.31:3001");
+                Log.e("message :  ", "Fine!");
+                String msg = "connected successfully!!";
+                mSocket.emit("new msg", msg);
+            } catch (Exception e) {
+                Log.e("message     :   ", "Error Connecting to IP!" + e.getMessage());
+            }
         }
 
+        mSocket.on("column_event", columnEvent);
+        mSocket.connect();
         setup();
+
 
         mBoardView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -91,7 +102,8 @@ public class OnlinedemoActivity extends AppCompatActivity {
                         switch (mGameModel.getGameState()) {
                             case 0: // Game is in play
                                 gameInPlay(event.getX(), event.getY());
-                                break;
+
+                            break;
 
                             case 1:  // Game is won
                                 break;
@@ -112,11 +124,55 @@ public class OnlinedemoActivity extends AppCompatActivity {
 
     }
 
+    private Emitter.Listener columnEvent = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            OnlinedemoActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    JSONObject data = (JSONObject) args[0];
+                    int column;
+                    int row;
+                    int player;
+                    try {
+                        row = data.getInt("row");
+                        column = data.getInt("column");
+                        player = data.getInt("player");
+                    } catch (JSONException e) {
+                        return;
+                    }
+
+
+                    //mGameActivity.gameInPlay(row,column);
+                    Pair<Integer,Integer> coordinates = mGameModel.dropToken(column);
+                    mBoardView.dropToken(row, column, player );
+                    //mGameModel.setCurrentPlayer();
+
+                    if (mGameModel.getGameState() == 1) {
+                       // mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
+                        //gameWon();
+                    }
+                    if (player == 0) {
+                        mFirstPlayerToken.selected();
+                        mSecondPlayerToken.unselected();
+                    } else {
+                        mSecondPlayerToken.selected();
+                        mFirstPlayerToken.unselected();
+                    }
+
+                }
+            });
+        }
+    };
+
     public void gameInPlay(float x, float y) {
 
         Pair<Integer,Integer> coordinates;
         int column = mBoardView.getColumn(x);
         int row = mBoardView.getRow(y);
+
+
 
         mRewindable = true;
 
@@ -129,21 +185,26 @@ public class OnlinedemoActivity extends AppCompatActivity {
         if (coordinates == null) {
             return;
         }
-
+        String coord = coordinates.first + "," + coordinates.second + "," + player;
+        //mSocket.emit("coordinates", coord);
         mBoardView.dropToken(coordinates.first, coordinates.second, player);
+        //mGameModel.getCurrentPlayer();
+        mSocket.emit("call",coord);
+
+
 
         if (mGameModel.getGameState() == 1) {
             mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
            // gameWon();
         }
 
-//        if (mGameModel.getCurrentPlayer() == 0) {
-//            mFirstPlayerToken.selected();
-//            mSecondPlayerToken.unselected();
-//        } else {
-//            mSecondPlayerToken.selected();
-//            mFirstPlayerToken.unselected();
-//        }
+        if (mGameModel.getCurrentPlayer() == 0) {
+            mFirstPlayerToken.selected();
+            mSecondPlayerToken.unselected();
+        } else {
+            mSecondPlayerToken.selected();
+            mFirstPlayerToken.unselected();
+        }
 
         //mRewindButton.setEnabled(mRewindable);
     }
@@ -166,17 +227,18 @@ public class OnlinedemoActivity extends AppCompatActivity {
 
 //        mFirstPlayerTextView = findViewById(R.id.player1_id);
 //        mFirstPlayerTextView.setText(firstPlayerName);
-//        mFirstPlayerToken = findViewById(R.id.player1_token_id);
-//        mFirstPlayerToken.setColor(firstPlayerColor);
-//        mFirstPlayerToken.selected();
+        mFirstPlayerToken = findViewById(R.id.player1_token_id);
+        mFirstPlayerToken.setColor(firstPlayerColor);
+        mFirstPlayerToken.selected();
 //
 //        mSecondPlayerTextView = findViewById(R.id.player2_id);
 //        mSecondPlayerTextView.setText(secondPlayerName);
-//        mSecondPlayerToken = findViewById(R.id.player2_token_id);
-//        mSecondPlayerToken.setColor(secondPlayerColor);
-//        mSecondPlayerToken.unselected();
+        mSecondPlayerToken = findViewById(R.id.player2_token_id);
+        mSecondPlayerToken.setColor(secondPlayerColor);
+        mSecondPlayerToken.unselected();
         //added a new field depth, but this will not affect the actual Game Model
         mGameModel = new GameModel(rows,columns,1);
+        mGameActivity = new GameActivity();
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
