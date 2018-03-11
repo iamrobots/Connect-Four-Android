@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
     private GameModel mGameModel;
 
     private GameActivity mGameActivity;
+    private ProgressBar spinner;
 
     private Context mContext;
     private int mRounds;
@@ -75,6 +77,8 @@ public class OnlinedemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_game);
 mContext=this;
+        spinner = findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.VISIBLE);
         {
             try {
                 mSocket = IO.socket("http://10.0.0.31:3001");
@@ -87,6 +91,7 @@ mContext=this;
         }
 
         mSocket.on("column_event", columnEvent);
+        mSocket.on("secondPlayer", AlertFirstPlayer);
         mSocket.connect();
         setup();
 
@@ -165,6 +170,27 @@ mContext=this;
             });
         }
     };
+
+    private Emitter.Listener AlertFirstPlayer = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            OnlinedemoActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+
+                        spinner.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        return;
+                    }
+
+                }
+            });
+        }
+    };
+
 
     public void gameInPlay(float x, float y) {
 
