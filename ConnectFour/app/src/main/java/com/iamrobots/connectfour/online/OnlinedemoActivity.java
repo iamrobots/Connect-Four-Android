@@ -1,6 +1,7 @@
 package com.iamrobots.connectfour.online;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -71,20 +73,26 @@ public class OnlinedemoActivity extends AppCompatActivity {
     private Player mPlayerTwo;
     private List<String> mScoreList;
     private Socket mSocket;
-
+    private Intent intent;
+    private Bundle bundle;
+    private String firstPlayer;
+    private String secondPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_game);
-mContext=this;
+        mContext=this;
         spinner = findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
+        intent= getIntent();
+        bundle = intent.getExtras();
         {
             try {
                 mSocket = IO.socket("http://10.0.0.31:3001");
                 Log.e("message :  ", "Fine!");
-                String msg = "connected successfully!!";
+                String msg = bundle.get("PlayerName") +",connected successfully!!";
                 mSocket.emit("new msg", msg);
+
             } catch (Exception e) {
                 Log.e("message     :   ", "Error Connecting to IP!" + e.getMessage());
             }
@@ -92,6 +100,8 @@ mContext=this;
 
         mSocket.on("column_event", columnEvent);
         mSocket.on("secondPlayer", AlertFirstPlayer);
+        //mSocket.on("firstPlayer", FirstPlayerJoined);
+        mSocket.on("players", UpdatePlayers);
         mSocket.connect();
         setup();
 
@@ -135,7 +145,7 @@ mContext=this;
             OnlinedemoActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     JSONObject data = (JSONObject) args[0];
                     int column;
                     int row;
@@ -148,14 +158,13 @@ mContext=this;
                         return;
                     }
 
-
-                    //mGameActivity.gameInPlay(row,column);
+                                    //mGameActivity.gameInPlay(row,column);
                     Pair<Integer,Integer> coordinates = mGameModel.dropToken(column);
                     mBoardView.dropToken(row, column, player );
                     //mGameModel.setCurrentPlayer();
 
                     if (mGameModel.getGameState() == 1) {
-                       // mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
+                        //mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
                         //gameWon();
                     }
                     if (player == 0) {
@@ -182,6 +191,7 @@ mContext=this;
                     try {
 
                         spinner.setVisibility(View.GONE);
+
                     } catch (Exception e) {
                         return;
                     }
@@ -191,6 +201,40 @@ mContext=this;
         }
     };
 
+
+    private Emitter.Listener UpdatePlayers = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            OnlinedemoActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String player1;
+                    String player2;
+                    try {
+                        player1 = data.getString("first");
+                        player2 = data.getString("second");
+                        Log.i("players :   ",player1 + " ,,,, "+ player2);
+                        mFirstPlayerTextView.setText(player1);
+                        mSecondPlayerTextView.setText(player2);
+                    } catch (Exception e) {
+                        return;
+                    }
+
+                }
+            });
+        }
+    };
+
+//    mRoundsButton.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            if (mGameModel.getGameState() > 0 && mCurrentRound < mRounds) {
+//                mCurrentRound++;
+//                newGame();
+//            }
+//        }
+//    });
 
     public void gameInPlay(float x, float y) {
 
@@ -215,6 +259,8 @@ mContext=this;
         //mSocket.emit("coordinates", coord);
         mBoardView.dropToken(coordinates.first, coordinates.second, player);
         //mGameModel.getCurrentPlayer();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         mSocket.emit("call",coord);
 
 
@@ -251,13 +297,13 @@ mContext=this;
         int secondPlayerColor = Color.parseColor("#e74c3c");
 
 
-//        mFirstPlayerTextView = findViewById(R.id.player1_id);
-//        mFirstPlayerTextView.setText(firstPlayerName);
+        mFirstPlayerTextView = findViewById(R.id.player1_id);
+       // mFirstPlayerTextView.setText(firstPlayerName);
         mFirstPlayerToken = findViewById(R.id.player1_token_id);
         mFirstPlayerToken.setColor(firstPlayerColor);
         mFirstPlayerToken.selected();
 //
-//        mSecondPlayerTextView = findViewById(R.id.player2_id);
+        mSecondPlayerTextView = findViewById(R.id.player2_id);
 //        mSecondPlayerTextView.setText(secondPlayerName);
         mSecondPlayerToken = findViewById(R.id.player2_token_id);
         mSecondPlayerToken.setColor(secondPlayerColor);
@@ -271,10 +317,10 @@ mContext=this;
         mBoardView.setFirstPlayerColor(firstPlayerColor);
         mBoardView.setSecondPlayerColor(secondPlayerColor);
 
-//        mRoundsButton = findViewById(R.id.roundsButton);
-//        mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
-//        mRoundsButton.setTextColor(Color.BLACK);
-//        mRoundsButton.setEnabled(false);
+        mRoundsButton = findViewById(R.id.roundsButton);
+        mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
+        mRoundsButton.setTextColor(Color.BLACK);
+        mRoundsButton.setEnabled(false);
 
 //        mRewindable = false;
 //        mRewindButton = findViewById(R.id.rewindButton);

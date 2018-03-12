@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.iamrobots.connectfour.R;
@@ -44,6 +45,7 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
 
     private String mFirstPlayerName;
     private String mSecondPlayerName = "Computer";
+    private EditText mPlayerName;
     private int mRows;
     private int mColumns;
     private int mRounds;
@@ -59,6 +61,7 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
         setSupportActionBar(toolbar);
 
         mOnlineButton = findViewById(R.id.button_play);
+        mPlayerName = findViewById(R.id.editText2);
 
         mOnlineButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +79,7 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
                 */
 
                 Intent i = new Intent(OnlineActivity.this, OnlinedemoActivity.class);
+                i.putExtra("PlayerName",mPlayerName.getText().toString());
                 startActivity(i);
             }
         });
