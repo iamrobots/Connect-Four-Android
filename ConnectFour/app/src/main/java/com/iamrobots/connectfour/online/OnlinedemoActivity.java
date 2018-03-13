@@ -431,5 +431,17 @@ String winner;
 //        mPlayerTwoWins = 0;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mSocket.disconnect();
+        mSocket.off("column_event", columnEvent);
+        mSocket.off("secondPlayer", AlertFirstPlayer);
+        //mSocket.on("firstPlayer", FirstPlayerJoined);
+        mSocket.off("players", UpdatePlayers);
+        mSocket.off("gamewon",GameWon);
+        mSocket.off("newGame",NewGame);
+    }
 
 }
