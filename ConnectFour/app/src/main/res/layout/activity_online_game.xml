@@ -88,7 +88,10 @@
         android:contentDescription="@string/rewind_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/roundsButton"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
+        app:srcCompat="@android:drawable/ic_menu_revert"
+        android:visibility="gone"
+        />
+
 
     <Button
         android:id="@+id/roundsButton"

@@ -164,10 +164,10 @@ public class OnlinedemoActivity extends AppCompatActivity {
                     //mGameModel.setCurrentPlayer();
 
                     if (mGameModel.getGameState() == 1) {
-                        //mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
+                        mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
                         //gameWon();
                     }
-                    if (player == 0) {
+                    if (player != 0) {
                         mFirstPlayerToken.selected();
                         mSecondPlayerToken.unselected();
                     } else {
@@ -286,9 +286,9 @@ public class OnlinedemoActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String firstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Alice");
         String secondPlayerName = preferences.getString(SECOND_PLAYER_KEY, "Bob");
-        int rows = preferences.getInt(ROW_KEY, 6);
-        int columns = preferences.getInt(COLUMNS_KEY, 7);
-        mRounds = preferences.getInt(ROUNDS_KEY, 1);
+        int rows = bundle.getInt(ROW_KEY, 6);
+        int columns = bundle.getInt(COLUMNS_KEY, 7);
+        mRounds = bundle.getInt(ROUNDS_KEY, 1);
         mCurrentRound = 1;
 
 
