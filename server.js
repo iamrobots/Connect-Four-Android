@@ -44,14 +44,14 @@ objectSocket.on('new msg', function (objectData) {
 var spl = objectData.split(",");
 players.push(spl[0]);
 console.log("message :  "+objectData);
-if(objectClients.length == 1)
+if((objectClients.length)%2 != 0)
 		{
 			var connected="first user connected";
 			objectSocket.emit("firstPlayer",{'first':connected});	
 			objectSocket.broadcast.emit("firstPlayer",{'first':connected});	
 		}
 		
-		if(objectClients.length == 2)
+		if((objectClients.length)%2 == 0)
 		{
 			var connected="second user connected";
 			objectSocket.emit("secondPlayer",{'second':connected});	
@@ -69,6 +69,19 @@ var spl = objectData.split(",");
 console.log("row : "+ spl[0] + "  column: " +spl[1] + "   player :  " + spl[2]);
 objectSocket.broadcast.emit("column_event", {'row':spl[0],'column':spl[1],'player':spl[2]});
 });
+
+objectSocket.on('gamewon', function (objectData) {
+//var spl = objectData.split(",");
+//console.log("row : "+ spl[0] + "  column: " +spl[1] + "   player :  " + spl[2]);
+objectSocket.broadcast.emit("gamewon", {'winner':objectData});
+});
+objectSocket.on('newGame', function (objectData) {
+//var spl = objectData.split(",");
+//console.log("row : "+ spl[0] + "  column: " +spl[1] + "   player :  " + spl[2]);
+objectSocket.broadcast.emit("newGame", {'newgame':objectData});
+
+});
+
 
 
 });
