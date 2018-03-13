@@ -77,6 +77,8 @@ public class OnlinedemoActivity extends AppCompatActivity {
     private Bundle bundle;
     private String firstPlayer;
     private String secondPlayer;
+    private String player1;
+    private String player2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,9 +104,28 @@ public class OnlinedemoActivity extends AppCompatActivity {
         mSocket.on("secondPlayer", AlertFirstPlayer);
         //mSocket.on("firstPlayer", FirstPlayerJoined);
         mSocket.on("players", UpdatePlayers);
+        mSocket.on("gamewon",GameWon);
+        mSocket.on("newGame",NewGame);
         mSocket.connect();
         setup();
 
+
+        mRoundsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGameModel.getGameState() > 0 && mCurrentRound < mRounds) {
+                    mCurrentRound++;
+                    mGameModel.reset();
+                    mBoardView.clear();
+                    mFirstPlayerToken.selected();
+                    mSecondPlayerToken.unselected();
+                    mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
+                    mRoundsButton.setTextColor(Color.BLACK);
+                    mRoundsButton.setEnabled(false);
+                    mSocket.emit("newGame","newgame");
+                }
+            }
+        });
 
         mBoardView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -166,6 +187,22 @@ public class OnlinedemoActivity extends AppCompatActivity {
                     if (mGameModel.getGameState() == 1) {
                         mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
                         //gameWon();
+
+                        String winner;
+                        if (mGameModel.getCurrentPlayer() != 0) {
+                            winner = player1;
+                            mPlayerOneWins += 1;
+                            mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
+                        }
+                        else {
+                            winner = player2;
+                            mPlayerTwoWins += 1;
+                            mSecondPlayerToken.setScore(String.valueOf(mPlayerTwoWins));
+                        }
+
+
+                        Toast.makeText(OnlinedemoActivity.this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+
                     }
                     if (player != 0) {
                         mFirstPlayerToken.selected();
@@ -201,6 +238,33 @@ public class OnlinedemoActivity extends AppCompatActivity {
         }
     };
 
+    private Emitter.Listener NewGame = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            OnlinedemoActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+
+                        mCurrentRound++;
+                        mGameModel.reset();
+                        mBoardView.clear();
+                        mFirstPlayerToken.selected();
+                        mSecondPlayerToken.unselected();
+                        mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
+                        mRoundsButton.setTextColor(Color.BLACK);
+                        mRoundsButton.setEnabled(false);
+
+                    } catch (Exception e) {
+                        return;
+                    }
+
+                }
+            });
+        }
+    };
 
     private Emitter.Listener UpdatePlayers = new Emitter.Listener() {
         @Override
@@ -209,8 +273,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-                    String player1;
-                    String player2;
+
                     try {
                         player1 = data.getString("first");
                         player2 = data.getString("second");
@@ -226,15 +289,28 @@ public class OnlinedemoActivity extends AppCompatActivity {
         }
     };
 
-//    mRoundsButton.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            if (mGameModel.getGameState() > 0 && mCurrentRound < mRounds) {
-//                mCurrentRound++;
-//                newGame();
-//            }
-//        }
-//    });
+    private Emitter.Listener GameWon = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            OnlinedemoActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+String winner;
+                    try {
+                        winner = data.getString("winner");
+                        Toast.makeText(OnlinedemoActivity.this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        return;
+                    }
+
+                }
+            });
+        }
+
+    };
+
+
 
     public void gameInPlay(float x, float y) {
 
@@ -268,6 +344,26 @@ public class OnlinedemoActivity extends AppCompatActivity {
         if (mGameModel.getGameState() == 1) {
             mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
            // gameWon();
+String winner;
+            if (mGameModel.getCurrentPlayer() != 0) {
+                winner = player1;
+                mPlayerOneWins += 1;
+                mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
+            }
+            else {
+                winner = player2;
+                mPlayerTwoWins += 1;
+                mSecondPlayerToken.setScore(String.valueOf(mPlayerTwoWins));
+            }
+
+
+            Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
+//mSocket.emit("gamewon",winner);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            if (mCurrentRound < mRounds) {
+                mRoundsButton.setText(R.string.next_round);
+                mRoundsButton.setEnabled(true);
+            }
         }
 
         if (mGameModel.getCurrentPlayer() == 0) {
@@ -277,6 +373,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
             mSecondPlayerToken.selected();
             mFirstPlayerToken.unselected();
         }
+
 
         //mRewindButton.setEnabled(mRewindable);
     }
