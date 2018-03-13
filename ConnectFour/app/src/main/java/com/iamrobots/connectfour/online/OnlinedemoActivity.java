@@ -34,6 +34,7 @@ import com.iamrobots.connectfour.gamePlay.BoardView;
 import com.iamrobots.connectfour.gamePlay.TokenView;
 
 import com.iamrobots.connectfour.gamePlay.PlayAgainDialog;
+
 import java.util.List;
 
 public class OnlinedemoActivity extends AppCompatActivity {
@@ -79,20 +80,21 @@ public class OnlinedemoActivity extends AppCompatActivity {
     private String secondPlayer;
     private String player1;
     private String player2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_game);
-        mContext=this;
+        mContext = this;
         spinner = findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
-        intent= getIntent();
+        intent = getIntent();
         bundle = intent.getExtras();
         {
             try {
                 mSocket = IO.socket("http://10.0.0.31:3001");
                 Log.e("message :  ", "Fine!");
-                String msg = bundle.get("PlayerName") +",connected successfully!!";
+                String msg = bundle.get("PlayerName") + ",connected successfully!!";
                 mSocket.emit("new msg", msg);
 
             } catch (Exception e) {
@@ -104,8 +106,8 @@ public class OnlinedemoActivity extends AppCompatActivity {
         mSocket.on("secondPlayer", AlertFirstPlayer);
         //mSocket.on("firstPlayer", FirstPlayerJoined);
         mSocket.on("players", UpdatePlayers);
-        mSocket.on("gamewon",GameWon);
-        mSocket.on("newGame",NewGame);
+        mSocket.on("gamewon", GameWon);
+        mSocket.on("newGame", NewGame);
         mSocket.connect();
         setup();
 
@@ -122,7 +124,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
                     mRoundsButton.setText("Round " + mCurrentRound + "/" + mRounds);
                     mRoundsButton.setTextColor(Color.BLACK);
                     mRoundsButton.setEnabled(false);
-                    mSocket.emit("newGame","newgame");
+                    mSocket.emit("newGame", "newgame");
                 }
             }
         });
@@ -139,7 +141,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
                             case 0: // Game is in play
                                 gameInPlay(event.getX(), event.getY());
 
-                            break;
+                                break;
 
                             case 1:  // Game is won
                                 break;
@@ -179,9 +181,9 @@ public class OnlinedemoActivity extends AppCompatActivity {
                         return;
                     }
 
-                                    //mGameActivity.gameInPlay(row,column);
-                    Pair<Integer,Integer> coordinates = mGameModel.dropToken(column);
-                    mBoardView.dropToken(row, column, player );
+                    //mGameActivity.gameInPlay(row,column);
+                    Pair<Integer, Integer> coordinates = mGameModel.dropToken(column);
+                    mBoardView.dropToken(row, column, player);
                     //mGameModel.setCurrentPlayer();
 
                     if (mGameModel.getGameState() == 1) {
@@ -193,8 +195,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
                             winner = player1;
                             mPlayerOneWins += 1;
                             mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
-                        }
-                        else {
+                        } else {
                             winner = player2;
                             mPlayerTwoWins += 1;
                             mSecondPlayerToken.setScore(String.valueOf(mPlayerTwoWins));
@@ -277,7 +278,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
                     try {
                         player1 = data.getString("first");
                         player2 = data.getString("second");
-                        Log.i("players :   ",player1 + " ,,,, "+ player2);
+                        Log.i("players :   ", player1 + " ,,,, " + player2);
                         mFirstPlayerTextView.setText(player1);
                         mSecondPlayerTextView.setText(player2);
                     } catch (Exception e) {
@@ -296,7 +297,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-String winner;
+                    String winner;
                     try {
                         winner = data.getString("winner");
                         Toast.makeText(OnlinedemoActivity.this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
@@ -311,13 +312,11 @@ String winner;
     };
 
 
-
     public void gameInPlay(float x, float y) {
 
-        Pair<Integer,Integer> coordinates;
+        Pair<Integer, Integer> coordinates;
         int column = mBoardView.getColumn(x);
         int row = mBoardView.getRow(y);
-
 
 
         mRewindable = true;
@@ -337,20 +336,18 @@ String winner;
         //mGameModel.getCurrentPlayer();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        mSocket.emit("call",coord);
-
+        mSocket.emit("call", coord);
 
 
         if (mGameModel.getGameState() == 1) {
             mBoardView.highlightTokens(mGameModel.getWinners(), mGameModel.getCurrentPlayer());
-           // gameWon();
-String winner;
+            // gameWon();
+            String winner;
             if (mGameModel.getCurrentPlayer() != 0) {
                 winner = player1;
                 mPlayerOneWins += 1;
                 mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
-            }
-            else {
+            } else {
                 winner = player2;
                 mPlayerTwoWins += 1;
                 mSecondPlayerToken.setScore(String.valueOf(mPlayerTwoWins));
@@ -395,7 +392,7 @@ String winner;
 
 
         mFirstPlayerTextView = findViewById(R.id.player1_id);
-       // mFirstPlayerTextView.setText(firstPlayerName);
+        // mFirstPlayerTextView.setText(firstPlayerName);
         mFirstPlayerToken = findViewById(R.id.player1_token_id);
         mFirstPlayerToken.setColor(firstPlayerColor);
         mFirstPlayerToken.selected();
@@ -406,7 +403,7 @@ String winner;
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
         //added a new field depth, but this will not affect the actual Game Model
-        mGameModel = new GameModel(rows,columns,1);
+        mGameModel = new GameModel(rows, columns, 1);
         mGameActivity = new GameActivity();
 
         mBoardView = findViewById(R.id.boardView);
@@ -440,8 +437,8 @@ String winner;
         mSocket.off("secondPlayer", AlertFirstPlayer);
         //mSocket.on("firstPlayer", FirstPlayerJoined);
         mSocket.off("players", UpdatePlayers);
-        mSocket.off("gamewon",GameWon);
-        mSocket.off("newGame",NewGame);
+        mSocket.off("gamewon", GameWon);
+        mSocket.off("newGame", NewGame);
     }
 
 }

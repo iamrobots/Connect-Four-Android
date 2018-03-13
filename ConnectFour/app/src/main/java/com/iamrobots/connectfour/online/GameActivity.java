@@ -122,7 +122,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void gameInPlay(int x, int y) {
 
-        Pair<Integer,Integer> coordinates;
+        Pair<Integer, Integer> coordinates;
         int column = y;
         int row = x;
 
@@ -167,8 +167,7 @@ public class GameActivity extends AppCompatActivity {
             mPlayerOneWins += 1;
             mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
             mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
-        }
-        else {
+        } else {
             winner = mPlayerTwo.getName();
             mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
             mPlayerTwoWins += 1;
@@ -181,8 +180,7 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
         // added to notify a player with new high score
         mScoreList = db.playerDao().topScores();
-        if(mScoreList.contains(winner))
-        {
+        if (mScoreList.contains(winner)) {
             Toast.makeText(this, winner + " has a new high score!", Toast.LENGTH_SHORT).show();
         }
 
@@ -258,7 +256,7 @@ public class GameActivity extends AppCompatActivity {
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
         //added a new field depth, but this will not affect the actual Game Model
-        mGameModel = new GameModel(rows,columns,1);
+        mGameModel = new GameModel(rows, columns, 1);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);

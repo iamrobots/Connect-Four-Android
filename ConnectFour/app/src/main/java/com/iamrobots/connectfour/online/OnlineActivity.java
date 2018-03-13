@@ -79,9 +79,9 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
                 */
 
                 Intent i = new Intent(OnlineActivity.this, OnlinedemoActivity.class);
-                i.putExtra("PlayerName",mPlayerName.getText().toString());
-                i.putExtra(ROW_KEY,mRows);
-                i.putExtra(COLUMNS_KEY,mColumns);
+                i.putExtra("PlayerName", mPlayerName.getText().toString());
+                i.putExtra(ROW_KEY, mRows);
+                i.putExtra(COLUMNS_KEY, mColumns);
                 i.putExtra(ROUNDS_KEY, mRounds);
                 startActivity(i);
             }

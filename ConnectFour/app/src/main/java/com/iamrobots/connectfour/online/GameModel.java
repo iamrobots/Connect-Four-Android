@@ -10,7 +10,6 @@ import java.util.Stack;
 
 /**
  * Created by Aniketha Katakam on 1/22/18.
- *
  */
 
 // TODO: Add a stack of the columns that where selected to keep track of what was played.
@@ -38,20 +37,18 @@ public class GameModel {
         mDepth = depth;
         mWinCoordinates = new ArrayList<>();
         mMoveStack = new Stack<>();
-        for (int i = 0; i < mBoardArray.length; i++)
-        {
-            for (int j = 0; j < mBoardArray[i].length; j++)
-            {
+        for (int i = 0; i < mBoardArray.length; i++) {
+            for (int j = 0; j < mBoardArray[i].length; j++) {
                 mBoardArray[i][j] = -1;
             }
         }
     }
 
-    public int getCurrentPlayer(){
+    public int getCurrentPlayer() {
         return mCurrentPlayer;
     }
 
-    public void setCurrentPlayer(){
+    public void setCurrentPlayer() {
         mCurrentPlayer = (mCurrentPlayer == 0) ? 1 : 0;
     }
 
@@ -108,11 +105,11 @@ public class GameModel {
     private void removeToken(int column) {
         for (int i = 1; i < mBoardRow; ++i) {
             if (mBoardArray[i][column] == -1) {
-                mBoardArray[i-1][column] = -1;
+                mBoardArray[i - 1][column] = -1;
                 break;
             }
         }
-        mBoardArray[mBoardRow-1][column] = -1;
+        mBoardArray[mBoardRow - 1][column] = -1;
     }
 
     private boolean checkBoard() {
@@ -121,25 +118,22 @@ public class GameModel {
         boolean diagUp = AIcheckDiagonalUpwards();
         boolean diagDown = AIcheckDiagonalDownwards();
 
-        if (horz|| vert || diagUp || diagDown) {
+        if (horz || vert || diagUp || diagDown) {
             return true;
         }
         return false;
     }
 
-    private boolean AIcheckHorizontal(){
-        for(int i = 0; i < mBoardRow; i++ )
-        {
-            for(int j = 0; j <= mBoardColumn -4 ; j++ )
-            {
-                if((mBoardArray[i][j] == 0
-                        && mBoardArray[i][j+1] == 0
-                        && mBoardArray[i][j+2] == 0
-                        && mBoardArray[i][j+3] == 0) || (mBoardArray[i][j] == 1
-                        && mBoardArray[i][j+1] == 1
-                        && mBoardArray[i][j+2] == 1
-                        && mBoardArray[i][j+3] == 1))
-                {
+    private boolean AIcheckHorizontal() {
+        for (int i = 0; i < mBoardRow; i++) {
+            for (int j = 0; j <= mBoardColumn - 4; j++) {
+                if ((mBoardArray[i][j] == 0
+                        && mBoardArray[i][j + 1] == 0
+                        && mBoardArray[i][j + 2] == 0
+                        && mBoardArray[i][j + 3] == 0) || (mBoardArray[i][j] == 1
+                        && mBoardArray[i][j + 1] == 1
+                        && mBoardArray[i][j + 2] == 1
+                        && mBoardArray[i][j + 3] == 1)) {
                     return true;
                 }
 
@@ -149,19 +143,16 @@ public class GameModel {
 
     }
 
-    private boolean AIcheckVertical(){
-        for(int i = 0; i < mBoardColumn; i++ )
-        {
-            for(int j = 0; j <= mBoardRow -4 ; j++ )
-            {
-                if((mBoardArray[j][i] == 0
-                        && mBoardArray[j+1][i] == 0
-                        && mBoardArray[j+2][i] == 0
-                        && mBoardArray[j+3][i] == 0) || (mBoardArray[j][i] == 1
-                        && mBoardArray[j+1][i] == 1
-                        && mBoardArray[j+2][i] == 1
-                        && mBoardArray[j+3][i] == 1))
-                {
+    private boolean AIcheckVertical() {
+        for (int i = 0; i < mBoardColumn; i++) {
+            for (int j = 0; j <= mBoardRow - 4; j++) {
+                if ((mBoardArray[j][i] == 0
+                        && mBoardArray[j + 1][i] == 0
+                        && mBoardArray[j + 2][i] == 0
+                        && mBoardArray[j + 3][i] == 0) || (mBoardArray[j][i] == 1
+                        && mBoardArray[j + 1][i] == 1
+                        && mBoardArray[j + 2][i] == 1
+                        && mBoardArray[j + 3][i] == 1)) {
                     return true;
                 }
 
@@ -170,19 +161,16 @@ public class GameModel {
         return false;
     }
 
-    private boolean AIcheckDiagonalUpwards(){
-        for(int i = 0; i <= mBoardRow -4 ; i++ )
-        {
-            for(int j = 3; j <= mBoardColumn -1  ; j++ )
-            {
-                if((mBoardArray[i][j] == 0
-                        && mBoardArray[i+1][j-1] == 0
-                        && mBoardArray[i+2][j-2] == 0
-                        && mBoardArray[i+3][j-3] == 0) || (mBoardArray[i][j] == 1
-                        && mBoardArray[i+1][j-1] == 1
-                        && mBoardArray[i+2][j-2] == 1
-                        && mBoardArray[i+3][j-3] == 1))
-                {
+    private boolean AIcheckDiagonalUpwards() {
+        for (int i = 0; i <= mBoardRow - 4; i++) {
+            for (int j = 3; j <= mBoardColumn - 1; j++) {
+                if ((mBoardArray[i][j] == 0
+                        && mBoardArray[i + 1][j - 1] == 0
+                        && mBoardArray[i + 2][j - 2] == 0
+                        && mBoardArray[i + 3][j - 3] == 0) || (mBoardArray[i][j] == 1
+                        && mBoardArray[i + 1][j - 1] == 1
+                        && mBoardArray[i + 2][j - 2] == 1
+                        && mBoardArray[i + 3][j - 3] == 1)) {
                     return true;
                 }
 
@@ -191,19 +179,16 @@ public class GameModel {
         return false;
     }
 
-    private boolean AIcheckDiagonalDownwards(){
-        for(int i = 0; i <= mBoardRow -4 ; i++ )
-        {
-            for(int j = 0; j <= mBoardColumn -4 ; j++ )
-            {
-                if((mBoardArray[i][j] == 0
-                        && mBoardArray[i+1][j+1] == 0
-                        && mBoardArray[i+2][j+2] == 0
-                        && mBoardArray[i+3][j+3] == 0) || (mBoardArray[i][j] == 1
-                        && mBoardArray[i+1][j+1] == 1
-                        && mBoardArray[i+2][j+2] == 1
-                        && mBoardArray[i+3][j+3] == 1))
-                {
+    private boolean AIcheckDiagonalDownwards() {
+        for (int i = 0; i <= mBoardRow - 4; i++) {
+            for (int j = 0; j <= mBoardColumn - 4; j++) {
+                if ((mBoardArray[i][j] == 0
+                        && mBoardArray[i + 1][j + 1] == 0
+                        && mBoardArray[i + 2][j + 2] == 0
+                        && mBoardArray[i + 3][j + 3] == 0) || (mBoardArray[i][j] == 1
+                        && mBoardArray[i + 1][j + 1] == 1
+                        && mBoardArray[i + 2][j + 2] == 1
+                        && mBoardArray[i + 3][j + 3] == 1)) {
                     return true;
                 }
 
@@ -215,48 +200,44 @@ public class GameModel {
 
     public Pair<Integer, Integer> dropToken(int column) {
         int returnRow;
-        for(int i = 0; i < mBoardRow; i++)
-        {
-            if(mBoardArray[i][column] == -1) {
+        for (int i = 0; i < mBoardRow; i++) {
+            if (mBoardArray[i][column] == -1) {
                 mBoardArray[i][column] = getCurrentPlayer();
 
                 setCurrentPlayer();
-                returnRow=i;
+                returnRow = i;
 
                 boolean horz = checkHorizontal();
                 boolean vert = checkVertical();
                 boolean diagUp = checkDiagonalUpwards();
                 boolean diagDown = checkDiagonalDownwards();
 
-                if (horz|| vert || diagUp || diagDown) {
+                if (horz || vert || diagUp || diagDown) {
                     mGameState = 1; //game won
-                }
-                else {
-                    int stalemateCounter=0;
-                    int inplayCounter=0;
+                } else {
+                    int stalemateCounter = 0;
+                    int inplayCounter = 0;
                     int boardSize;
                     //yet to add draw logic
-                    for (int k = 0; k < mBoardArray.length; k++)
-                    {
-                        for (int j = 0; j < mBoardArray[k].length; j++)
-                        {
-                            if(mBoardArray[k][j]== 1 || mBoardArray[k][j]== 0)
+                    for (int k = 0; k < mBoardArray.length; k++) {
+                        for (int j = 0; j < mBoardArray[k].length; j++) {
+                            if (mBoardArray[k][j] == 1 || mBoardArray[k][j] == 0)
                                 stalemateCounter++;
-                            if(mBoardArray[k][j]== -1)
+                            if (mBoardArray[k][j] == -1)
                                 inplayCounter++;
                         }
                     }
 
-                    boardSize = (mBoardArray.length)*(mBoardArray[0].length);
+                    boardSize = (mBoardArray.length) * (mBoardArray[0].length);
 
-                    if(boardSize > inplayCounter )
+                    if (boardSize > inplayCounter)
                         mGameState = 0;
-                    if(stalemateCounter+1 == boardSize)
-                        mGameState=2;
+                    if (stalemateCounter + 1 == boardSize)
+                        mGameState = 2;
                     //setCurrentPlayer();
                 }
                 mMoveStack.push(new Pair<>(returnRow, column));
-                return Pair.create(returnRow,column);
+                return Pair.create(returnRow, column);
             }
         }
 
@@ -274,23 +255,20 @@ public class GameModel {
         return rowColumnPair;
     }
 
-    private boolean checkHorizontal(){
-        for(int i = 0; i < mBoardRow; i++ )
-        {
-            for(int j = 0; j <= mBoardColumn -4 ; j++ )
-            {
-                if((mBoardArray[i][j] == 0
-                        && mBoardArray[i][j+1] == 0
-                        && mBoardArray[i][j+2] == 0
-                        && mBoardArray[i][j+3] == 0) || (mBoardArray[i][j] == 1
-                        && mBoardArray[i][j+1] == 1
-                        && mBoardArray[i][j+2] == 1
-                        && mBoardArray[i][j+3] == 1))
-                {
-                    mWinCoordinates.add( Pair.create(i, j));
-                    mWinCoordinates.add( Pair.create(i, j+1));
-                    mWinCoordinates.add( Pair.create(i, j+2));
-                    mWinCoordinates.add( Pair.create(i, j+3));
+    private boolean checkHorizontal() {
+        for (int i = 0; i < mBoardRow; i++) {
+            for (int j = 0; j <= mBoardColumn - 4; j++) {
+                if ((mBoardArray[i][j] == 0
+                        && mBoardArray[i][j + 1] == 0
+                        && mBoardArray[i][j + 2] == 0
+                        && mBoardArray[i][j + 3] == 0) || (mBoardArray[i][j] == 1
+                        && mBoardArray[i][j + 1] == 1
+                        && mBoardArray[i][j + 2] == 1
+                        && mBoardArray[i][j + 3] == 1)) {
+                    mWinCoordinates.add(Pair.create(i, j));
+                    mWinCoordinates.add(Pair.create(i, j + 1));
+                    mWinCoordinates.add(Pair.create(i, j + 2));
+                    mWinCoordinates.add(Pair.create(i, j + 3));
                     return true;
                 }
 
@@ -300,23 +278,20 @@ public class GameModel {
 
     }
 
-    private boolean checkVertical(){
-        for(int i = 0; i < mBoardColumn; i++ )
-        {
-            for(int j = 0; j <= mBoardRow -4 ; j++ )
-            {
-                if((mBoardArray[j][i] == 0
-                        && mBoardArray[j+1][i] == 0
-                        && mBoardArray[j+2][i] == 0
-                        && mBoardArray[j+3][i] == 0) || (mBoardArray[j][i] == 1
-                        && mBoardArray[j+1][i] == 1
-                        && mBoardArray[j+2][i] == 1
-                        && mBoardArray[j+3][i] == 1))
-                {
-                    mWinCoordinates.add( Pair.create(j, i));
-                    mWinCoordinates.add( Pair.create(j+1,i));
-                    mWinCoordinates.add( Pair.create(j+2,i));
-                    mWinCoordinates.add( Pair.create(j+3,i));
+    private boolean checkVertical() {
+        for (int i = 0; i < mBoardColumn; i++) {
+            for (int j = 0; j <= mBoardRow - 4; j++) {
+                if ((mBoardArray[j][i] == 0
+                        && mBoardArray[j + 1][i] == 0
+                        && mBoardArray[j + 2][i] == 0
+                        && mBoardArray[j + 3][i] == 0) || (mBoardArray[j][i] == 1
+                        && mBoardArray[j + 1][i] == 1
+                        && mBoardArray[j + 2][i] == 1
+                        && mBoardArray[j + 3][i] == 1)) {
+                    mWinCoordinates.add(Pair.create(j, i));
+                    mWinCoordinates.add(Pair.create(j + 1, i));
+                    mWinCoordinates.add(Pair.create(j + 2, i));
+                    mWinCoordinates.add(Pair.create(j + 3, i));
                     return true;
                 }
 
@@ -325,23 +300,20 @@ public class GameModel {
         return false;
     }
 
-    private boolean checkDiagonalUpwards(){
-        for(int i = 0; i <= mBoardRow -4 ; i++ )
-        {
-            for(int j = 3; j <= mBoardColumn -1  ; j++ )
-            {
-                if((mBoardArray[i][j] == 0
-                        && mBoardArray[i+1][j-1] == 0
-                        && mBoardArray[i+2][j-2] == 0
-                        && mBoardArray[i+3][j-3] == 0) || (mBoardArray[i][j] == 1
-                        && mBoardArray[i+1][j-1] == 1
-                        && mBoardArray[i+2][j-2] == 1
-                        && mBoardArray[i+3][j-3] == 1))
-                {
-                    mWinCoordinates.add( Pair.create(i, j));
-                    mWinCoordinates.add( Pair.create(i+1, j-1));
-                    mWinCoordinates.add( Pair.create(i+2, j-2));
-                    mWinCoordinates.add( Pair.create(i+3, j-3));
+    private boolean checkDiagonalUpwards() {
+        for (int i = 0; i <= mBoardRow - 4; i++) {
+            for (int j = 3; j <= mBoardColumn - 1; j++) {
+                if ((mBoardArray[i][j] == 0
+                        && mBoardArray[i + 1][j - 1] == 0
+                        && mBoardArray[i + 2][j - 2] == 0
+                        && mBoardArray[i + 3][j - 3] == 0) || (mBoardArray[i][j] == 1
+                        && mBoardArray[i + 1][j - 1] == 1
+                        && mBoardArray[i + 2][j - 2] == 1
+                        && mBoardArray[i + 3][j - 3] == 1)) {
+                    mWinCoordinates.add(Pair.create(i, j));
+                    mWinCoordinates.add(Pair.create(i + 1, j - 1));
+                    mWinCoordinates.add(Pair.create(i + 2, j - 2));
+                    mWinCoordinates.add(Pair.create(i + 3, j - 3));
                     return true;
                 }
 
@@ -350,23 +322,20 @@ public class GameModel {
         return false;
     }
 
-    private boolean checkDiagonalDownwards(){
-        for(int i = 0; i <= mBoardRow -4 ; i++ )
-        {
-            for(int j = 0; j <= mBoardColumn -4 ; j++ )
-            {
-                if((mBoardArray[i][j] == 0
-                        && mBoardArray[i+1][j+1] == 0
-                        && mBoardArray[i+2][j+2] == 0
-                        && mBoardArray[i+3][j+3] == 0) || (mBoardArray[i][j] == 1
-                        && mBoardArray[i+1][j+1] == 1
-                        && mBoardArray[i+2][j+2] == 1
-                        && mBoardArray[i+3][j+3] == 1))
-                {
-                    mWinCoordinates.add( Pair.create(i, j));
-                    mWinCoordinates.add( Pair.create(i+1, j+1));
-                    mWinCoordinates.add( Pair.create(i+2, j+2));
-                    mWinCoordinates.add( Pair.create(i+3, j+3));
+    private boolean checkDiagonalDownwards() {
+        for (int i = 0; i <= mBoardRow - 4; i++) {
+            for (int j = 0; j <= mBoardColumn - 4; j++) {
+                if ((mBoardArray[i][j] == 0
+                        && mBoardArray[i + 1][j + 1] == 0
+                        && mBoardArray[i + 2][j + 2] == 0
+                        && mBoardArray[i + 3][j + 3] == 0) || (mBoardArray[i][j] == 1
+                        && mBoardArray[i + 1][j + 1] == 1
+                        && mBoardArray[i + 2][j + 2] == 1
+                        && mBoardArray[i + 3][j + 3] == 1)) {
+                    mWinCoordinates.add(Pair.create(i, j));
+                    mWinCoordinates.add(Pair.create(i + 1, j + 1));
+                    mWinCoordinates.add(Pair.create(i + 2, j + 2));
+                    mWinCoordinates.add(Pair.create(i + 3, j + 3));
                     return true;
                 }
 
@@ -392,10 +361,8 @@ public class GameModel {
         mCurrentPlayer = 0;
         mWinCoordinates = new ArrayList<>();
 
-        for (int i = 0; i < mBoardArray.length; i++)
-        {
-            for (int j = 0; j < mBoardArray[i].length; j++)
-            {
+        for (int i = 0; i < mBoardArray.length; i++) {
+            for (int j = 0; j < mBoardArray[i].length; j++) {
                 mBoardArray[i][j] = -1;
             }
         }
