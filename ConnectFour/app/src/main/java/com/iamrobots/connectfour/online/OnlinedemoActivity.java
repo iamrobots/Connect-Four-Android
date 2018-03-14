@@ -93,6 +93,7 @@ public class OnlinedemoActivity extends AppCompatActivity {
         {
             try {
                 mSocket = IO.socket("http://10.0.0.31:3001");
+                // replace "10.0.0.31" with ip from computer (phones and laptop should all be connected to hotspot)
                 Log.e("message :  ", "Fine!");
                 String msg = bundle.get("PlayerName") + ",connected successfully!!";
                 mSocket.emit("new msg", msg);

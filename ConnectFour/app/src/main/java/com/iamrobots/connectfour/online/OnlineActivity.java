@@ -23,10 +23,12 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.iamrobots.connectfour.TopScoresActivity;
 import com.iamrobots.connectfour.gamePlay.AIGameActivity;
+import com.iamrobots.connectfour.offline.BottomNavigationHelper;
 import com.iamrobots.connectfour.offline.GameHomeActivity;
 import com.iamrobots.connectfour.offline.GameMenuActivity;
 import com.iamrobots.connectfour.offline.PlayerListActivity;
 import com.iamrobots.connectfour.offline.PlayerSelectActivity;
+import com.iamrobots.connectfour.offline.RulesActivity;
 
 public class OnlineActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "OnlineActivity";
@@ -60,32 +62,6 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
         Toolbar toolbar = findViewById(R.id.toolbar_online);
         setSupportActionBar(toolbar);
 
-        mOnlineButton = findViewById(R.id.button_play);
-        mPlayerName = findViewById(R.id.editText2);
-
-        mOnlineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // what we usually pass to the game model in offline mode
-                /*
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(FIRST_PLAYER_KEY, mFirstPlayerName);
-                editor.putString(SECOND_PLAYER_KEY, mSecondPlayerName);
-                editor.putInt(ROW_KEY, mRows);
-                editor.putInt(COLUMNS_KEY, mColumns);
-                editor.putInt(ROUNDS_KEY, mRounds);
-                editor.apply();
-                */
-
-                Intent i = new Intent(OnlineActivity.this, OnlinedemoActivity.class);
-                i.putExtra("PlayerName", mPlayerName.getText().toString());
-                i.putExtra(ROW_KEY, mRows);
-                i.putExtra(COLUMNS_KEY, mColumns);
-                i.putExtra(ROUNDS_KEY, mRounds);
-                startActivity(i);
-            }
-        });
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mFirstPlayerName = preferences.getString(FIRST_PLAYER_KEY, "Alice");
@@ -99,7 +75,23 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
 
         spinnerSetup();
 
+        mOnlineButton = findViewById(R.id.button_play);
+        mPlayerName = findViewById(R.id.editText2);
+
+        mOnlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(OnlineActivity.this, OnlinedemoActivity.class);
+                i.putExtra("PlayerName", mPlayerName.getText().toString());
+                i.putExtra(ROW_KEY, mRows);
+                i.putExtra(COLUMNS_KEY, mColumns);
+                i.putExtra(ROUNDS_KEY, mRounds);
+                startActivity(i);
+            }
+        });
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
+        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
@@ -116,6 +108,10 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
                     case R.id.ic_highscore:
                         Intent i3 = new Intent(OnlineActivity.this, TopScoresActivity.class);
                         startActivity(i3);
+                        break;
+                    case R.id.ic_help:
+                        Intent i4 = new Intent(OnlineActivity.this, RulesActivity.class);
+                        startActivity(i4);
                         break;
                 }
 

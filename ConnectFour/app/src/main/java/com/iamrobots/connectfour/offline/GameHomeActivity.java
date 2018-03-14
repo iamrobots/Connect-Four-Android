@@ -3,6 +3,8 @@ package com.iamrobots.connectfour.offline;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -16,6 +18,8 @@ import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.TopScoresActivity;
 import com.iamrobots.connectfour.gamePlay.GameActivity;
 import com.iamrobots.connectfour.online.OnlineActivity;
+
+import java.lang.reflect.Field;
 
 // Home screen of app, replaces GameMenuActivity. Not fully implemented.
 
@@ -47,6 +51,7 @@ public class GameHomeActivity extends AppCompatActivity {
         tabs.setupWithViewPager(mViewPager);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
+        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -60,6 +65,10 @@ public class GameHomeActivity extends AppCompatActivity {
                     case R.id.ic_highscore:
                         Intent i3 = new Intent(GameHomeActivity.this, TopScoresActivity.class);
                         startActivity(i3);
+                        break;
+                    case R.id.ic_help:
+                        Intent i4 = new Intent(GameHomeActivity.this, RulesActivity.class);
+                        startActivity(i4);
                         break;
                 }
 

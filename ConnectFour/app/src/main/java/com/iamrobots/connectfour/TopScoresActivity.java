@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
+import com.iamrobots.connectfour.offline.BottomNavigationHelper;
 import com.iamrobots.connectfour.offline.GameHomeActivity;
+import com.iamrobots.connectfour.offline.RulesActivity;
 import com.iamrobots.connectfour.online.OnlineActivity;
 
 import java.lang.ref.WeakReference;
@@ -52,6 +54,7 @@ public class TopScoresActivity extends AppCompatActivity {
         loader.execute();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
+        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
@@ -68,6 +71,10 @@ public class TopScoresActivity extends AppCompatActivity {
                         startActivity(i2);
                         break;
                     case R.id.ic_highscore:
+                        break;
+                    case R.id.ic_help:
+                        Intent i4 = new Intent(TopScoresActivity.this, RulesActivity.class);
+                        startActivity(i4);
                         break;
                 }
 

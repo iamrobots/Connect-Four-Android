@@ -7,8 +7,8 @@ import android.view.View;
 
 import com.iamrobots.connectfour.R;
 
-/**
- * Created by namrathamanjunatha on 3/2/18.
+/*
+ * Allows user to submit feedback. No longer needed, replaced by RulesActivity.
  */
 
 public class FeedbackActivity extends AppCompatActivity {

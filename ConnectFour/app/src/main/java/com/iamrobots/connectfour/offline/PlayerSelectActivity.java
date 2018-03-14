@@ -1,6 +1,6 @@
 /*
  *  Alternate to PlayerSelectionActivity that uses tabs to show human and ai modes.
- *  Not fully implemented.
+ *  Replaced by GameHomeActivity.
  */
 
 package com.iamrobots.connectfour.offline;

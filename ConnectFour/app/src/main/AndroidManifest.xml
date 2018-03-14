@@ -26,7 +26,8 @@
 
         <activity
             android:name=".online.OnlineActivity"
-            android:theme="@style/NoBarNoAnimation"/>
+            android:theme="@style/NoBarNoAnimation"
+            android:label="Online" />
 
         <activity
             android:name=".TopScoresActivity"
@@ -35,7 +36,10 @@
             android:parentActivityName=".offline.GameMenuActivity"
             android:theme="@style/NoBarNoAnimation" />
 
-        <activity android:name=".offline.RulesActivity" />
+        <activity
+            android:name=".offline.RulesActivity"
+            android:label="Help"
+            android:theme="@style/NoBarNoAnimation"/>
 
         <activity android:name=".offline.FeedbackActivity" />
 

@@ -1,7 +1,8 @@
 package com.iamrobots.connectfour.offline;
 
-/**
- * Created by namrathamanjunatha on 1/26/18.
+/*
+ *  Simple landing activity that navigates to different game modes.
+ *  Replaced by GameHomeActivity.
  */
 
 import android.support.v7.app.AppCompatActivity;
