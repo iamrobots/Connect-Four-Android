@@ -91,7 +91,7 @@ public class OnlineActivity extends AppCompatActivity implements AdapterView.OnI
         });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
-        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
+        //BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);

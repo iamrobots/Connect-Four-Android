@@ -37,7 +37,7 @@ public class RulesActivity extends AppCompatActivity{
         });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
-        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
+        //BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(3);
         menuItem.setChecked(true);

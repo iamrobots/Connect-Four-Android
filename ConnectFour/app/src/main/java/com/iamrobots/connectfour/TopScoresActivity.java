@@ -54,7 +54,7 @@ public class TopScoresActivity extends AppCompatActivity {
         loader.execute();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
-        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
+        //BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);

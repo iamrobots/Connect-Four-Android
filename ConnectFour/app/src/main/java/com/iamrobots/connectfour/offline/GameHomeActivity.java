@@ -51,7 +51,7 @@ public class GameHomeActivity extends AppCompatActivity {
         tabs.setupWithViewPager(mViewPager);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.homeBottomBar);
-        BottomNavigationHelper.disableShiftMode(bottomNavigationView);
+        //BottomNavigationHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
