@@ -165,11 +165,11 @@ public class AIGameActivity extends AppCompatActivity {
             mRoundsButton.setText(R.string.next_round);
             mRoundsButton.setEnabled(true);
         }
-        // else: show dialog to play again
-        else {
+        // else: show dialog to play again, no longer used
+        /*else {
             PlayAgainDialog dialog = new PlayAgainDialog();
             dialog.show(getFragmentManager(), "AddPlayerDialog");
-        }
+        }*/
     }
 
 
@@ -201,7 +201,7 @@ public class AIGameActivity extends AppCompatActivity {
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
         //set depth here
-        mGameModel = new GameModel(rows,columns,11);
+        mGameModel = new GameModel(rows,columns,10);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
@@ -215,7 +215,7 @@ public class AIGameActivity extends AppCompatActivity {
         mRewindable = false;
         mRewindButton = findViewById(R.id.rewindButton);
         mRewindButton.setEnabled(mRewindable);
-//        mRewindButton.setVisibility(View.GONE);
+        mRewindButton.setVisibility(View.GONE);
 
         db = AppDatabase.getInstance(this);
         mHumanPlayer = db.playerDao().getPlayerByName(firstPlayerName);

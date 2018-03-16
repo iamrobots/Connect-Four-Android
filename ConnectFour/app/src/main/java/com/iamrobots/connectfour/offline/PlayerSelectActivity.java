@@ -1,6 +1,6 @@
 /*
  *  Alternate to PlayerSelectionActivity that uses tabs to show human and ai modes.
- *  Not fully implemented.
+ *  Replaced by GameHomeActivity.
  */
 
 package com.iamrobots.connectfour.offline;
@@ -15,7 +15,6 @@ import android.util.Log;
 import com.iamrobots.connectfour.R;
 
 public class PlayerSelectActivity extends AppCompatActivity {
-
     private static final String TAG = "PlayerSelectActivity";
 
     private SectionsPageAdapter mSectionsPageAdapter;
@@ -50,3 +49,12 @@ public class PlayerSelectActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 }
+
+
+
+
+
+
+
+
+

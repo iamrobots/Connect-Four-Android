@@ -1,5 +1,6 @@
 package com.iamrobots.connectfour.offline;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -72,7 +73,8 @@ public class PlayerListActivity extends AppCompatActivity {
                 Intent mIntent = getIntent();
                 String fromTab= mIntent.getStringExtra("FROM_TAB");
 
-                Intent i = new Intent(PlayerListActivity.this, PlayerSelectActivity.class);
+                //Intent i = new Intent(PlayerListActivity.this, PlayerSelectActivity.class);
+                Intent i = new Intent(PlayerListActivity.this, GameHomeActivity.class);
                 i.putExtra("FROM_TAB", fromTab);
                 startActivity(i);
             }

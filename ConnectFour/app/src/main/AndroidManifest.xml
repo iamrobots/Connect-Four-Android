@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iamrobots.connectfour">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/connect4_icon"
@@ -9,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".offline.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,37 +19,74 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".offline.GameHomeActivity"
+            android:theme="@style/NoBarNoAnimation"/>
+
+        <activity
+            android:name=".online.OnlineActivity"
+            android:theme="@style/NoBarNoAnimation"
+            android:label="Online" />
+
+        <activity
+            android:name=".TopScoresActivity"
+            android:exported="true"
+            android:label="@string/top_scores"
+            android:parentActivityName=".offline.GameMenuActivity"
+            android:theme="@style/NoBarNoAnimation" />
+
+        <activity
+            android:name=".offline.RulesActivity"
+            android:label="Help"
+            android:theme="@style/NoBarNoAnimation"/>
+
+        <activity android:name=".offline.FeedbackActivity" />
+
+        <activity
+            android:name=".offline.PlayerListActivity"
+            android:label="@string/title_activity_player_list" />
+
+        <activity android:name=".offline.AddPlayerActivity" />
+
+        <activity
+            android:name=".gamePlay.GameActivity"
+            android:exported="true"
+            android:parentActivityName=".offline.PlayerSelectionActivity" />
+
+        <activity
+            android:name=".gamePlay.AIGameActivity"
+            android:exported="true"
+            android:parentActivityName=".offline.PlayerSelectionActivity" />
+
+        <activity
+            android:name=".online.GameActivity"
+            android:label="Online"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".online.OnlinedemoActivity"
+            android:label="@string/title_activity_onlinedemo"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!-- activity no longer used -->
         <activity
             android:name=".offline.GameMenuActivity"
             android:label="@string/title_player_mode" />
-        <activity
-            android:name=".gamePlay.GameActivity"
-            android:parentActivityName=".offline.PlayerSelectionActivity"
-            android:exported="true" />
+
+        <!-- activity no longer used -->
         <activity
             android:name=".offline.PlayerSelectionActivity"
             android:label="@string/title_activity_player_selection"
             android:parentActivityName=".offline.GameMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".online.OnlineActivity" />
-        <activity
-            android:name=".TopScoresActivity"
-            android:label="@string/top_scores"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".offline.GameMenuActivity"
-            android:exported="true"/>
-        <activity
-            android:name=".offline.PlayerListActivity"
-            android:label="@string/title_activity_player_list" />
+
+        <!-- activity no longer used -->
         <activity
             android:name=".offline.PlayerSelectActivity"
             android:label="@string/title_activity_player_select"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".offline.AddPlayerActivity" />
-        <activity android:name=".gamePlay.AIGameActivity"
-            android:parentActivityName=".offline.PlayerSelectionActivity"
-            android:exported="true"/>
-        <activity android:name=".offline.RulesActivity"></activity>
+
     </application>
 
 </manifest>

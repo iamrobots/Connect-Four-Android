@@ -1,7 +1,8 @@
 package com.iamrobots.connectfour.offline;
 
-/**
- * Created by namrathamanjunatha on 1/26/18.
+/*
+ *  Simple landing activity that navigates to different game modes.
+ *  Replaced by GameHomeActivity.
  */
 
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +37,7 @@ public class GameMenuActivity extends AppCompatActivity{
         mOnlineButton = findViewById(R.id.button_multi);
         mTopScoresButton = findViewById(R.id.button_top_scores);
 
-       mOfflineButton.setOnClickListener(new View.OnClickListener() {
+        mOfflineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(GameMenuActivity.this, PlayerSelectActivity.class);
@@ -72,7 +73,6 @@ public class GameMenuActivity extends AppCompatActivity{
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -84,8 +84,8 @@ public class GameMenuActivity extends AppCompatActivity{
         }
 
         if (id == R.id.help_id) {
-            Toast.makeText(this, "report a bug if found!", Toast.LENGTH_SHORT).show();
-            return true;
+            Intent intent2 = new Intent(GameMenuActivity.this, FeedbackActivity.class);
+            this.startActivity(intent2);
         }
 
         return super.onOptionsItemSelected(item);

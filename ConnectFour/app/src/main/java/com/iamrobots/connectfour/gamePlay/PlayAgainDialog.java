@@ -14,8 +14,9 @@ import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.offline.GameMenuActivity;
 import com.iamrobots.connectfour.offline.PlayerSelectActivity;
 
-/**
- * Created by AbesMac on 2/24/18.
+/*
+ *  No longer used after implementing GameHomeActivity. Since there is no menu to return to,
+ *  the dialog no longer made sense.
  */
 
 public class PlayAgainDialog extends DialogFragment {

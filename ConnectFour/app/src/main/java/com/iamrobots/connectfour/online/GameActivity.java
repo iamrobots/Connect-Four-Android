@@ -1,25 +1,26 @@
-package com.iamrobots.connectfour.gamePlay;
+package com.iamrobots.connectfour.online;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.util.Pair;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iamrobots.connectfour.R;
 import com.iamrobots.connectfour.database.AppDatabase;
 import com.iamrobots.connectfour.database.Player;
-import com.iamrobots.connectfour.offline.GameHomeActivity;
+import com.iamrobots.connectfour.gamePlay.BoardView;
+import com.iamrobots.connectfour.gamePlay.TokenView;
+import com.iamrobots.connectfour.online.GameModel;
+import com.iamrobots.connectfour.gamePlay.PlayAgainDialog;
 
 import java.util.List;
 
@@ -71,35 +72,35 @@ public class GameActivity extends AppCompatActivity {
 
         setup();
 
-        mBoardView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.performClick();
-
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        switch (mGameModel.getGameState()) {
-                            case 0: // Game is in play
-                                gameInPlay(event.getX(), event.getY());
-                                break;
-
-                            case 1:  // Game is won
-                                break;
-
-                            case 2:  // Game is draw
-                                if (mCurrentRound < mRounds) {
-                                    mRoundsButton.setText(R.string.next_round);
-                                    mRoundsButton.setEnabled(true);
-                                }
-                                Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        break;
-                }
-                return true;
-            }
-        });
+//        mBoardView.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.performClick();
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_UP:
+//                        switch (mGameModel.getGameState()) {
+//                            case 0: // Game is in play
+//                                gameInPlay(event.getX(), event.getY());
+//                                break;
+//
+//                            case 1:  // Game is won
+//                                break;
+//
+//                            case 2:  // Game is draw
+//                                if (mCurrentRound < mRounds) {
+//                                    mRoundsButton.setText(R.string.next_round);
+//                                    mRoundsButton.setEnabled(true);
+//                                }
+//                                Toast.makeText(getApplicationContext(), "The game is a draw", Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         mRoundsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,11 +120,11 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void gameInPlay(float x, float y) {
+    public void gameInPlay(int x, int y) {
 
-        Pair<Integer,Integer> coordinates;
-        int column = mBoardView.getColumn(x);
-        int row = mBoardView.getRow(y);
+        Pair<Integer, Integer> coordinates;
+        int column = y;
+        int row = x;
 
         mRewindable = true;
 
@@ -166,8 +167,7 @@ public class GameActivity extends AppCompatActivity {
             mPlayerOneWins += 1;
             mPlayerTwo.setLosses(mPlayerTwo.getDraws() + 1);
             mFirstPlayerToken.setScore(String.valueOf(mPlayerOneWins));
-        }
-        else {
+        } else {
             winner = mPlayerTwo.getName();
             mPlayerTwo.setWins(mPlayerTwo.getWins() + 1);
             mPlayerTwoWins += 1;
@@ -176,12 +176,11 @@ public class GameActivity extends AppCompatActivity {
         }
 
         db.playerDao().updatePlayers(mPlayerOne, mPlayerTwo);
-        Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
 
+        Toast.makeText(this, winner + " is the winner!", Toast.LENGTH_SHORT).show();
         // added to notify a player with new high score
         mScoreList = db.playerDao().topScores();
-        if(mScoreList.contains(winner))
-        {
+        if (mScoreList.contains(winner)) {
             Toast.makeText(this, winner + " has a new high score!", Toast.LENGTH_SHORT).show();
         }
 
@@ -190,13 +189,11 @@ public class GameActivity extends AppCompatActivity {
             mRoundsButton.setText(R.string.next_round);
             mRoundsButton.setEnabled(true);
         }
-        // else: show dialog to play again, no longer used
-        /*else {
-            //PlayAgainDialog dialog = new PlayAgainDialog();
-            //dialog.show(getFragmentManager(), "AddPlayerDialog");
-            //Intent i = new Intent(GameActivity.this, GameHomeActivity.class);
-            //startActivity(i);
-        }*/
+        // else: show dialog to play again
+        else {
+            PlayAgainDialog dialog = new PlayAgainDialog();
+            dialog.show(getFragmentManager(), "AddPlayerDialog");
+        }
     }
 
     public void rewind() {
@@ -259,7 +256,7 @@ public class GameActivity extends AppCompatActivity {
         mSecondPlayerToken.setColor(secondPlayerColor);
         mSecondPlayerToken.unselected();
         //added a new field depth, but this will not affect the actual Game Model
-        mGameModel = new GameModel(rows,columns,1);
+        mGameModel = new GameModel(rows, columns, 1);
 
         mBoardView = findViewById(R.id.boardView);
         mBoardView.setRowsColumns(rows, columns);
